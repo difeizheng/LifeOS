@@ -228,7 +228,7 @@ export default function AgentSwimLane({ agentName, events, timeRange, onClose }:
         <button
           onClick={onClose}
           className="text-[var(--ink-3)] hover:text-white transition-colors p-0.5 rounded hover:bg-white/[0.05]"
-          title="Remove this swim lane"
+          title="移除此泳道"
         >
           <X size={16} strokeWidth={2.5} />
         </button>
@@ -241,7 +241,7 @@ export default function AgentSwimLane({ agentName, events, timeRange, onClose }:
           <div className="absolute inset-0 flex items-center justify-center">
             <p className="flex items-center gap-2 text-[var(--ink-3)] text-sm font-semibold">
               <Loader2 size={16} strokeWidth={2.5} className="animate-spin" />
-              Waiting for events...
+              等待事件...
             </p>
           </div>
         )}

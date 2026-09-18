@@ -42,7 +42,7 @@ export default function GraphPage() {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-xs text-ink-3" style={{ fontFamily: "'concourse-t3', sans-serif" }}>
-          Loading graph...
+          加载中...
         </div>
       </div>
     );
@@ -57,7 +57,7 @@ export default function GraphPage() {
           className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink-3"
           style={{ fontFamily: "'concourse-c3', 'concourse-t3', sans-serif" }}
         >
-          KNOWLEDGE GRAPH
+          知识图谱
         </h1>
         <span className="text-[13px] text-ink-3 ml-2" style={{ fontFamily: "'concourse-t3', sans-serif" }}>
           {data.nodes.length} nodes · {data.edges.length} edges
@@ -66,10 +66,10 @@ export default function GraphPage() {
         {/* Legend — dot colors are the graph node color scale (intentional) */}
         <div className="ml-auto flex items-center gap-1.5">
           {[
-            { label: "System", color: "#22d3ee" },
-            { label: "People", color: "#38bdf8" },
-            { label: "Companies", color: "#fbbf24" },
-            { label: "Ideas", color: "#a78bfa" },
+            { label: "系统", color: "#22d3ee" },
+            { label: "人物", color: "#38bdf8" },
+            { label: "公司", color: "#fbbf24" },
+            { label: "想法", color: "#a78bfa" },
           ].map((item) => (
             <Pill key={item.label} dim="neutral">
               <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />

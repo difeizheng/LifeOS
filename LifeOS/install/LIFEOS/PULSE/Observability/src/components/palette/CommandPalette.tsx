@@ -322,7 +322,7 @@ export default function CommandPalette() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleInputKeyDown}
-            placeholder={scope === "wiki" ? "Search docs and knowledge..." : "Jump to anything..."}
+            placeholder={scope === "wiki" ? "搜索文档和知识库..." : "跳转到任何内容..."}
             className="flex-1 bg-transparent text-[15px] text-ink-1 placeholder:text-ink-3 outline-none caret-[#3b82f6]"
             style={font}
           />
@@ -335,19 +335,19 @@ export default function CommandPalette() {
         <div className="max-h-[52vh] overflow-y-auto">
           {rows.length === 0 && (
             <div className="px-4 py-8 text-center text-xs text-ink-3" style={font}>
-              {wikiLoading ? "Searching..." : query ? `No results for "${query}"` : "Nothing here yet"}
+              {wikiLoading ? "搜索中..." : query ? `未找到 "${query}" 的结果` : "暂无内容"}
             </div>
           )}
 
           {recentCount > 0 && (
             <div className="px-4 py-2 text-[11px] text-ink-3 uppercase tracking-widest border-b border-line-1" style={font}>
-              Recent
+              最近
             </div>
           )}
           {pageRows.slice(0, recentCount).map((row) => renderRow(row, rowIndex++))}
           {pageRows.length > recentCount && (recentCount > 0 || wikiRows.length > 0) && (
             <div className="px-4 py-2 text-[11px] text-ink-3 uppercase tracking-widest border-b border-line-1" style={font}>
-              Pages
+              页面
             </div>
           )}
           {pageRows.slice(recentCount).map((row) => renderRow(row, rowIndex++))}
@@ -364,11 +364,11 @@ export default function CommandPalette() {
 
         {/* Footer */}
         <div className="flex items-center gap-4 px-4 py-2 border-t border-line-1 text-[12px] text-ink-3" style={font}>
-          <span>↑↓ navigate</span>
-          <span>⏎ open</span>
-          <span>⌘⏎ new tab</span>
-          <span>tab scope</span>
-          {scope && <span>⌫ clear scope</span>}
+          <span>↑↓ 导航</span>
+          <span>⏎ 打开</span>
+          <span>⌘⏎ 新标签</span>
+          <span>tab 范围</span>
+          {scope && <span>⌫ 清除范围</span>}
         </div>
       </div>
     </div>

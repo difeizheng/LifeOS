@@ -114,25 +114,25 @@ function Narrative({ telos, tone='operator', showIds, onTrace }: NarrativeProps)
       <p className="narrative">
         <Trace id={null} cls="n-accent">{n.days_into}</Trace> {n.push_name}.{' '}
         <Trace id={work.id} cls="n-accent">{work.title.toLowerCase()}</Trace> —{' '}
-        <Trace id={strat.id} cls="n-soft">{strategyTitle}</Trace>,{' '}
-        <Trace id={chal.id} cls="n-warm">{challengeTitle}</Trace>.
+        <Trace id={strat.id} cls="n-soft">{strategyTitle}</Trace>，{' '}
+        <Trace id={chal.id} cls="n-warm">{challengeTitle}</Trace>。
       </p>
     );
   }
 
   return (
     <p className="narrative">
-      You&rsquo;re <span className="n-accent">{n.days_into} days</span> into the <span className="n-accent">{n.push_name}</span>.
-      {' '}Right now you&rsquo;re on <Trace id={work.id} cls="n-accent">{work.title.toLowerCase()}</Trace> —
-      a <Trace id={strat.id} cls="n-soft">{strategyTitle}</Trace> move,
-      pressing on <Trace id={chal.id} cls="n-warm">{challengeTitle}</Trace>.
-      {' '}It pushes <Trace id={goal.id} cls="n-soft">{goalTitle}</Trace> forward,
-      serves <Trace id={miss.id} cls="n-warm">{missionTitle}</Trace>
+      你已进入 <span className="n-accent">{n.push_name}</span> 的第 <span className="n-accent">{n.days_into} 天</span>。
+      {' '}此刻你正在推进 <Trace id={work.id} cls="n-accent">{work.title.toLowerCase()}</Trace> —
+      一项 <Trace id={strat.id} cls="n-soft">{strategyTitle}</Trace> 行动，
+      直面 <Trace id={chal.id} cls="n-warm">{challengeTitle}</Trace>。
+      {' '}它推动 <Trace id={goal.id} cls="n-soft">{goalTitle}</Trace> 向前，
+      服务于 <Trace id={miss.id} cls="n-warm">{missionTitle}</Trace>
       {problemTitle && (
         <>
-          , and pulls at <Trace id={prob?.id} cls="n-warm">{problemTitle}</Trace>
+          ，并牵动 <Trace id={prob?.id} cls="n-warm">{problemTitle}</Trace>
         </>
-      )}.
+      )}。
       {moodLine && <> {' '}<span className="n-quiet">{moodLine}</span></>}
     </p>
   );
@@ -161,7 +161,7 @@ export function Hero({ telos, tone, showIds, onTrace, openFile, isPersonalized }
           <span className="hero-date-day">{owner.day}</span>
           <span className="hero-streak">
             <span className="hero-streak-flame">◆</span>
-            <span>{owner.streak} days in a row</span>
+            <span>连续 {owner.streak} 天</span>
           </span>
           <span className="hero-date-meta">· 09:14</span>
         </div>
@@ -195,14 +195,14 @@ export function Hero({ telos, tone, showIds, onTrace, openFile, isPersonalized }
           ) : null}
           {telos.recommendedNextAction && (
             <p className="hero-next-action">
-              <span className="hero-next-tag">Next</span>
+              <span className="hero-next-tag">下一步</span>
               <span>{telos.recommendedNextAction}</span>
             </p>
           )}
           {(telos.currentStateBullets || telos.idealStateBullets || hasNarratives) && (
             <div className="hero-state-cards">
               <div className="hero-state-card hero-state-card-current">
-                <div className="hero-state-card-label">Current State</div>
+                <div className="hero-state-card-label">现状</div>
                 {telos.currentStateBullets && telos.currentStateBullets.length > 0 ? (
                   <ul className="hero-state-card-list">
                     {telos.currentStateBullets.map((b) => (
@@ -217,7 +217,7 @@ export function Hero({ telos, tone, showIds, onTrace, openFile, isPersonalized }
                 ) : null}
               </div>
               <div className="hero-state-card hero-state-card-ideal" id="sec-ideal">
-                <div className="hero-state-card-label">Ideal State</div>
+                <div className="hero-state-card-label">理想状态</div>
                 {telos.idealStateBullets && telos.idealStateBullets.length > 0 ? (
                   <ul className="hero-state-card-list">
                     {telos.idealStateBullets.map((b) => (
@@ -241,19 +241,19 @@ export function Hero({ telos, tone, showIds, onTrace, openFile, isPersonalized }
           <div className="hero-summary">
             <p className="hero-summary-headline">{summary.headline}</p>
             {summary.position && (
-              <p className="hero-summary-line"><span className="hero-summary-tag">Position</span>{summary.position}</p>
+              <p className="hero-summary-line"><span className="hero-summary-tag">定位</span>{summary.position}</p>
             )}
             {summary.traction && (
-              <p className="hero-summary-line"><span className="hero-summary-tag hero-summary-tag-ok">Traction</span>{summary.traction}</p>
+              <p className="hero-summary-line"><span className="hero-summary-tag hero-summary-tag-ok">动能</span>{summary.traction}</p>
             )}
             {summary.pinch && (
-              <p className="hero-summary-line"><span className="hero-summary-tag hero-summary-tag-warn">Pinch</span>{summary.pinch}</p>
+              <p className="hero-summary-line"><span className="hero-summary-tag hero-summary-tag-warn">卡点</span>{summary.pinch}</p>
             )}
             {summary.drift && (
-              <p className="hero-summary-line"><span className="hero-summary-tag hero-summary-tag-warn">Drift</span>{summary.drift}</p>
+              <p className="hero-summary-line"><span className="hero-summary-tag hero-summary-tag-warn">漂移</span>{summary.drift}</p>
             )}
             {summary.recommendations && (
-              <p className="hero-summary-line hero-summary-line-recs"><span className="hero-summary-tag hero-summary-tag-next">Next</span>{summary.recommendations}</p>
+              <p className="hero-summary-line hero-summary-line-recs"><span className="hero-summary-tag hero-summary-tag-next">下一步</span>{summary.recommendations}</p>
             )}
           </div>
         ) : <div />}
@@ -263,7 +263,7 @@ export function Hero({ telos, tone, showIds, onTrace, openFile, isPersonalized }
       {hasIdealState && (
         <div className="ideal-head">
           <div className="ideal-head-l">
-            <span className="ideal-label">Current vs Ideal</span>
+            <span className="ideal-label">现状与理想</span>
             <span className="ideal-horizon">{idealState.horizon}</span>
           </div>
           <span className="ideal-note">{idealState.note}</span>
@@ -285,18 +285,18 @@ export function Hero({ telos, tone, showIds, onTrace, openFile, isPersonalized }
 
       {projects.length > 0 && (
         <p className="hero-sub">
-          {green} moving well. {amber} need{amber===1?'s':''} attention.
-          {red > 0 && <> {red===1?'One is':`${red} are`} stuck.</>}
-          {' '}<span className="hero-sub-soft">{wip} threads in flight · cap is 2.</span>
+          {green} 个进展顺利。{amber} 个需要{amber===1?'':''}关注。
+          {red > 0 && <> {red===1?'有 1 个卡住了':`${red} 个卡住了`}。</>}
+          {' '}<span className="hero-sub-soft">{wip} 条线程进行中 · 上限 2 条。</span>
         </p>
       )}
 
       <div className="hero-snapshot">
         {snapshot.map(s=>{
           const label =
-            s.id==='mood'   ? (s.v>=7?'steady':s.v>=5?'mixed':'low') :
+            s.id==='mood'   ? (s.v>=7?'稳定':s.v>=5?'混合':'低落') :
             s.id==='energy' ? `${s.v.toFixed(0)} / 10` :
-                              (s.v>=8?'sharp':s.v>=6?'clear':'scattered');
+                              (s.v>=8?'敏锐':s.v>=6?'清晰':'涣散');
           return (
             <div key={s.id} className="snap">
               <span className="snap-dot" style={{background:`var(${s.id==='mood'?'--freedom':s.id==='energy'?'--money':'--creative'})`,opacity:0.35 + (s.v/s.of)*0.65}}/>

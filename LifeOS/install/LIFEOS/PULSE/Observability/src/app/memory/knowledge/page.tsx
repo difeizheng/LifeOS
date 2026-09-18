@@ -118,16 +118,16 @@ const SEARCH_CATEGORY_ICONS: Record<string, typeof FileText> = {
 };
 
 const SEARCH_CATEGORY_LABELS: Record<string, string> = {
-  "system-doc": "System",
-  person: "People",
-  company: "Companies",
-  idea: "Ideas",
-  blog: "Blogs",
-  book: "Books",
-  research: "Research",
-  isa: "ISAs",
-  lesson: "Lessons",
-  wisdom: "Wisdom",
+  "system-doc": "系统",
+  person: "人物",
+  company: "公司",
+  idea: "想法",
+  blog: "博客",
+  book: "书籍",
+  research: "研究",
+  isa: "ISA",
+  lesson: "教训",
+  wisdom: "智慧",
 };
 
 function KnowledgeHeroSearch({ totalPages }: { totalPages: number }) {
@@ -185,7 +185,7 @@ function KnowledgeHeroSearch({ totalPages }: { totalPages: number }) {
                 router.push(wikiPageUrl(results[0].category, results[0].slug));
               }
             }}
-            placeholder={`Search ${totalPages.toLocaleString()} entries — people, companies, ideas, blogs, books…`}
+            placeholder={`搜索 ${totalPages.toLocaleString()} 条目 — 人物、公司、想法、博客、书籍…`}
             className="flex-1 bg-transparent outline-none text-ink-1 placeholder:text-ink-3"
             style={{ fontSize: 18, fontFamily: "'concourse-t3', sans-serif" }}
             autoFocus
@@ -197,7 +197,7 @@ function KnowledgeHeroSearch({ totalPages }: { totalPages: number }) {
                 inputRef.current?.focus();
               }}
               className="text-ink-3 hover:text-ink-1 shrink-0 transition-colors"
-              aria-label="Clear search"
+              aria-label="清除搜索"
             >
               <X className="w-4 h-4" />
             </button>
@@ -208,11 +208,11 @@ function KnowledgeHeroSearch({ totalPages }: { totalPages: number }) {
       {query.trim() && (
         <Panel className="p-0 overflow-hidden">
           {loading && results.length === 0 && (
-            <div className="px-5 py-6 text-sm text-ink-3">Searching…</div>
+            <div className="px-5 py-6 text-sm text-ink-3">搜索中…</div>
           )}
           {!loading && results.length === 0 && (
             <div className="px-5 py-6 text-sm text-ink-3">
-              No results for &ldquo;{query}&rdquo;
+              没有与 &ldquo;{query}&rdquo; 匹配的结果
             </div>
           )}
           {results.length > 0 && (
@@ -276,14 +276,14 @@ function KnowledgeLanding({ data }: { data: WikiIndex }) {
         {isFreshInstall && (
           <EmptyStateGuide
             section="Cortex"
-            description="Everything the system knows — people, companies, ideas, research, work sessions (ISAs), lessons, and wisdom. Notes live under ~/.claude/LIFEOS/MEMORY/."
+            description="系统所知的一切 — 人物、公司、想法、研究、工作会话（ISA）、教训与智慧。笔记位于 ~/.claude/LIFEOS/MEMORY/。"
             daPromptExample="help me start my memory archive"
           />
         )}
 
         <PageHeader
           title="Cortex"
-          subtitle="The memory system — everything we know, searchable, browsable, one graph"
+          subtitle="记忆系统 — 我们所知的一切，可搜索、可浏览、一张图谱"
         />
 
         <KnowledgeHeroSearch totalPages={data.stats.totalPages} />
@@ -291,15 +291,15 @@ function KnowledgeLanding({ data }: { data: WikiIndex }) {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {[
-            { icon: Users, label: "People", count: data.stats.totalPeople, dim: "relationships" as const },
-            { icon: Building2, label: "Companies", count: data.stats.totalCompanies, dim: "money" as const },
-            { icon: Lightbulb, label: "Ideas", count: data.stats.totalIdeas, dim: "freedom" as const },
-            { icon: Newspaper, label: "Blogs", count: data.stats.totalBlogs ?? 0, dim: "creative" as const },
-            { icon: BookOpen, label: "Books", count: data.stats.totalBooks ?? 0, dim: "creative" as const },
-            { icon: FlaskConical, label: "Research", count: data.stats.totalResearch ?? 0, dim: "freedom" as const },
-            { icon: Workflow, label: "ISAs", count: data.stats.totalIsas ?? 0, dim: "rhythms" as const },
-            { icon: GraduationCap, label: "Lessons", count: data.stats.totalLessons ?? 0, dim: "health" as const },
-            { icon: Sparkles, label: "Wisdom", count: data.stats.totalWisdom ?? 0, dim: "freedom" as const },
+            { icon: Users, label: "人物", count: data.stats.totalPeople, dim: "relationships" as const },
+            { icon: Building2, label: "公司", count: data.stats.totalCompanies, dim: "money" as const },
+            { icon: Lightbulb, label: "想法", count: data.stats.totalIdeas, dim: "freedom" as const },
+            { icon: Newspaper, label: "博客", count: data.stats.totalBlogs ?? 0, dim: "creative" as const },
+            { icon: BookOpen, label: "书籍", count: data.stats.totalBooks ?? 0, dim: "creative" as const },
+            { icon: FlaskConical, label: "研究", count: data.stats.totalResearch ?? 0, dim: "freedom" as const },
+            { icon: Workflow, label: "ISA", count: data.stats.totalIsas ?? 0, dim: "rhythms" as const },
+            { icon: GraduationCap, label: "教训", count: data.stats.totalLessons ?? 0, dim: "health" as const },
+            { icon: Sparkles, label: "智慧", count: data.stats.totalWisdom ?? 0, dim: "freedom" as const },
           ].map(({ icon: Icon, label, count, dim }) => (
             <StatTile key={label} icon={Icon} label={label} value={count} dim={dim} />
           ))}
@@ -307,7 +307,7 @@ function KnowledgeLanding({ data }: { data: WikiIndex }) {
 
         {/* Recent changes */}
         <Panel className="p-0">
-          <PanelHeader title="Recent Changes" icon={Clock} className="px-5 pt-5 mb-0" />
+          <PanelHeader title="最近更新" icon={Clock} className="px-5 pt-5 mb-0" />
           <div className="divide-y divide-line-1">
             {knowledgeEntries.slice(0, 20).map((page) => {
               const Icon = CATEGORY_ICONS[page.category] || Lightbulb;
@@ -404,7 +404,7 @@ function KnowledgePageInner() {
 
   return (
     <div className="flex items-center justify-center h-full">
-      <div className="text-sm text-ink-3">Loading...</div>
+      <div className="text-sm text-ink-3">加载中...</div>
     </div>
   );
 }
@@ -414,7 +414,7 @@ export default function KnowledgePage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center h-full">
-          <div className="text-sm text-ink-3">Loading...</div>
+          <div className="text-sm text-ink-3">加载中...</div>
         </div>
       }
     >

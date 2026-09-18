@@ -87,20 +87,20 @@ const pageLink = wikiPageUrl;
 // Landing page — shown when no doc/knowledge is selected
 function WikiLanding({ data }: { data: WikiIndex }) {
   const tiles: Array<{ icon: typeof FileText; label: string; count: number; dim?: Dim }> = [
-    { icon: FileText, label: "Total", count: data.stats.totalPages },
-    { icon: BookOpen, label: "System", count: data.stats.totalSystem, dim: "blue" },
-    { icon: Users, label: "People", count: data.stats.totalPeople, dim: "freedom" },
-    { icon: Building2, label: "Companies", count: data.stats.totalCompanies, dim: "money" },
-    { icon: Lightbulb, label: "Ideas", count: data.stats.totalIdeas, dim: "relationships" },
-    { icon: BookOpen, label: "Books", count: data.stats.totalBooks, dim: "creative" },
+    { icon: FileText, label: "总计", count: data.stats.totalPages },
+    { icon: BookOpen, label: "系统", count: data.stats.totalSystem, dim: "blue" },
+    { icon: Users, label: "人物", count: data.stats.totalPeople, dim: "freedom" },
+    { icon: Building2, label: "公司", count: data.stats.totalCompanies, dim: "money" },
+    { icon: Lightbulb, label: "想法", count: data.stats.totalIdeas, dim: "relationships" },
+    { icon: BookOpen, label: "书籍", count: data.stats.totalBooks, dim: "creative" },
   ];
 
   return (
     <PageShell>
       <PageHeader
         icon={BookOpen}
-        title="System"
-        subtitle="System documentation & knowledge archive"
+        title="系统"
+        subtitle="系统文档与知识存档"
       />
 
       {/* Stats */}
@@ -112,7 +112,7 @@ function WikiLanding({ data }: { data: WikiIndex }) {
 
       {/* Recent changes */}
       <Panel>
-        <PanelHeader title="Recent Changes" icon={Clock} />
+        <PanelHeader title="最近更新" icon={Clock} />
         <div className="space-y-1">
           {data.recentChanges.slice(0, 20).map((page) => {
             const Icon = CATEGORY_ICONS[page.category] || FileText;
@@ -181,10 +181,10 @@ function BookmarkViewer({ detail }: { detail: BookmarkDetail }) {
         <div className="flex items-center gap-2 mb-2">
           <Bookmark className="w-4 h-4 shrink-0" style={{ color: "var(--creative)" }} />
           <span className="text-[13px] uppercase tracking-wider" style={{ fontFamily: "'advocate-c14', sans-serif", color: "var(--creative)" }}>
-            Bookmark
+            书签
           </span>
           {detail.favorite && (
-            <span className="text-[13px] text-warn ml-2">Favorite</span>
+            <span className="text-[13px] text-warn ml-2">收藏</span>
           )}
         </div>
         <h1
@@ -225,7 +225,7 @@ function BookmarkViewer({ detail }: { detail: BookmarkDetail }) {
       {detail.excerpt && (
         <Panel className="p-4">
           <div className="text-[13px] text-ink-3 uppercase tracking-wider mb-2" style={{ fontFamily: "'advocate-c14', sans-serif" }}>
-            Excerpt
+            摘要
           </div>
           <p className="text-sm text-ink-2 leading-relaxed" style={{ fontFamily: "'concourse-t3', sans-serif" }}>
             {detail.excerpt}
@@ -237,7 +237,7 @@ function BookmarkViewer({ detail }: { detail: BookmarkDetail }) {
       {detail.note && (
         <Panel className="p-4">
           <div className="text-[13px] text-ink-3 uppercase tracking-wider mb-2" style={{ fontFamily: "'advocate-c14', sans-serif" }}>
-            Note
+            备注
           </div>
           <p className="text-sm text-ink-2 leading-relaxed whitespace-pre-wrap" style={{ fontFamily: "'concourse-t3', sans-serif" }}>
             {detail.note}
@@ -249,13 +249,13 @@ function BookmarkViewer({ detail }: { detail: BookmarkDetail }) {
       <div className="grid grid-cols-2 gap-4 text-[13px]">
         {detail.folder && (
           <div>
-            <span className="text-ink-3">Folder</span>
+            <span className="text-ink-3">文件夹</span>
             <p className="text-ink-2 mt-0.5" style={{ fontFamily: "'concourse-t3', sans-serif" }}>{detail.folder}</p>
           </div>
         )}
         {detail.created && (
           <div>
-            <span className="text-ink-3">Saved</span>
+            <span className="text-ink-3">保存于</span>
             <p className="text-ink-2 mt-0.5" style={{ fontFamily: "'concourse-t3', sans-serif" }}>
               {new Date(detail.created).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
             </p>
@@ -263,7 +263,7 @@ function BookmarkViewer({ detail }: { detail: BookmarkDetail }) {
         )}
         {detail.tags.length > 0 && (
           <div className="col-span-2">
-            <span className="text-ink-3">Tags</span>
+            <span className="text-ink-3">标签</span>
             <div className="flex flex-wrap gap-1.5 mt-1">
               {detail.tags.map((tag) => (
                 <Pill key={tag} dim="neutral">{tag}</Pill>
@@ -367,7 +367,7 @@ function LifeosPageInner() {
     return (
       <div className="flex flex-col items-center justify-center h-full p-6 max-w-md mx-auto text-center">
         <div className="text-sm text-err mb-2" style={{ fontFamily: "'advocate-c14', sans-serif" }}>
-          Page not found
+          页面未找到
         </div>
         <div className="text-[13px] text-ink-2 mb-4 break-all" style={{ fontFamily: "'concourse-t3', sans-serif" }}>
           {requestedSlug}
@@ -380,7 +380,7 @@ function LifeosPageInner() {
           className="text-[13px] underline underline-offset-2 hover:opacity-80"
           style={{ fontFamily: "'concourse-t3', sans-serif", color: "var(--accent-blue)" }}
         >
-          Back to wiki index
+          返回 wiki 索引
         </Link>
       </div>
     );
@@ -390,7 +390,7 @@ function LifeosPageInner() {
   return (
     <div className="flex items-center justify-center h-full">
       <div className="text-[13px] text-ink-2" style={{ fontFamily: "'concourse-t3', sans-serif" }}>
-        Loading...
+        加载中...
       </div>
     </div>
   );
@@ -402,7 +402,7 @@ export default function LifeosPage() {
       fallback={
         <div className="flex items-center justify-center h-full">
           <div className="text-[13px] text-ink-2" style={{ fontFamily: "'concourse-t3', sans-serif" }}>
-            Loading...
+            加载中...
           </div>
         </div>
       }

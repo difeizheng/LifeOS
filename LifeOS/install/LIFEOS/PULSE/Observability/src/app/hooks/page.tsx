@@ -77,21 +77,21 @@ function HooksLanding({ hooks, events }: { hooks: HookEntry[]; events: string[] 
     <PageShell>
       {hooks.length === 0 && (
         <EmptyStateGuide
-          section="Hook Activity"
-          description="Per-hook health, latency, and recent invocations. Populates as hooks fire during your sessions."
+          section="钩子活动"
+          description="每个钩子的健康状态、延迟与最近调用记录。随着会话中钩子触发逐步填充。"
           hideInterview
           daPromptExample="show me which hooks fired in this session"
         />
       )}
       <PageHeader
-        title="Hooks"
+        title="钩子"
         icon={Webhook}
-        subtitle="Lifecycle event handlers that run shell commands or HTTP requests in response to Claude Code events. Configured in settings.json; they intercept tool calls, session events, and system changes."
+        subtitle="生命周期事件处理器 — 在 Claude Code 事件触发时执行 shell 命令或 HTTP 请求。在 settings.json 中配置；可拦截工具调用、会话事件与系统变更。"
       />
 
       <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(180px, 220px))" }}>
-        <StatTile label="Hooks" value={hooks.length} icon={Webhook} dim="money" />
-        <StatTile label="Events" value={events.length} icon={FileCode} dim="freedom" />
+        <StatTile label="钩子" value={hooks.length} icon={Webhook} dim="money" />
+        <StatTile label="事件" value={events.length} icon={FileCode} dim="freedom" />
       </div>
 
       <SystemHealthPanel />
@@ -108,7 +108,7 @@ function HooksLanding({ hooks, events }: { hooks: HookEntry[]; events: string[] 
                 <span className="text-[12px] text-ink-3 mono">({eventHooks.length})</span>
               </div>
               {eventHooks.length === 0 ? (
-                <p className="pl-1 text-[13px] italic text-ink-3">No hooks registered</p>
+                <p className="pl-1 text-[13px] italic text-ink-3">未注册钩子</p>
               ) : (
                 <div className="flex flex-col gap-2">
                   {eventHooks.map((hook, i) => (
@@ -157,7 +157,7 @@ function HookDetailView({ hook }: { hook: HookDetail }) {
           <h1 className="text-ink-1">{hook.name}</h1>
           <p className="mt-0.5 text-[13px] text-ink-2">
             {(hook.size / 1024).toFixed(1)} KB ·{" "}
-            {new Date(hook.lastModified).toLocaleDateString("en-US", {
+            {new Date(hook.lastModified).toLocaleDateString("zh-CN", {
               month: "short",
               day: "numeric",
               year: "numeric",
@@ -184,7 +184,7 @@ function HooksPageInner() {
     queryKey: ["hooks-list"],
     queryFn: async () => {
       const res = await fetch("/api/wiki/hooks");
-      if (!res.ok) throw new Error("Failed to fetch hooks");
+      if (!res.ok) throw new Error("获取钩子列表失败");
       return res.json();
     },
     staleTime: 30_000,
@@ -195,7 +195,7 @@ function HooksPageInner() {
     queryKey: ["hook-detail", hookName],
     queryFn: async () => {
       const res = await fetch(`/api/wiki/hooks/${encodeURIComponent(hookName!)}`);
-      if (!res.ok) throw new Error("Failed to fetch hook");
+      if (!res.ok) throw new Error("获取钩子详情失败");
       return res.json();
     },
     enabled: isViewing,
@@ -211,7 +211,7 @@ function HooksPageInner() {
 
   return (
     <div className="flex items-center justify-center h-full">
-      <div className="text-sm text-ink-3">Loading...</div>
+      <div className="text-sm text-ink-3">加载中…</div>
     </div>
   );
 }
@@ -221,7 +221,7 @@ export default function HooksPage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center h-full">
-          <div className="text-sm text-ink-3">Loading...</div>
+          <div className="text-sm text-ink-3">加载中…</div>
         </div>
       }
     >

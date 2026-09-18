@@ -104,8 +104,8 @@ export default function ContentPage() {
       `}</style>
 
       <PageHeader
-        title="Content"
-        subtitle="drop → transcribe → produce (edit+augment · clips 2–16 · social · omny · discord) → review → publish"
+        title="内容"
+        subtitle="投放 → 转录 → 制作（编辑+增强 · 片段 2–16 · 社交 · omny · discord）→ 审核 → 发布"
         actions={
           <>
             <Pill dim={live ? "ok" : "neutral"}>
@@ -113,7 +113,7 @@ export default function ContentPage() {
                 className={live ? "conv-dot" : undefined}
                 style={{ width: 6, height: 6, borderRadius: 999, background: live ? "var(--ok)" : "var(--ink-3)" }}
               />
-              {live ? "LIVE" : "POLLING"}
+              {live ? "直播中" : "轮询中"}
             </Pill>
             <span className="text-[12px] text-ink-3 mono">{data ? `${data.items.length}` : "…"}</span>
           </>
@@ -136,7 +136,7 @@ export default function ContentPage() {
                 const failed = it.stage_status === "failed" || it.blocked;
                 const done = it.stage_status === "done";
                 const dot = `var(--${running ? "accent-blue" : failed ? "err" : done ? "ok" : "ink-3"})`;
-                const statusLabel = running ? "RUNNING" : failed ? "BLOCKED" : done ? "READY" : "IDLE";
+                const statusLabel = running ? "运行中" : failed ? "阻塞" : done ? "就绪" : "空闲";
                 const border = running
                   ? "var(--accent-blue)"
                   : failed
@@ -159,11 +159,11 @@ export default function ContentPage() {
                       <button
                         type="button"
                         className="conv-x"
-                        title="Delete item — stops its tasks"
-                        aria-label={`Delete ${it.title}`}
+                        title="删除项目 — 停止其任务"
+                        aria-label={`删除 ${it.title}`}
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (window.confirm(`Delete "${it.title}" and stop its tasks?`)) {
+                          if (window.confirm(`删除"${it.title}"并停止其任务？`)) {
                             fetch(`/api/content/${it.id}`, { method: "DELETE" });
                           }
                         }}
@@ -178,12 +178,12 @@ export default function ContentPage() {
                       <Pill dim="neutral" className="uppercase">{it.type}</Pill>
                       <span style={{ fontSize: 9.5, letterSpacing: "0.08em", color: dot, fontWeight: 600 }}>{statusLabel}</span>
                       {it.requested_run ? (
-                        <Pill dim="blue">RUN QUEUED</Pill>
+                        <Pill dim="blue">运行排队</Pill>
                       ) : (
                         !["review", "publishing", "done"].includes(it.stage) && (
                           <button
                             type="button"
-                            title="Queue the regular run: edit → augment → clips → social (staged, never auto-published)"
+                            title="排队常规运行：编辑 → 增强 → 片段 → 社交（分阶段，永不自动发布）"
                             onClick={(e) => {
                               e.stopPropagation();
                               fetch(`/api/content/${it.id}/run`, { method: "POST" });
@@ -191,14 +191,14 @@ export default function ContentPage() {
                             className="rounded-full text-[12px] font-medium cursor-pointer"
                             style={{ ...dimStyle("blue", true), padding: "1px 8px", fontFamily: "inherit" }}
                           >
-                            ▶ RUN
+                            ▶ 运行
                           </button>
                         )
                       )}
                       {(running || done) && it.activity_at && (
                         <span className="text-ink-3" style={{ fontSize: 9.5 }}>{elapsed(it.activity_at, nowMs)}</span>
                       )}
-                      {failed && it.attempt ? <span style={{ fontSize: 9.5, color: "var(--err)" }}>try {it.attempt}</span> : null}
+                      {failed && it.attempt ? <span style={{ fontSize: 9.5, color: "var(--err)" }}>尝试 {it.attempt}</span> : null}
                     </div>
 
                     {/* Activity line */}

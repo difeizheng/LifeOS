@@ -12,8 +12,8 @@ import "./globals.css";
 import "./telos/_v7/styles.css";
 
 export const metadata: Metadata = {
-  title: "Pulse | Home",
-  description: "LifeOS Observability Dashboard",
+  title: "Pulse | 首页",
+  description: "LifeOS 可观测性仪表盘",
   icons: {
     icon: "/lifeos-logo.svg",
   },
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="zh-CN" className="dark" suppressHydrationWarning>
       <head>
         {/* Pre-paint: applies observer class + route scope before first render so
             a reload with observer on never flashes personal data. */}

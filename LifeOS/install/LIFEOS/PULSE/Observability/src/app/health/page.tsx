@@ -50,21 +50,21 @@ interface FileMeta {
 }
 
 const FILE_META: Record<string, FileMeta> = {
-  METRICS: { icon: Activity, label: "Metrics", priority: 1 },
-  FITNESS: { icon: Heart, label: "Fitness", priority: 2 },
-  NUTRITION: { icon: Apple, label: "Nutrition", priority: 3 },
-  CONDITIONS: { icon: ClipboardList, label: "Conditions", priority: 4 },
-  MEDICATIONS: { icon: PillIcon, label: "Medications", priority: 5 },
-  PROVIDERS: { icon: Stethoscope, label: "Providers", priority: 6 },
-  HISTORY: { icon: FileText, label: "History", priority: 7 },
-  SUPPLEMENTS: { icon: PillIcon, label: "Supplements", priority: 5 },
+  METRICS: { icon: Activity, label: "指标", priority: 1 },
+  FITNESS: { icon: Heart, label: "健身", priority: 2 },
+  NUTRITION: { icon: Apple, label: "营养", priority: 3 },
+  CONDITIONS: { icon: ClipboardList, label: "状况", priority: 4 },
+  MEDICATIONS: { icon: PillIcon, label: "用药", priority: 5 },
+  PROVIDERS: { icon: Stethoscope, label: "医疗提供方", priority: 6 },
+  HISTORY: { icon: FileText, label: "病史", priority: 7 },
+  SUPPLEMENTS: { icon: PillIcon, label: "补剂", priority: 5 },
 };
 
 function fileMeta(name: string): FileMeta {
   if (name.startsWith("lab_results")) {
     return {
       icon: FlaskConical,
-      label: name.replace(/^lab_results_/, "Labs — "),
+      label: name.replace(/^lab_results_/, "化验 — "),
       priority: 0,
     };
   }
@@ -81,7 +81,7 @@ function FileCard({ file }: { file: HealthFile }) {
         icon={Icon}
         actions={
           <Pill dim="health" className="tabular-nums">
-            {file.sections.length} section{file.sections.length === 1 ? "" : "s"}
+            {file.sections.length} 个部分
           </Pill>
         }
       />
@@ -97,7 +97,7 @@ function FileCard({ file }: { file: HealthFile }) {
         ))}
         {file.sections.length > 8 && (
           <div className="text-[12px] italic pt-1 text-ink-3">
-            + {file.sections.length - 8} more
+            + {file.sections.length - 8} 更多
           </div>
         )}
       </div>
@@ -116,8 +116,13 @@ interface Supplement {
   status?: string;
 }
 
-const CATEGORY_ORDER = ["Foundational", "Longevity", "Nootropic", "Allergy", "Rx"];
+const CATEGORY_ORDER = ["基础", "长寿", "促智", "抗敏", "处方"];
 const CATEGORY_DIM: Record<string, Dim> = {
+  基础: "health",
+  长寿: "rhythms",
+  促智: "blue",
+  抗敏: "creative",
+  处方: "money",
   Foundational: "health",
   Longevity: "rhythms",
   Nootropic: "blue",
@@ -194,10 +199,10 @@ function SupplementsTab({ sections }: { sections: Section[] }) {
   if (items.length === 0) {
     return (
       <EmptyStateGuide
-        section="Supplements"
-        description="Your daily and as-needed supplement stack — dose, purpose, and cadence per item."
+        section="补剂"
+        description="你的日常和按需补剂清单 — 每项的剂量、用途和频率。"
         userDir="HEALTH"
-        daPromptExample="add my supplements to the health page"
+        daPromptExample="把我的补剂加到健康页面"
       />
     );
   }
@@ -215,19 +220,19 @@ function SupplementsTab({ sections }: { sections: Section[] }) {
     <div className="space-y-6">
       <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
         <StatTile
-          label="Tracked"
+          label="已追踪"
           value={<span data-sensitive>{items.length}</span>}
           dim="health"
           icon={PillIcon}
         />
         <StatTile
-          label="Daily"
+          label="每日"
           value={<span data-sensitive>{daily}</span>}
           dim="rhythms"
           icon={Activity}
         />
         <StatTile
-          label="Categories"
+          label="分类"
           value={<span data-sensitive>{categories.length}</span>}
           dim="blue"
           icon={LayoutGrid}
@@ -235,7 +240,7 @@ function SupplementsTab({ sections }: { sections: Section[] }) {
       </div>
 
       <p className="text-sm flex items-center gap-2 text-ink-3">
-        <Lock className="w-3.5 h-3.5" /> Fully private. Observer mode blurs all data below.
+        <Lock className="w-3.5 h-3.5" /> 完全私密。观察模式下所有数据将被模糊。
       </p>
 
       {categories.map((cat) => {
@@ -256,7 +261,7 @@ function SupplementsTab({ sections }: { sections: Section[] }) {
 
       {notes && (
         <Panel style={{ borderLeft: "3px solid var(--rhythms)" }}>
-          <PanelHeader title="Notes" icon={FileText} />
+          <PanelHeader title="备注" icon={FileText} />
           <div className="text-xs text-ink-2 whitespace-pre-line" data-sensitive>
             {notes.replace(/^- /gm, "• ")}
           </div>
@@ -270,8 +275,8 @@ function SupplementsTab({ sections }: { sections: Section[] }) {
 
 type TabKey = "overview" | "supplements";
 const TABS: TabSpec<TabKey>[] = [
-  { id: "overview", label: "Overview", icon: Activity, dim: "health", hint: "1" },
-  { id: "supplements", label: "Supplements", icon: PillIcon, dim: "rhythms", hint: "2" },
+  { id: "overview", label: "概览", icon: Activity, dim: "health", hint: "1" },
+  { id: "supplements", label: "补剂", icon: PillIcon, dim: "rhythms", hint: "2" },
 ];
 
 function OverviewTab({ files }: { files: HealthFile[] }) {
@@ -282,13 +287,13 @@ function OverviewTab({ files }: { files: HealthFile[] }) {
     <div className="space-y-6">
       <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
         <StatTile
-          label="Tracked Sources"
+          label="追踪来源"
           value={<span data-sensitive>{files.length}</span>}
           dim="health"
           icon={Activity}
         />
         <StatTile
-          label="Lab Panels"
+          label="化验面板"
           value={<span data-sensitive>{labs.length}</span>}
           dim="rhythms"
           icon={FlaskConical}
@@ -296,13 +301,13 @@ function OverviewTab({ files }: { files: HealthFile[] }) {
       </div>
 
       <p className="text-sm flex items-center gap-2 text-ink-3">
-        <Lock className="w-3.5 h-3.5" /> Fully private. Observer mode blurs all data below.
+        <Lock className="w-3.5 h-3.5" /> 完全私密。观察模式下所有数据将被模糊。
       </p>
 
       {labs.length > 0 && (
         <section>
           <h2 className="text-[13px] font-medium uppercase tracking-widest text-ink-3 mb-4 flex items-center gap-2">
-            <FlaskConical className="w-4 h-4" /> Lab Panels
+            <FlaskConical className="w-4 h-4" /> 化验面板
           </h2>
           <div className="prob-grid">
             {labs.map((f) => (
@@ -314,7 +319,7 @@ function OverviewTab({ files }: { files: HealthFile[] }) {
       {nonLabs.length > 0 && (
         <section>
           <h2 className="text-[13px] font-medium uppercase tracking-widest text-ink-3 mb-4">
-            Core Files
+            核心文件
           </h2>
           <div className="prob-grid">
             {nonLabs.map((f) => (
@@ -369,13 +374,13 @@ export default function HealthPage() {
     return (
       <PageShell>
         <Panel style={{ borderLeft: "3px solid var(--err)" }}>
-          <h2 className="font-medium text-err">Failed to load health</h2>
+          <h2 className="font-medium text-err">加载健康数据失败</h2>
           <p className="text-sm text-ink-2">{error}</p>
         </Panel>
       </PageShell>
     );
   }
-  if (!data) return <div className="p-8 text-sm text-ink-3">Loading Health...</div>;
+  if (!data) return <div className="p-8 text-sm text-ink-3">加载健康数据中...</div>;
 
   const files = (data.files || [])
     .slice()
@@ -385,18 +390,18 @@ export default function HealthPage() {
   return (
     <PageShell>
       <PageHeader
-        title="Health"
+        title="健康"
         icon={Activity}
-        subtitle="Labs, fitness, nutrition, and supplements — fully private. Press 1/2 to switch tabs."
+        subtitle="化验、健身、营养和补剂 — 完全私密。按 1/2 切换标签页。"
         actions={<FreshnessIndicator freshness={data.freshness} />}
       />
 
       {isFreshInstall && (
         <EmptyStateGuide
-          section="Health Snapshots"
-          description="Lab results, fitness data, nutrition tracking, and trends over time."
+          section="健康快照"
+          description="化验结果、健身数据、营养追踪和随时间变化的趋势。"
           userDir="HEALTH"
-          daPromptExample="help me set up where my health data lives"
+          daPromptExample="帮我设置健康数据的存放位置"
         />
       )}
 

@@ -32,19 +32,19 @@ function noteUrl(node: MemNode): string | null {
 // Stable type identity: same hue everywhere, every time. Overview slots keep
 // knowledge visible next to the much larger work corpus.
 const TYPES: Array<{ key: string; label: string; color: string; slots: number }> = [
-  { key: "person", label: "People", color: "#38bdf8", slots: 16 },
-  { key: "company", label: "Companies", color: "#fbbf24", slots: 14 },
-  { key: "idea", label: "Ideas", color: "#a78bfa", slots: 20 },
-  { key: "blog", label: "Blogs", color: "#94a3b8", slots: 10 },
-  { key: "book", label: "Books", color: "#f87171", slots: 5 },
-  { key: "research", label: "Research", color: "#22d3ee", slots: 12 },
-  { key: "isa", label: "ISAs", color: "#34d399", slots: 16 },
-  { key: "lesson", label: "Lessons", color: "#a3e635", slots: 8 },
-  { key: "wisdom", label: "Wisdom", color: "#e879f9", slots: 8 },
+  { key: "person", label: "人物", color: "#38bdf8", slots: 16 },
+  { key: "company", label: "公司", color: "#fbbf24", slots: 14 },
+  { key: "idea", label: "想法", color: "#a78bfa", slots: 20 },
+  { key: "blog", label: "博客", color: "#94a3b8", slots: 10 },
+  { key: "book", label: "书籍", color: "#f87171", slots: 5 },
+  { key: "research", label: "研究", color: "#22d3ee", slots: 12 },
+  { key: "isa", label: "ISA", color: "#34d399", slots: 16 },
+  { key: "lesson", label: "教训", color: "#a3e635", slots: 8 },
+  { key: "wisdom", label: "智慧", color: "#e879f9", slots: 8 },
 ];
 const TYPE_COLOR: Record<string, string> = Object.fromEntries(TYPES.map((t) => [t.key, t.color]));
 const KIND_ORDER = ["related", "wikilink", "inferred", "tag"];
-const KIND_LABEL: Record<string, string> = { related: "Declared (typed)", wikilink: "Wikilinks", inferred: "Inferred (similar)", tag: "Shared tags" };
+const KIND_LABEL: Record<string, string> = { related: "已声明（类型化）", wikilink: "Wiki 链接", inferred: "推断（相似）", tag: "共享标签" };
 const NEIGHBOR_CAP = 36;
 const THEME_NODE_CAP = 140;
 
@@ -168,7 +168,7 @@ export default function MemoryGraphPage() {
     // first mount or the one-shot measure runs against nothing.
     return (
       <div ref={outerRef} className="flex items-center justify-center" style={{ height: fillHeight ?? "calc(100vh - 160px)" }}>
-        <div className="text-xs text-ink-3" style={font}>Loading memory graph…</div>
+        <div className="text-xs text-ink-3" style={font}>加载记忆图谱中…</div>
       </div>
     );
   }
@@ -202,7 +202,7 @@ export default function MemoryGraphPage() {
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 border-b border-line-2 bg-surface-1 shrink-0">
         <Network className="w-4 h-4 text-dim-relationships" />
-        <h1 className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink-3 shrink-0 whitespace-nowrap" style={{ fontFamily: "'concourse-c3', 'concourse-t3', sans-serif" }}>Memory Graph</h1>
+        <h1 className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink-3 shrink-0 whitespace-nowrap" style={{ fontFamily: "'concourse-c3', 'concourse-t3', sans-serif" }}>记忆图谱</h1>
         {theme && !focusNode && (
           <button onClick={() => setTheme(null)} className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-3 border border-line-2 text-[11px] text-ink-1 hover:border-line-3" style={font}>
             <Tag className="w-3 h-3 text-dim-relationships" />{theme}
@@ -212,7 +212,7 @@ export default function MemoryGraphPage() {
         <div className="relative ml-4 flex-1 max-w-md">
           <Search className="w-3.5 h-3.5 text-ink-3 absolute left-2 top-1/2 -translate-y-1/2" />
           <input
-            value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search any memory item…"
+            value={q} onChange={(e) => setQ(e.target.value)} placeholder="搜索任意记忆条目…"
             className="w-full bg-surface-2 border border-line-2 rounded pl-7 pr-2 py-1 text-[12px] text-ink-1 outline-none focus:border-line-3"
             style={font}
           />
@@ -227,7 +227,7 @@ export default function MemoryGraphPage() {
             </div>
           )}
         </div>
-        <span className="text-[11px] text-ink-3 shrink-0 whitespace-nowrap ml-auto" style={font}>{data.nodes.length.toLocaleString()} items · {data.edges.length.toLocaleString()} links</span>
+        <span className="text-[11px] text-ink-3 shrink-0 whitespace-nowrap ml-auto" style={font}>{data.nodes.length.toLocaleString()} 条目 · {data.edges.length.toLocaleString()} 链接</span>
       </div>
 
       <div className="flex flex-1 min-h-0">
@@ -236,7 +236,7 @@ export default function MemoryGraphPage() {
           {!focusNode ? (
             <div>
               {/* Type legend — the color key IS the filter */}
-              <div className="text-[10px] uppercase tracking-[0.14em] text-ink-3 mb-2" style={heading}>Types</div>
+              <div className="text-[10px] uppercase tracking-[0.14em] text-ink-3 mb-2" style={heading}>类型</div>
               <div className="space-y-0.5 mb-4">
                 {TYPES.filter((t) => (typeCounts[t.key] ?? 0) > 0).map((t) => {
                   const off = hiddenTypes.has(t.key);
@@ -252,9 +252,9 @@ export default function MemoryGraphPage() {
               </div>
 
               {/* Themes — human-named clusters from curated tags */}
-              <div className="text-[10px] uppercase tracking-[0.14em] text-ink-3 mb-2" style={heading}>Themes</div>
+              <div className="text-[10px] uppercase tracking-[0.14em] text-ink-3 mb-2" style={heading}>主题</div>
               <div className="text-[11px] leading-relaxed text-ink-3 mb-2" style={font}>
-                A theme is a tag running through your notes. Click one to see its members and how they connect.
+                主题是贯穿笔记的标签。点击任一主题查看其成员与连接关系。
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {(data.themes ?? []).map((t) => (
@@ -275,11 +275,11 @@ export default function MemoryGraphPage() {
               </div>
               <div className="text-[14px] text-ink-1 font-medium mb-1 leading-snug" style={heading}>{focusNode.title}</div>
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-[11px] text-ink-3" style={font}>{neighborIds.length} connections</span>
+                <span className="text-[11px] text-ink-3" style={font}>{neighborIds.length} 连接</span>
                 {noteUrl(focusNode) && (
                   <Link href={noteUrl(focusNode)!} className="flex items-center gap-1 text-[11px] text-sky-400 hover:text-sky-300 transition-colors" style={font}>
                     <ExternalLink className="w-3 h-3" />
-                    Open note
+                    打开笔记
                   </Link>
                 )}
               </div>
@@ -319,8 +319,8 @@ export default function MemoryGraphPage() {
           {!focusNode && (
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-surface-1 border border-line-2 text-[10px] tracking-[0.1em] uppercase text-ink-3 pointer-events-none" style={font}>
               {themeView
-                ? `${theme} — ${themeView.nodes.length}${themeView.total > themeView.nodes.length ? ` of ${themeView.total}` : ""} items`
-                : `Most-connected of each type — ${canvas.nodes.length} of ${data.nodes.length.toLocaleString()}`}
+                ? `${theme} — ${themeView.nodes.length}${themeView.total > themeView.nodes.length ? ` / ${themeView.total}` : ""} 条目`
+                : `各类型连接最多 — ${canvas.nodes.length} / ${data.nodes.length.toLocaleString()}`}
             </div>
           )}
         </div>

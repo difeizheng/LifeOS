@@ -85,22 +85,22 @@ export const systemHome = "/assistant";
 // ── Tier 2 — contextual. These machine pages render as a second row ONLY when
 // you are inside System. They used to be a permanent second global menu.
 export const systemNav: NavItem[] = [
-  { href: "/assistant", label: "Assistant", icon: Bot, keywords: ["chat", "ask"], module: "da" },
-  { href: "/bunker", label: "Bunker", icon: Container, keywords: ["apps", "chassis"], module: "bunker" },
-  { href: "/algorithm", label: "Algorithm", icon: Workflow, keywords: ["thinking", "doctrine", "rules", "loop"], module: "algorithm" },
-  { href: "/skills", label: "Skills", icon: Zap },
-  { href: "/hooks", label: "Hooks", icon: Webhook },
-  { href: "/conduit", label: "Conduit", icon: Radar, keywords: ["sensors"], module: "conduit" },
-  { href: "/upgrades", label: "Upgrades", icon: Sparkles, keywords: ["hypotheses", "recommendations", "improvements", "directives", "proposals"], module: "upgrades" },
-  { href: "/arbol", label: "Arbol", icon: TreePine, keywords: ["workers", "pipeline"] },
-  { href: "/security", label: "Security", icon: ShieldCheck, keywords: ["monitoring"] },
-  { href: "/ledger", label: "Ledger", icon: ScrollText, keywords: ["versions", "updates", "deploys", "drift", "integrity", "registry", "changelog"], module: "ledger" },
-  { href: "/performance", label: "Perf", icon: BarChart3, keywords: ["performance", "latency"], module: "performance" },
-  { href: "/usage", label: "Usage", icon: Gauge, keywords: ["tokens", "cost"], module: "usage" },
-  { href: "/docs", label: "Docs", icon: BookOpen, keywords: ["documentation", "wiki"], module: "docs" },
+  { href: "/assistant", label: "助手", icon: Bot, keywords: ["chat", "ask", "助手", "聊天"], module: "da" },
+  { href: "/bunker", label: "Bunker", icon: Container, keywords: ["apps", "chassis", "应用"], module: "bunker" },
+  { href: "/algorithm", label: "Algorithm", icon: Workflow, keywords: ["thinking", "doctrine", "rules", "loop", "算法"], module: "algorithm" },
+  { href: "/skills", label: "技能", icon: Zap, keywords: ["技能"] },
+  { href: "/hooks", label: "钩子", icon: Webhook, keywords: ["钩子"] },
+  { href: "/conduit", label: "Conduit", icon: Radar, keywords: ["sensors", "传感器"], module: "conduit" },
+  { href: "/upgrades", label: "升级", icon: Sparkles, keywords: ["hypotheses", "recommendations", "improvements", "directives", "proposals", "升级", "改进"], module: "upgrades" },
+  { href: "/arbol", label: "Arbol", icon: TreePine, keywords: ["workers", "pipeline", "任务树"] },
+  { href: "/security", label: "安全", icon: ShieldCheck, keywords: ["monitoring", "安全"] },
+  { href: "/ledger", label: "账本", icon: ScrollText, keywords: ["versions", "updates", "deploys", "drift", "integrity", "registry", "changelog", "账本", "版本"], module: "ledger" },
+  { href: "/performance", label: "性能", icon: BarChart3, keywords: ["performance", "latency", "性能"], module: "performance" },
+  { href: "/usage", label: "用量", icon: Gauge, keywords: ["tokens", "cost", "用量", "开销"], module: "usage" },
+  { href: "/docs", label: "文档", icon: BookOpen, keywords: ["documentation", "wiki", "文档"], module: "docs" },
 ];
 
-const homeEntry: NavItem = { href: "/", label: "Home", icon: Home, keywords: ["dashboard", "pulse"] };
+const homeEntry: NavItem = { href: "/", label: "首页", icon: Home, keywords: ["dashboard", "pulse", "首页", "仪表盘"] };
 
 /** Every page the palette can jump to, in display order. */
 export const paletteEntries: NavItem[] = [homeEntry, ...tier1Nav, ...metaNav, ...systemNav];

@@ -73,10 +73,10 @@ type Range = "day" | "week" | "month" | "year";
 type SectionTab = "all" | SectionKey;
 
 const RANGES: { id: Range; label: string }[] = [
-  { id: "day", label: "Day" },
-  { id: "week", label: "Week" },
-  { id: "month", label: "Month" },
-  { id: "year", label: "Year" },
+  { id: "day", label: "日" },
+  { id: "week", label: "周" },
+  { id: "month", label: "月" },
+  { id: "year", label: "年" },
 ];
 
 interface SectionDef {
@@ -88,14 +88,14 @@ interface SectionDef {
 }
 
 const SECTIONS: SectionDef[] = [
-  { key: "construction", label: "Construction", icon: Building2, dim: "money", emptyHint: "No new construction permits in this window." },
-  { key: "crime", label: "Crime", icon: Shield, dim: "err", emptyHint: "No new crime stats in this window." },
-  { key: "business", label: "New Business", icon: Briefcase, dim: "ok", emptyHint: "No new business openings in this window." },
-  { key: "officials", label: "Officials", icon: Users, dim: "blue", emptyHint: "No officials news in this window." },
-  { key: "legislation", label: "Legislation", icon: ScrollText, dim: "relationships", emptyHint: "No pending or enacted laws in this window." },
-  { key: "elections", label: "Elections", icon: Vote, dim: "freedom", emptyHint: "No upcoming elections." },
-  { key: "arrests", label: "Arrests", icon: Gavel, dim: "warn", emptyHint: "No new arrests reported in this window." },
-  { key: "news", label: "Local News", icon: Newspaper, dim: "rhythms", emptyHint: "No local news in this window." },
+  { key: "construction", label: "建设", icon: Building2, dim: "money", emptyHint: "此时间窗口内无新建筑许可。" },
+  { key: "crime", label: "治安", icon: Shield, dim: "err", emptyHint: "此时间窗口内无新治安统计。" },
+  { key: "business", label: "新商业", icon: Briefcase, dim: "ok", emptyHint: "此时间窗口内无新开业商家。" },
+  { key: "officials", label: "官员动态", icon: Users, dim: "blue", emptyHint: "此时间窗口内无官员动态。" },
+  { key: "legislation", label: "立法", icon: ScrollText, dim: "relationships", emptyHint: "此时间窗口内无待审或已颁布法规。" },
+  { key: "elections", label: "选举", icon: Vote, dim: "freedom", emptyHint: "暂无即将举行的选举。" },
+  { key: "arrests", label: "逮捕", icon: Gavel, dim: "warn", emptyHint: "此时间窗口内无新逮捕报告。" },
+  { key: "news", label: "本地新闻", icon: Newspaper, dim: "rhythms", emptyHint: "此时间窗口内无本地新闻。" },
 ];
 
 const SECTION_BY_KEY = Object.fromEntries(SECTIONS.map((s) => [s.key, s])) as Record<SectionKey, SectionDef>;
@@ -132,12 +132,12 @@ function relativeTime(iso: string): string {
   // Future-dated items (bid deadlines, upcoming elections) get the absolute
   // date — a negative "-521489s ago" is a bug, not information.
   if (ago < 0) return shortDate(iso);
-  if (ago < 60) return `${ago}s ago`;
-  if (ago < 3600) return `${Math.floor(ago / 60)}m ago`;
-  if (ago < 86400) return `${Math.floor(ago / 3600)}h ago`;
-  if (ago < 86400 * 30) return `${Math.floor(ago / 86400)}d ago`;
-  if (ago < 86400 * 365) return `${Math.floor(ago / (86400 * 30))}mo ago`;
-  return `${Math.floor(ago / (86400 * 365))}y ago`;
+  if (ago < 60) return `${ago}秒前`;
+  if (ago < 3600) return `${Math.floor(ago / 60)}分钟前`;
+  if (ago < 86400) return `${Math.floor(ago / 3600)}小时前`;
+  if (ago < 86400 * 30) return `${Math.floor(ago / 86400)}天前`;
+  if (ago < 86400 * 365) return `${Math.floor(ago / (86400 * 30))}月前`;
+  return `${Math.floor(ago / (86400 * 365))}年前`;
 }
 
 /* ── Segmented time picker — deliberately NOT a pill row, so "when" reads as a
@@ -181,7 +181,7 @@ function RefreshButton({ refreshing, onClick }: { refreshing: boolean; onClick: 
       className="inline-flex items-center gap-2 rounded-md border border-line-2 hover:border-line-3 disabled:opacity-50 px-3 py-1.5 text-sm text-ink-2 transition-colors"
     >
       <RefreshCw className={refreshing ? "w-4 h-4 animate-spin" : "w-4 h-4"} />
-      {refreshing ? "Researching…" : "Refresh now"}
+      {refreshing ? "调研中…" : "立即刷新"}
     </button>
   );
 }
@@ -254,7 +254,7 @@ function SectionCard({
   return (
     <Panel as="section" hover className="flex flex-col">
       <header className="flex items-center justify-between mb-4">
-        <button type="button" onClick={onOpen} className="cursor-pointer" title={`Open ${section.label}`}>
+        <button type="button" onClick={onOpen} className="cursor-pointer" title={`打开 ${section.label}`}>
           <Pill dim={section.dim}>
             <Icon className="w-3.5 h-3.5" />
             <span className="uppercase tracking-[0.16em] font-semibold">{section.label}</span>
@@ -274,7 +274,7 @@ function SectionCard({
 
       {items.length === 0 ? (
         <p className="text-sm text-ink-2 italic">
-          {status === "unavailable" ? "Source unavailable for this city." : emptyText}
+          {status === "unavailable" ? "此城市暂无数据源。" : emptyText}
         </p>
       ) : (
         <ul className="space-y-3.5 flex-1">
@@ -310,7 +310,7 @@ function SectionCard({
                 onClick={onOpen}
                 className="text-[12px] uppercase tracking-[0.15em] mono text-ink-3 hover:text-ink-2 transition-colors"
               >
-                +{items.length - 5} more →
+                +{items.length - 5} 条更多 →
               </button>
             </li>
           ) : null}
@@ -339,7 +339,7 @@ function SectionDetail({
       <Panel>
         <EmptyState
           icon={Icon}
-          title={status === "unavailable" ? "Source unavailable for this city." : section.emptyHint}
+          title={status === "unavailable" ? "此城市暂无数据源。" : section.emptyHint}
         />
       </Panel>
     );
@@ -375,7 +375,7 @@ function SectionDetail({
       <div className="space-y-7">
         {overflow > 0 ? (
           <p className="text-[12px] uppercase tracking-[0.15em] text-ink-3 mono">
-            showing newest {capped.length} of {items.length} items
+            显示最新 {capped.length} 条，共 {items.length} 条
           </p>
         ) : null}
         {ordered.map(([date, group]) => (
@@ -384,7 +384,7 @@ function SectionDetail({
               className="text-[12px] uppercase tracking-[0.2em] mono mb-3.5 pb-1.5 border-b"
               style={{ color: hue, borderColor: `color-mix(in srgb, ${hue} 25%, transparent)` }}
             >
-              {date === "undated" ? "Undated" : shortDate(date)}
+              {date === "undated" ? "未标注日期" : shortDate(date)}
             </div>
             <ul className="space-y-5">
               {group.map((item, i) => (
@@ -468,13 +468,13 @@ export default function LocalPage() {
   if (error === "not-yet-generated") {
     return (
       <PageShell>
-        <PageHeader title="Local" subtitle="Civic intelligence digest for your hometown." />
+        <PageHeader title="本地" subtitle="你所在城市的市政情报摘要。" />
         <Panel className="flex items-start gap-3">
           <AlertCircle className="w-5 h-5 text-warn mt-0.5 shrink-0" />
           <div>
-            <p className="font-medium text-ink-1">No digest generated yet.</p>
+            <p className="font-medium text-ink-1">尚未生成摘要。</p>
             <p className="text-sm text-ink-2 mt-1">
-              The first refresh hasn&apos;t completed. Click below to run it now or wait for the daily 6 a.m. job.
+              首次刷新尚未完成。点击下方立即运行，或等待每日早 6 点的定时任务。
             </p>
             <div className="mt-4">
               <RefreshButton refreshing={refreshing} onClick={refreshNow} />
@@ -488,9 +488,9 @@ export default function LocalPage() {
   if (error) {
     return (
       <PageShell>
-        <PageHeader title="Local" subtitle="Civic intelligence digest for your hometown." />
+        <PageHeader title="本地" subtitle="你所在城市的市政情报摘要。" />
         <Panel className="text-sm text-err" style={{ borderColor: "var(--err)" }}>
-          Error loading digest: {error}
+          加载摘要出错：{error}
         </Panel>
       </PageShell>
     );
@@ -499,8 +499,8 @@ export default function LocalPage() {
   if (!digest) {
     return (
       <PageShell>
-        <PageHeader title="Local" subtitle="Civic intelligence digest for your hometown." />
-        <EmptyState title="Loading…" />
+        <PageHeader title="本地" subtitle="你所在城市的市政情报摘要。" />
+        <EmptyState title="加载中…" />
       </PageShell>
     );
   }
@@ -519,7 +519,7 @@ export default function LocalPage() {
   const totalItems = SECTIONS.reduce((a, s) => a + itemsFor(s.key).length, 0);
 
   const sectionTabs: TabSpec<SectionTab>[] = [
-    { id: "all", label: "All", icon: LayoutGrid, dim: "blue", hint: totalItems || undefined },
+    { id: "all", label: "全部", icon: LayoutGrid, dim: "blue", hint: totalItems || undefined },
     ...SECTIONS.map((s) => ({
       id: s.key as SectionTab,
       label: s.label,
@@ -531,16 +531,16 @@ export default function LocalPage() {
 
   const coverage =
     range === "day"
-      ? `${totalItems} items today`
+      ? `今日 ${totalItems} 条`
       : hist
-        ? `${fmtRangeDate(hist.first_date, hist.window_days)} – ${fmtRangeDate(hist.last_date, hist.window_days)} · ${totalItems} items · ${hist.days_covered}/${hist.window_days} days covered`
-        : "loading…";
+        ? `${fmtRangeDate(hist.first_date, hist.window_days)} – ${fmtRangeDate(hist.last_date, hist.window_days)} · ${totalItems} 条 · ${hist.days_covered}/${hist.window_days} 天`
+        : "加载中…";
 
   return (
     <PageShell>
       <PageHeader
-        title="Local"
-        subtitle={`${meta.city}, ${meta.state} — civic intelligence digest.`}
+        title="本地"
+        subtitle={`${meta.city}, ${meta.state} — 市政情报摘要。`}
         actions={
           <>
             <div className="flex items-center gap-2 text-[12px] uppercase tracking-[0.15em] text-ink-3 mono">
@@ -548,14 +548,14 @@ export default function LocalPage() {
               {meta.county ? (
                 <>
                   <span className="text-ink-3">·</span>
-                  <span>{meta.county} County</span>
+                  <span>{meta.county} 县/区</span>
                 </>
               ) : null}
               <span className="text-ink-3">·</span>
-              <span>refreshed {relativeTime(meta.generated_at)}</span>
+              <span>更新于 {relativeTime(meta.generated_at)}</span>
               <span className="text-ink-3">·</span>
               <span className="text-ink-2">
-                {meta.sources_used.length}/{totalSources} sources
+                {meta.sources_used.length}/{totalSources} 来源
               </span>
             </div>
             <RefreshButton refreshing={refreshing} onClick={refreshNow} />
@@ -567,8 +567,8 @@ export default function LocalPage() {
         <Panel className="flex items-center gap-3 py-3" style={{ borderColor: "var(--warn)" }}>
           <AlertTriangle className="w-4 h-4 text-warn shrink-0" />
           <p className="text-sm text-ink-2">
-            This digest is <span className="text-ink-1 font-medium">{relativeTime(meta.generated_at)}</span> old —
-            the daily 6 a.m. job may not be landing. Check the Assistant tab&apos;s cron panel or refresh now.
+            此摘要已 <span className="text-ink-1 font-medium">{relativeTime(meta.generated_at)}</span> 未更新 —
+            每日早 6 点的任务可能未执行。请检查 Assistant 标签页的 cron 面板，或立即刷新。
           </p>
         </Panel>
       ) : null}
@@ -590,7 +590,7 @@ export default function LocalPage() {
               section={s}
               items={itemsFor(s.key)}
               status={statusFor(s.key)}
-              emptyText={range !== "day" && !hist ? "Loading history…" : s.emptyHint}
+              emptyText={range !== "day" && !hist ? "加载历史…" : s.emptyHint}
               showAbsoluteDates={range === "month" || range === "year"}
               daysWithData={range === "day" ? undefined : hist?.sections?.[s.key]?.days_with_data}
               onOpen={() => setSection(s.key)}
@@ -610,7 +610,7 @@ export default function LocalPage() {
       {range === "day" && section === "all" && meta.errors.length > 0 ? (
         <details className="text-xs text-ink-3 mono">
           <summary className="cursor-pointer hover:text-ink-2 uppercase tracking-[0.18em]">
-            {meta.errors.length} source error{meta.errors.length === 1 ? "" : "s"}
+            {meta.errors.length} 个来源错误
           </summary>
           <ul className="mt-3 space-y-1 pl-4">
             {meta.errors.map((e, i) => (

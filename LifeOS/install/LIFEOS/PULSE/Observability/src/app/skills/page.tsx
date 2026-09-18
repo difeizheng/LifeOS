@@ -59,19 +59,19 @@ function SkillsLanding({ skills }: { skills: SkillMeta[] }) {
   return (
     <PageShell>
       <PageHeader
-        title="Skills"
+        title="技能"
         icon={Zap}
-        subtitle="Domain-specific capabilities that activate on trigger phrases. Each skill bundles prompts, workflows, tools, and templates into a self-contained unit."
+        subtitle="按触发短语激活的领域能力。每个技能将提示词、工作流、工具与模板打包为独立单元。"
       />
 
       <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(180px, 220px))" }}>
-        <StatTile label="Skills" value={skills.length} icon={Zap} dim="creative" />
+        <StatTile label="技能" value={skills.length} icon={Zap} dim="creative" />
       </div>
 
       <TabBar
         tabs={[
-          { id: "public", label: "Public", dim: "blue", hint: publicSkills.length },
-          { id: "private", label: "Private", dim: "creative", hint: privateSkills.length },
+          { id: "public", label: "公开", dim: "blue", hint: publicSkills.length },
+          { id: "private", label: "私有", dim: "creative", hint: privateSkills.length },
         ]}
         active={tab}
         onChange={setTab}
@@ -79,8 +79,7 @@ function SkillsLanding({ skills }: { skills: SkillMeta[] }) {
 
       {tab === "private" && (
         <p className="-mt-2 text-[13px] text-ink-3">
-          Prefixed with _ and all-caps — personal integrations and platform-specific
-          automations, read live from your skills directory.
+          以 _ 开头且全大写 — 个人集成与平台特定自动化，从你的技能目录实时读取。
         </p>
       )}
 
@@ -112,7 +111,7 @@ function SkillCard({ skill }: { skill: SkillMeta }) {
         </p>
         <div className="flex items-center gap-1.5 mt-auto pt-1">
           <Pill dim={effortDim(skill.effort)}>{skill.effort}</Pill>
-          {skill.hasWorkflows && <Pill dim="relationships">workflows</Pill>}
+          {skill.hasWorkflows && <Pill dim="relationships">工作流</Pill>}
         </div>
       </Panel>
     </Link>
@@ -131,7 +130,7 @@ function SkillDetailView({ skill }: { skill: SkillDetail }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content }),
       });
-      if (!res.ok) throw new Error("Failed to save");
+      if (!res.ok) throw new Error("保存失败");
       return res.json();
     },
     onSuccess: () => {
@@ -158,8 +157,8 @@ function SkillDetailView({ skill }: { skill: SkillDetail }) {
           <div>
             <h1 className="text-ink-1">{skill.name}</h1>
             <p className="mt-0.5 text-[13px] text-ink-2">
-              {skill.wordCount} words ·{" "}
-              {new Date(skill.lastModified).toLocaleDateString("en-US", {
+              {skill.wordCount} 字 ·{" "}
+              {new Date(skill.lastModified).toLocaleDateString("zh-CN", {
                 month: "short",
                 day: "numeric",
                 year: "numeric",
@@ -186,7 +185,7 @@ function SkillDetailView({ skill }: { skill: SkillDetail }) {
                 ) : (
                   <Check className="w-4 h-4" />
                 )}
-                Save
+                保存
               </button>
               <button
                 onClick={() => {
@@ -197,7 +196,7 @@ function SkillDetailView({ skill }: { skill: SkillDetail }) {
                 style={dimStyle("neutral")}
               >
                 <X className="w-4 h-4" />
-                Cancel
+                取消
               </button>
             </>
           ) : (
@@ -210,7 +209,7 @@ function SkillDetailView({ skill }: { skill: SkillDetail }) {
               style={dimStyle("neutral")}
             >
               <Pencil className="w-4 h-4" />
-              Edit
+              编辑
             </button>
           )}
         </div>
@@ -218,7 +217,7 @@ function SkillDetailView({ skill }: { skill: SkillDetail }) {
 
       {mutation.isError && (
         <div className="px-3 py-2 rounded-md text-[13px]" style={dimStyle("err")}>
-          Failed to save changes.
+          保存更改失败。
         </div>
       )}
 
@@ -249,7 +248,7 @@ function SkillsPageInner() {
     queryKey: ["skills-list"],
     queryFn: async () => {
       const res = await fetch("/api/wiki/skills");
-      if (!res.ok) throw new Error("Failed to fetch skills");
+      if (!res.ok) throw new Error("获取技能列表失败");
       return res.json();
     },
     staleTime: 30_000,
@@ -260,7 +259,7 @@ function SkillsPageInner() {
     queryKey: ["skill-detail", skillName],
     queryFn: async () => {
       const res = await fetch(`/api/wiki/skills/${encodeURIComponent(skillName!)}`);
-      if (!res.ok) throw new Error("Failed to fetch skill");
+      if (!res.ok) throw new Error("获取技能详情失败");
       return res.json();
     },
     enabled: isViewing,
@@ -276,7 +275,7 @@ function SkillsPageInner() {
 
   return (
     <div className="flex items-center justify-center h-full">
-      <div className="text-sm text-ink-3">Loading...</div>
+      <div className="text-sm text-ink-3">加载中…</div>
     </div>
   );
 }
@@ -286,7 +285,7 @@ export default function SkillsPage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center h-full">
-          <div className="text-sm text-ink-3">Loading...</div>
+          <div className="text-sm text-ink-3">加载中…</div>
         </div>
       }
     >

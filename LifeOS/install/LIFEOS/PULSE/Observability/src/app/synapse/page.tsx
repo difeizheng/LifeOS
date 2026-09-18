@@ -125,9 +125,9 @@ interface SynapseData {
 
 type TabId = "stream" | "stats" | "system";
 const TABS: TabSpec<TabId>[] = [
-  { id: "stream", label: "Stream", icon: Radio, dim: "money" },
-  { id: "stats", label: "Stats", icon: BarChart3, dim: "money" },
-  { id: "system", label: "System", icon: BookOpen, dim: "money" },
+  { id: "stream", label: "流", icon: Radio, dim: "money" },
+  { id: "stats", label: "统计", icon: BarChart3, dim: "money" },
+  { id: "system", label: "系统", icon: BookOpen, dim: "money" },
 ];
 
 type StreamKind = "capture" | "note" | "issue";
@@ -157,11 +157,11 @@ function ago(ts: string | null | undefined): string {
   const then = new Date(ts).getTime();
   if (Number.isNaN(then)) return "—";
   const s = Math.max(0, Math.round((Date.now() - then) / 1000));
-  if (s < 60) return `${s}s ago`;
+  if (s < 60) return `${s}秒前`;
   const m = Math.round(s / 60);
-  if (m < 60) return `${m}m ago`;
+  if (m < 60) return `${m}分钟前`;
   const h = Math.round(m / 60);
-  return h < 24 ? `${h}h ago` : `${Math.round(h / 24)}d ago`;
+  return h < 24 ? `${h}小时前` : `${Math.round(h / 24)}天前`;
 }
 
 const nf = (n: number | null | undefined) => (n === null || n === undefined ? "—" : n.toLocaleString());
@@ -395,7 +395,7 @@ export default function SynapsePage() {
             <Pill dim="money">input router</Pill>
           </span>
         }
-        subtitle="One contract in, the right home out — capture → amber ledger → grade → route → resurface."
+        subtitle="一个入口进，正确的家出 — 捕捉 → 琥珀账本 → 评分 → 路由 → 再浮现。"
       />
 
       {/* ── Tab bar ── */}
@@ -410,24 +410,24 @@ export default function SynapsePage() {
               style={{ background: error ? "var(--err)" : "var(--ok)" }}
             />
             <span className="whitespace-nowrap">
-              {error ? "offline" : fetchedAt ? `updated ${ago(new Date(fetchedAt).toISOString())} · auto 60s` : "loading…"}
+              {error ? "离线" : fetchedAt ? `更新于 ${ago(new Date(fetchedAt).toISOString())} · 自动 60 秒` : "加载中…"}
             </span>
           </div>
         }
       />
 
-      {error && <div className="text-warn text-sm">Couldn&apos;t reach the Synapse API: {error}</div>}
-      {!data && !error && <div className="text-ink-3 text-sm">Loading…</div>}
+      {error && <div className="text-warn text-sm">无法连接 Synapse API：{error}</div>}
+      {!data && !error && <div className="text-ink-3 text-sm">加载中…</div>}
 
       {/* ════ STREAM ════ */}
       {data && tab === "stream" && (
         <>
           {/* Compact stat strip */}
           <div className="flex flex-wrap gap-x-6 gap-y-1.5 text-[12px] text-ink-3">
-            <span><span className="text-ink-1 tabular-nums font-medium">{nf(L?.total ?? null)}</span> preserved</span>
-            <span><span className="text-ink-1 tabular-nums font-medium">{nf(L?.routed ?? 0)}</span> routed · <span className="text-ink-1 tabular-nums font-medium">{nf(L?.captured ?? 0)}</span> waiting</span>
-            <span><span className="text-ink-1 tabular-nums font-medium">{nf(K?.last7d ?? null)}</span> notes / 7d</span>
-            <span><span className="text-ink-1 tabular-nums font-medium">{nf(B?.cloud_parsed ?? null)}</span> bookmarks / 90d</span>
+            <span><span className="text-ink-1 tabular-nums font-medium">{nf(L?.total ?? null)}</span> 已保留</span>
+            <span><span className="text-ink-1 tabular-nums font-medium">{nf(L?.routed ?? 0)}</span> 已路由 · <span className="text-ink-1 tabular-nums font-medium">{nf(L?.captured ?? 0)}</span> 等待中</span>
+            <span><span className="text-ink-1 tabular-nums font-medium">{nf(K?.last7d ?? null)}</span> 笔记 / 7天</span>
+            <span><span className="text-ink-1 tabular-nums font-medium">{nf(B?.cloud_parsed ?? null)}</span> 书签 / 90天</span>
           </div>
 
           {/* Origin + state filter chips */}
@@ -437,7 +437,7 @@ export default function SynapsePage() {
               className="text-[11px] px-2.5 py-1 rounded-full transition-colors"
               style={dimStyle("money", originFilter === "all")}
             >
-              all <span className="tabular-nums opacity-70">{stream.length}</span>
+              全部 <span className="tabular-nums opacity-70">{stream.length}</span>
             </button>
             {origins.map(([o, n]) => (
               <button
@@ -464,7 +464,7 @@ export default function SynapsePage() {
 
           {/* The feed */}
           <Panel className="p-0 divide-y divide-line-1 overflow-hidden">
-            {visible.length === 0 && <div className="p-4 text-sm text-ink-3">Nothing caught yet.</div>}
+            {visible.length === 0 && <div className="p-4 text-sm text-ink-3">还没有捕获。</div>}
             {visible.map((it) => {
               const KindIcon =
                 it.kind === "note" ? Library : it.kind === "issue" ? Bookmark : CONTENT_KIND_ICON[it.contentKind ?? "other"] ?? CircleDot;
@@ -483,7 +483,7 @@ export default function SynapsePage() {
                     <span
                       className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center"
                       style={dimStyle(KIND_DIM[it.kind], true)}
-                      title={it.kind === "capture" ? `${it.contentKind} capture` : it.kind}
+                      title={it.kind === "capture" ? `${it.contentKind} 捕获` : it.kind}
                     >
                       <KindIcon className="w-3.5 h-3.5" />
                     </span>
@@ -524,7 +524,7 @@ export default function SynapsePage() {
                             );
                           })}
                         {it.routed && it.actions !== null && it.actions.length === 0 && (
-                          <span className="hidden sm:inline shrink-0 whitespace-nowrap opacity-70">→ held in amber</span>
+                          <span className="hidden sm:inline shrink-0 whitespace-nowrap opacity-70">→ 已存入琥珀账本</span>
                         )}
                       </div>
                     </div>
@@ -538,7 +538,7 @@ export default function SynapsePage() {
                         onClick={(e) => e.stopPropagation()}
                       >
                         <Library className="w-3 h-3" />
-                        note
+                        笔记
                       </a>
                     )}
 
@@ -547,7 +547,7 @@ export default function SynapsePage() {
                       <span
                         className="shrink-0 text-[11px] tabular-nums font-medium px-1.5 py-0.5 rounded"
                         style={dimStyle(scoreDim(it.score), true)}
-                        title={`graded ${it.score}/10 against TELOS`}
+                        title={`按 TELOS 评分 ${it.score}/10`}
                       >
                         {it.score}
                       </span>
@@ -559,7 +559,7 @@ export default function SynapsePage() {
                     ) : (
                       <span className="shrink-0 hidden md:flex items-center gap-1 text-[11px]" style={{ color: `var(--${it.kind === "note" ? "ok" : "relationships"})` }}>
                         <CircleCheck className="w-3 h-3" />
-                        {it.kind === "note" ? "curated" : "issue"}
+                        {it.kind === "note" ? "已策划" : "议题"}
                       </span>
                     )}
 
@@ -580,16 +580,16 @@ export default function SynapsePage() {
                       )}
                       <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-ink-3">
                         <span>
-                          state{" "}
+                          状态{" "}
                           <span className="text-ink-1 font-medium">{it.status}</span>
                         </span>
                         <span>
-                          score{" "}
-                          <span className="text-ink-1 font-medium tabular-nums">{it.score !== null ? `${it.score}/10` : "ungraded"}</span>
+                          评分{" "}
+                          <span className="text-ink-1 font-medium tabular-nums">{it.score !== null ? `${it.score}/10` : "未评分"}</span>
                           {it.gradeVersion && <span className="opacity-70"> · {it.gradeVersion}</span>}
                         </span>
                         <span className="flex items-center gap-1.5 flex-wrap">
-                          routed to{" "}
+                          路由至{" "}
                           {(it.actions?.length ?? 0) > 0 ? (
                             it.actions!.map((a) => {
                               const m = actionMeta(a);
@@ -600,7 +600,7 @@ export default function SynapsePage() {
                               );
                             })
                           ) : (
-                            <span className="text-ink-2">{it.routed ? "nowhere — held in amber (below action bar)" : "not yet routed"}</span>
+                            <span className="text-ink-2">{it.routed ? "无处可去 — 已存入琥珀账本（操作栏下方）" : "尚未路由"}</span>
                           )}
                         </span>
                       </div>
@@ -608,7 +608,7 @@ export default function SynapsePage() {
                         <span className="mono text-[11px] opacity-70">{it.id}</span>
                         {it.href && (
                           <a href={it.href} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-ink-1" onClick={(e) => e.stopPropagation()}>
-                            <ExternalLink className="w-3 h-3" /> open source
+                            <ExternalLink className="w-3 h-3" /> 打开来源
                           </a>
                         )}
                         {it.note && (
@@ -617,7 +617,7 @@ export default function SynapsePage() {
                             className="flex items-center gap-1 hover:text-ink-1"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <Library className="w-3 h-3" /> open knowledge note
+                            <Library className="w-3 h-3" /> 打开知识笔记
                           </a>
                         )}
                       </div>
@@ -628,8 +628,8 @@ export default function SynapsePage() {
             })}
           </Panel>
           <p className="text-[12px] text-ink-3">
-            Merged live from three feeds: ledger captures (last 50), Knowledge Archive notes (30d), and X-bookmark work
-            issues (30d). Paths without per-item records (browser hotkey → sheet) can&apos;t appear here — see System for why.
+            合并自三个实时源：账本捕捉（最近 50 条）、Knowledge Archive 笔记（30 天）与 X 书签工作
+            问题（30 天）。没有逐条记录的路径（浏览器快捷键 → 表格）无法在此显示 — 原因见“系统”。
           </p>
         </>
       )}
@@ -639,67 +639,66 @@ export default function SynapsePage() {
         <>
           {/* ── What each number is ── */}
           <Panel className="text-[13px] leading-relaxed text-ink-2 space-y-1.5">
-            <div className="text-[11px] uppercase tracking-[0.16em] text-ink-3 mb-2">What each number is</div>
-            <div><span className="font-medium text-dim-money">The ledger</span> — the amber ledger, Synapse&apos;s permanent store (a D1 database). Every capture is written here the instant it&apos;s caught, before any grading. &ldquo;Preserved&rdquo; is its row count.</div>
-            <div><span className="font-medium text-ok">Knowledge notes</span> — curated markdown notes in the Knowledge Archive (Ideas, Research, People…). The tile counts notes created across the <em>whole archive</em> by any pipeline (harvest, research, curation); &ldquo;via Synapse&rdquo; counts only notes Synapse promoted from the amber ledger.</div>
-            <div><span className="font-medium text-dim-freedom">Spreadsheet</span> — the newsletter capture sheet the summarize worker appends to. Counts are per instrumented path; the browser-hotkey path has no counter yet.</div>
-            <div><span className="font-medium text-dim-relationships">X bookmarks</span> — bookmarks the every-minute cloud cron pulled from X, summarized, and sent to the sheet (rolling 90 days), plus the local <span className="mono">tb</span> sweep that turns bookmarks into work issues.</div>
+            <div className="text-[11px] uppercase tracking-[0.16em] text-ink-3 mb-2">每个数字的含义</div>
+            <div><span className="font-medium text-dim-money">账本</span> — 琥珀账本，Synapse 的永久存储（D1 数据库）。每次捕捉在捕获的瞬间就写入，先于任何评分。“已保留”即其行数。</div>
+            <div><span className="font-medium text-ok">知识笔记</span> — Knowledge Archive 中人工策划的 Markdown 笔记（想法、研究、人物…）。磁贴统计<em>整个归档</em>中由任意流水线创建的笔记；“经 Synapse”仅统计 Synapse 从琥珀账本提升的笔记。</div>
+            <div><span className="font-medium text-dim-freedom">表格</span> — summarize worker 追加的 newsletter 捕捉表。计数按已埋点路径；浏览器快捷键路径尚无计数器。</div>
+            <div><span className="font-medium text-dim-relationships">X 书签</span> — 每分钟云端定时任务从 X 拉取、摘要并发送到表格的书签（滚动 90 天），以及本地 <span className="mono">tb</span> 扫描将书签转为工作问题的部分。</div>
           </Panel>
 
           {/* ── Stats tiles ── */}
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
             <StatTile
               icon={Database}
-              label="Preserved"
+              label="已保留"
               value={nf(L?.total ?? null)}
               dim="money"
-              sub="append-only D1 ledger rows"
+              sub="仅追加的 D1 账本行"
             />
             <StatTile
               icon={GitBranch}
-              label="Routed / waiting"
+              label="已路由 / 等待中"
               value={`${nf(L?.routed ?? 0)} / ${nf(L?.captured ?? 0)}`}
-              sub="routed to a home / caught, not yet routed"
+              sub="已路由到归属 / 已捕捉，尚未路由"
             />
             <StatTile
               icon={Library}
-              label="Knowledge notes"
+              label="知识笔记"
               value={nf(K?.last7d ?? null)}
               dim="ok"
-              sub={`created in 7d, whole archive · ${nf(K?.last30d ?? null)} in 30d · via Synapse: ${nf(K?.amber_promoted ?? null)}`}
+              sub={`7 天内创建，整个归档 · 30 天：${nf(K?.last30d ?? null)} · 经 Synapse：${nf(K?.amber_promoted ?? null)}`}
             />
             <StatTile
               icon={Table2}
-              label="To spreadsheet"
+              label="到表格"
               value={nf((B?.cloud_parsed ?? 0) + (L?.by_source?.["surface"] ?? 0))}
               dim="freedom"
-              sub="observed 90d: bookmark cron + Surface saves (hotkey path un-instrumented)"
+              sub="过去 90 天观测：书签定时 + Surface 保存（快捷键路径未埋点）"
             />
             <StatTile
               icon={Bookmark}
-              label="X bookmarks"
+              label="X 书签"
               value={nf(B?.cloud_parsed ?? null)}
               dim="relationships"
-              sub={`cloud cron, last 90d · ${nf(B?.local_seen ?? 0)} via local tb · ${nf(B?.issues_created ?? 0)} became issues`}
+              sub={`云端定时，过去 90 天 · 本地 tb：${nf(B?.local_seen ?? 0)} · 转为问题：${nf(B?.issues_created ?? 0)}`}
             />
           </div>
 
           {/* ── Knowledge base breakdown ── */}
           <div>
-            <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-1">Knowledge base — what got saved</h2>
+            <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-1">知识库 — 已保存内容</h2>
             <p className="text-[12px] text-ink-3 mb-3">
-              Notes created in the Knowledge Archive by <em>all</em> pipelines, by type.
-              Synapse&apos;s own contribution is the &ldquo;via Synapse&rdquo; row — {nf(K?.amber_promoted ?? 0)} notes promoted from the
-              ledger by the 30-min routing scheduler.
+              Knowledge Archive 中由<em>所有</em>流水线创建的笔记，按类型。
+              Synapse 自身的贡献是“经 Synapse”行 — {nf(K?.amber_promoted ?? 0)} 条笔记由 30 分钟路由调度器从账本提升。
             </p>
             <Panel className="p-0 overflow-x-auto">
               <table className="w-full text-sm min-w-[480px]">
                 <thead>
                   <tr className="text-left text-[11px] uppercase tracking-[0.12em] text-ink-3 border-b border-line-2">
-                    <th className="px-4 py-2.5 font-medium">Note type</th>
-                    <th className="px-4 py-2.5 font-medium text-right">7 days</th>
-                    <th className="px-4 py-2.5 font-medium text-right">30 days</th>
-                    <th className="px-4 py-2.5 font-medium text-right">All time</th>
+                    <th className="px-4 py-2.5 font-medium">笔记类型</th>
+                    <th className="px-4 py-2.5 font-medium text-right">7 天</th>
+                    <th className="px-4 py-2.5 font-medium text-right">30 天</th>
+                    <th className="px-4 py-2.5 font-medium text-right">全部时间</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line-1">
@@ -714,7 +713,7 @@ export default function SynapsePage() {
                       </tr>
                     ))}
                   <tr className="border-t border-line-2">
-                    <td className="px-4 py-2.5 text-ok">via Synapse routing (all types)</td>
+                    <td className="px-4 py-2.5 text-ok">经 Synapse 路由（所有类型）</td>
                     <td className="px-4 py-2.5 text-right tabular-nums text-ok" colSpan={3}>{nf(K?.amber_promoted ?? 0)}</td>
                   </tr>
                 </tbody>
@@ -725,9 +724,9 @@ export default function SynapsePage() {
           {/* ── Ledger by source + sheet paths ── */}
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-3">Ledger by source</h2>
+              <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-3">按来源分组的账本</h2>
               <Panel className="p-0 divide-y divide-line-1">
-                {sourceEntries.length === 0 && <div className="p-4 text-sm text-ink-3">No captures yet.</div>}
+                {sourceEntries.length === 0 && <div className="p-4 text-sm text-ink-3">暂无捕捉。</div>}
                 {sourceEntries.map(([source, n]) => (
                   <div key={source} className="flex items-center justify-between px-4 py-2.5 text-sm">
                     <span className="text-ink-2 mono">{source}</span>
@@ -737,7 +736,7 @@ export default function SynapsePage() {
               </Panel>
             </div>
             <div>
-              <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-3">Spreadsheet sends (per path)</h2>
+              <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-3">表格发送（按路径）</h2>
               <Panel className="p-0 divide-y divide-line-1">
                 {data.sheet.paths.map((p) => (
                   <div key={p.name} className="px-4 py-2.5">
@@ -758,46 +757,45 @@ export default function SynapsePage() {
       {data && tab === "system" && (
         <>
           <Panel className="text-[13px] leading-relaxed text-ink-2 max-w-3xl">
-            <div className="text-[11px] uppercase tracking-[0.16em] text-ink-3 mb-2">What Synapse is</div>
+            <div className="text-[11px] uppercase tracking-[0.16em] text-ink-3 mb-2">Synapse 是什么</div>
             <p className="mb-2">
-              Synapse is the input router: anything worth keeping — a page, a tweet, a spoken thought, a feed item —
-              gets caught by the nearest input, written to the amber ledger <em>before</em> any judgment,
-              then graded against TELOS and routed to where it&apos;s useful: a Knowledge note, a work issue, a blog seed,
-              the newsletter sheet.
+              Synapse 是输入路由：任何值得保留的东西 — 一个页面、一条推文、一句口述、一个 feed 条目 —
+              被最近的输入捕获，写入琥珀账本<em>先于</em>任何判断，
+              然后按 TELOS 评分并路由到有用的地方：知识笔记、工作问题、博客种子、newsletter 表格。
             </p>
             <p>
-              The name is the mechanic: a synapse is weighted transmission — grading sets the weight, routing propagates what clears the bar. The journal keeps the old name: like an insect in amber, nothing captured is ever lost, because the raw capture is preserved before any judgment can reject it.
+              名字即机制：突触（synapse）是带权重的传输 — 评分设定权重，路由传播通过阈值的内容。日志保留旧名：如琥珀中的昆虫，被捕捉的永不丢失，因为原始捕捉在任何判断拒绝之前就已保留。
             </p>
           </Panel>
 
           {/* ── The flow ── */}
           <div>
-            <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-3">The one loop</h2>
+            <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-3">单一循环</h2>
             <div className="flex flex-wrap items-stretch gap-2 mb-3">
               <FlowStage
-                name="Capture"
-                desc="8 live inputs, 3 roadmap — hotkey, bookmarks, harvest, voice, feed, Surface, CLI"
-                count={`${data.inputs.filter((i) => i.status === "live").length} live inputs`}
+                name="捕捉"
+                desc="8 个实时输入，3 个路线图 — 快捷键、书签、收割、语音、feed、Surface、CLI"
+                count={`${data.inputs.filter((i) => i.status === "live").length} 个实时输入`}
                 dim="freedom"
               />
               <div className="hidden lg:flex items-center text-ink-3"><ArrowRight className="w-4 h-4" /></div>
               <FlowStage
-                name="Journal"
-                desc="write-ahead to the amber ledger, before grading — nothing is ever lost"
+                name="日志"
+                desc="先写入琥珀账本，再评分 — 永不丢失"
                 count={nf(L?.total ?? null)}
                 dim="money"
               />
               <div className="hidden lg:flex items-center text-ink-3"><ArrowRight className="w-4 h-4" /></div>
               <FlowStage
-                name="Grade"
-                desc="scored against TELOS — is this good for what the principal is actually doing?"
+                name="评分"
+                desc="按 TELOS 打分 — 这对 {{PRINCIPAL_NAME}} 正在做的事有益吗？"
                 dim="relationships"
               />
               <div className="hidden lg:flex items-center text-ink-3"><ArrowRight className="w-4 h-4" /></div>
               <FlowStage
-                name="Route"
-                desc="fan to KNOWLEDGE notes, Type:queue / Type:project issues, blog seeds, newsletter"
-                count={`${nf(L?.routed ?? 0)} routed`}
+                name="路由"
+                desc="分发到 KNOWLEDGE 笔记、Type:queue / Type:project 问题、博客种子、newsletter"
+                count={`${nf(L?.routed ?? 0)} 已路由`}
                 dim="ok"
               />
               <div className="hidden lg:flex items-center text-ink-3"><ArrowRight className="w-4 h-4" /></div>
@@ -808,25 +806,25 @@ export default function SynapsePage() {
               />
             </div>
             <p className="text-[12px] text-ink-3">
-              Destinations: KNOWLEDGE <span className="text-ink-2">idea</span> notes · work issues{" "}
-              <span className="text-ink-2">Type:queue / Type:project</span> · newsletter sheet · blog seeds · feed source registry.
-              Routing runs unattended every 30 min (<span className="text-ink-2">com.lifeos.amberroute</span>) and on demand via <span className="text-ink-2">amber route</span>.
+              目的地：KNOWLEDGE <span className="text-ink-2">idea</span> 笔记 · 工作问题{" "}
+              <span className="text-ink-2">Type:queue / Type:project</span> · newsletter 表格 · 博客种子 · feed 来源注册表。
+              路由每 30 分钟自动运行（<span className="text-ink-2">com.lifeos.amberroute</span>），也可按需通过 <span className="text-ink-2">amber route</span> 触发。
             </p>
           </div>
 
           {/* ── Inputs catalog ── */}
           <div>
-            <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-3">Inputs — every way an idea gets caught</h2>
+            <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-3">输入 — 想法被捕捉的所有方式</h2>
             <Panel className="p-0 overflow-x-auto mb-2">
               <table className="w-full text-sm min-w-[640px]">
                 <thead>
                   <tr className="text-left text-[11px] uppercase tracking-[0.12em] text-ink-3 border-b border-line-2">
                     <th className="px-4 py-2.5 font-medium">#</th>
-                    <th className="px-4 py-2.5 font-medium">Input</th>
-                    <th className="px-4 py-2.5 font-medium">Trigger</th>
-                    <th className="px-4 py-2.5 font-medium">Component</th>
-                    <th className="px-4 py-2.5 font-medium text-right">Ledger rows</th>
-                    <th className="px-4 py-2.5 font-medium text-right">Status</th>
+                    <th className="px-4 py-2.5 font-medium">输入</th>
+                    <th className="px-4 py-2.5 font-medium">触发</th>
+                    <th className="px-4 py-2.5 font-medium">组件</th>
+                    <th className="px-4 py-2.5 font-medium text-right">账本行数</th>
+                    <th className="px-4 py-2.5 font-medium text-right">状态</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line-1">
@@ -848,22 +846,22 @@ export default function SynapsePage() {
               </table>
             </Panel>
             <p className="text-[12px] text-ink-3">
-              &ldquo;Ledger rows&rdquo; counts captures whose <span className="mono">source</span> tag maps to that input — inputs still
-              dead-ending in the spreadsheet (hotkey, cloud bookmark cron) show &ldquo;—&rdquo; until Phase 3 wires them to the capture contract.
+              “账本行数”统计 <span className="mono">source</span> 标签映射到该输入的捕捉 — 仍
+              终结在表格的输入（快捷键、云端书签定时）显示“—”，直到 Phase 3 将它们接入捕捉契约。
             </p>
           </div>
 
           {/* ── How this page works ── */}
           <div>
-            <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-3">How this page gets its numbers</h2>
+            <h2 className="text-sm uppercase tracking-[0.16em] text-ink-2 mb-3">本页数字的来源</h2>
             <Panel className="text-[13px] leading-relaxed text-ink-2 space-y-1.5 max-w-3xl">
-              <div className="flex gap-2"><FileText className="w-3.5 h-3.5 mt-0.5 shrink-0 text-dim-money" /><span><span className="text-ink-1">Ledger worker</span> — <span className="mono">/stats</span> and <span className="mono">/captures</span> on the D1-backed amber-ledger worker, bearer-authed server-side.</span></div>
-              <div className="flex gap-2"><FileText className="w-3.5 h-3.5 mt-0.5 shrink-0 text-ok" /><span><span className="text-ink-1">Knowledge Archive</span> — a frontmatter scan of <span className="mono">MEMORY/KNOWLEDGE</span> note files (<span className="mono">created:</span>, <span className="mono">source_amber_id:</span>).</span></div>
-              <div className="flex gap-2"><FileText className="w-3.5 h-3.5 mt-0.5 shrink-0 text-dim-relationships" /><span><span className="text-ink-1">X bookmarks</span> — SEEN_BOOKMARKS KV key count via the Cloudflare API, plus local <span className="mono">_X</span> state files for the <span className="mono">tb</span> sweep and issue creation.</span></div>
+              <div className="flex gap-2"><FileText className="w-3.5 h-3.5 mt-0.5 shrink-0 text-dim-money" /><span><span className="text-ink-1">账本 worker</span> — D1 支持的琥珀账本 worker 上的 <span className="mono">/stats</span> 与 <span className="mono">/captures</span>，服务端 bearer 鉴权。</span></div>
+              <div className="flex gap-2"><FileText className="w-3.5 h-3.5 mt-0.5 shrink-0 text-ok" /><span><span className="text-ink-1">Knowledge Archive</span> — <span className="mono">MEMORY/KNOWLEDGE</span> 笔记文件的 frontmatter 扫描（<span className="mono">created:</span>、<span className="mono">source_amber_id:</span>）。</span></div>
+              <div className="flex gap-2"><FileText className="w-3.5 h-3.5 mt-0.5 shrink-0 text-dim-relationships" /><span><span className="text-ink-1">X 书签</span> — 通过 Cloudflare API 获取 SEEN_BOOKMARKS KV 键计数，加上 <span className="mono">tb</span> 扫描与问题创建的本地 <span className="mono">_X</span> 状态文件。</span></div>
               <div className="pt-1">
-                Everything is composed server-side by the Pulse <span className="mono">synapse</span> module (60s cache); no
-                secrets reach the browser. Every number is a live probe of what actually ran — un-instrumented paths are
-                labeled, never estimated.
+                所有内容均由 Pulse <span className="mono">synapse</span> 模块在服务端组合（60 秒缓存）；无
+                密钥到达浏览器。每个数字都是对实际运行情况的实时探测 — 未埋点路径
+                会标注，绝不估算。
               </div>
             </Panel>
           </div>
@@ -874,8 +872,8 @@ export default function SynapsePage() {
         <div className="flex items-center gap-2 text-[11px] text-ink-3">
           <Sparkles className="w-3 h-3" />
           <span>
-            generated {ago(data.generated_at)} · 60s cache
-            {data.errors ? ` · degraded probes: ${Object.keys(data.errors).join(", ")}` : ""}
+            生成于 {ago(data.generated_at)} · 60 秒缓存
+            {data.errors ? ` · 降级探针：${Object.keys(data.errors).join(", ")}` : ""}
           </span>
         </div>
       )}

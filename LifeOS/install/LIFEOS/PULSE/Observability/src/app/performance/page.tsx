@@ -107,7 +107,7 @@ const rowHoverIn = (e: React.MouseEvent<HTMLTableRowElement>) => (e.currentTarge
 const rowHoverOut = (e: React.MouseEvent<HTMLTableRowElement>) => (e.currentTarget.style.background = "transparent");
 
 function CostTab({ data }: { data: CostData | null }) {
-  if (!data) return <div className="p-8 text-ink-3">Loading cost data...</div>;
+  if (!data) return <div className="p-8 text-ink-3">加载成本数据中...</div>;
 
   const maxDaily = Math.max(...data.dailyCosts.map((d) => d.cost), 1);
   const isEmpty = data.totalSessions === 0 && data.totalCost === 0 && data.totalTokens === 0;
@@ -117,9 +117,9 @@ function CostTab({ data }: { data: CostData | null }) {
       {isEmpty && (
         <EmptyStateGuide
           section="Performance"
-          description="Runtime telemetry — tool latency, model timing, agent durations. Populates as you use LifeOS."
+          description="运行遥测 — 工具延迟、模型计时、代理耗时。使用 LifeOS 时自动填充。"
           hideInterview
-          daPromptExample="show me where my sessions are spending time"
+          daPromptExample="显示我的会话时间花在哪里"
         />
       )}
       {/* Summary cards */}
@@ -127,30 +127,30 @@ function CostTab({ data }: { data: CostData | null }) {
         <StatTile
           icon={DollarSign}
           dim="money"
-          label={`Total (${data.days}d)`}
+          label={`总计 (${data.days}d)`}
           value={formatCost(data.totalCost)}
-          sub={`${data.totalSessions.toLocaleString()} sessions`}
+          sub={`${data.totalSessions.toLocaleString()} 个会话`}
         />
-        <StatTile icon={TrendingUp} dim="money" label="Avg / Session" value={formatCost(data.avgCostPerSession)} />
-        <StatTile icon={Cpu} dim="money" label="Total Tokens" value={formatTokens(data.totalTokens)} />
+        <StatTile icon={TrendingUp} dim="money" label="每会话均值" value={formatCost(data.avgCostPerSession)} />
+        <StatTile icon={Cpu} dim="money" label="总 Token 数" value={formatTokens(data.totalTokens)} />
         <StatTile
           icon={Zap}
           dim="money"
-          label="Cache Read $"
+          label="缓存读取 $"
           value={formatCost(data.costBreakdown.cacheRead)}
-          sub={`${Math.round((data.costBreakdown.cacheRead / Math.max(data.totalCost, 0.01)) * 100)}% of total`}
+          sub={`${Math.round((data.costBreakdown.cacheRead / Math.max(data.totalCost, 0.01)) * 100)}% 占比`}
         />
       </div>
 
       {/* Cost breakdown */}
       <Panel>
-        <PanelHeader title="Cost Breakdown" />
+        <PanelHeader title="成本明细" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: "Input", val: data.costBreakdown.input, color: "var(--money)" },
-            { label: "Output", val: data.costBreakdown.output, color: "var(--creative)" },
-            { label: "Cache Write", val: data.costBreakdown.cacheWrite, color: "var(--rhythms)" },
-            { label: "Cache Read", val: data.costBreakdown.cacheRead, color: "var(--health)" },
+            { label: "输入", val: data.costBreakdown.input, color: "var(--money)" },
+            { label: "输出", val: data.costBreakdown.output, color: "var(--creative)" },
+            { label: "缓存写入", val: data.costBreakdown.cacheWrite, color: "var(--rhythms)" },
+            { label: "缓存读取", val: data.costBreakdown.cacheRead, color: "var(--health)" },
           ].map((item) => (
             <div key={item.label}>
               <div className="flex items-center gap-2 mb-1">
@@ -168,7 +168,7 @@ function CostTab({ data }: { data: CostData | null }) {
 
       {/* Model breakdown */}
       <Panel>
-        <PanelHeader title="Cost by Model" />
+        <PanelHeader title="按模型统计成本" />
         <div className="space-y-2">
           {data.byModel.map((m) => (
             <div key={m.model} className="flex items-center gap-3">
@@ -182,7 +182,7 @@ function CostTab({ data }: { data: CostData | null }) {
                   }}
                 >
                   <span className="text-[12px] whitespace-nowrap font-semibold" style={{ color: "var(--ground)" }}>
-                    {formatCost(m.cost)} · {m.sessions} sessions
+                    {formatCost(m.cost)} · {m.sessions} 个会话
                   </span>
                 </div>
               </div>
@@ -194,7 +194,7 @@ function CostTab({ data }: { data: CostData | null }) {
       {/* Daily trend */}
       {data.dailyCosts.length > 1 && (
         <Panel>
-          <PanelHeader title="Daily Cost Trend" />
+          <PanelHeader title="每日成本趋势" />
           <div className="flex items-end gap-1 h-32">
             {data.dailyCosts.slice(-30).map((d) => (
               <div key={d.day} className="flex-1 flex flex-col items-center justify-end gap-1">
@@ -217,16 +217,16 @@ function CostTab({ data }: { data: CostData | null }) {
 
       {/* Top sessions */}
       <Panel>
-        <PanelHeader title="Most Expensive Sessions" />
+        <PanelHeader title="最高成本会话" />
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="border-b border-line-1">
-                <th className="text-left py-2 pr-3 text-ink-3">Cost</th>
-                <th className="text-left py-2 pr-3 text-ink-3">Model</th>
-                <th className="text-right py-2 pr-3 text-ink-3">Msgs</th>
-                <th className="text-right py-2 pr-3 text-ink-3">Tokens</th>
-                <th className="text-left py-2 text-ink-3">Date</th>
+                <th className="text-left py-2 pr-3 text-ink-3">成本</th>
+                <th className="text-left py-2 pr-3 text-ink-3">模型</th>
+                <th className="text-right py-2 pr-3 text-ink-3">消息</th>
+                <th className="text-right py-2 pr-3 text-ink-3">Token</th>
+                <th className="text-left py-2 text-ink-3">日期</th>
               </tr>
             </thead>
             <tbody>
@@ -253,7 +253,7 @@ function CostTab({ data }: { data: CostData | null }) {
 }
 
 function FailuresTab({ data }: { data: FailureData | null }) {
-  if (!data) return <div className="p-8 text-ink-3">Loading failure data...</div>;
+  if (!data) return <div className="p-8 text-ink-3">加载失败数据中...</div>;
 
   return (
     <div className="space-y-6">
@@ -262,30 +262,30 @@ function FailuresTab({ data }: { data: FailureData | null }) {
         <StatTile
           icon={AlertTriangle}
           dim="creative"
-          label="Overall Failure Rate"
+          label="总体失败率"
           value={`${data.overallRate}%`}
-          sub={`${data.totalFailures.toLocaleString()} failures / ${data.totalCalls.toLocaleString()} calls`}
+          sub={`${data.totalFailures.toLocaleString()} 次失败 / ${data.totalCalls.toLocaleString()} 次调用`}
         />
         <StatTile
           icon={BarChart3}
           dim="creative"
-          label="Top Offender"
+          label="最高失败工具"
           value={data.byTool[0]?.tool || "—"}
-          sub={`${data.byTool[0]?.failures ?? 0} failures (${data.byTool[0]?.failureRate ?? 0}%)`}
+          sub={`${data.byTool[0]?.failures ?? 0} 次失败 (${data.byTool[0]?.failureRate ?? 0}%)`}
         />
         <StatTile
           icon={Clock}
           dim="creative"
-          label="Trend"
+          label="趋势"
           value={data.trend.length >= 2 ? `${data.trend[data.trend.length - 1]?.rate ?? 0}%` : "—"}
-          sub="Most recent day"
+          sub="最近一天"
         />
       </div>
 
       {/* Daily trend */}
       {data.trend.length > 1 && (
         <Panel>
-          <PanelHeader title="7-Day Failure Rate" />
+          <PanelHeader title="7 天失败率" />
           <div className="flex items-end gap-2 h-24">
             {data.trend.map((d) => (
               <div key={d.day} className="flex-1 flex flex-col items-center justify-end gap-1">
@@ -303,16 +303,16 @@ function FailuresTab({ data }: { data: FailureData | null }) {
 
       {/* Per-tool table */}
       <Panel>
-        <PanelHeader title="Failure Rate by Tool" />
+        <PanelHeader title="按工具统计失败率" />
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="border-b border-line-1">
-                <th className="text-left py-2 pr-4 text-ink-3">Tool</th>
-                <th className="text-right py-2 pr-4 text-ink-3">Failures</th>
-                <th className="text-right py-2 pr-4 text-ink-3">Total Calls</th>
-                <th className="text-right py-2 pr-4 text-ink-3">Rate</th>
-                <th className="text-left py-2 text-ink-3" style={{ width: "30%" }}>Bar</th>
+                <th className="text-left py-2 pr-4 text-ink-3">工具</th>
+                <th className="text-right py-2 pr-4 text-ink-3">失败次数</th>
+                <th className="text-right py-2 pr-4 text-ink-3">总调用次数</th>
+                <th className="text-right py-2 pr-4 text-ink-3">比率</th>
+                <th className="text-left py-2 text-ink-3" style={{ width: "30%" }}>图示</th>
               </tr>
             </thead>
             <tbody>
@@ -348,12 +348,12 @@ function FailuresTab({ data }: { data: FailureData | null }) {
 }
 
 function AnthropicTab({ data }: { data: AnthropicData | null }) {
-  if (!data) return <div className="p-8 text-ink-3">Loading Anthropic cost data...</div>;
+  if (!data) return <div className="p-8 text-ink-3">加载 Anthropic 成本数据中...</div>;
   if (!data.current)
     return (
       <div className="p-8 text-ink-3">
-        No ledger entries yet. CostTracker cron runs hourly — next entry at :00.
-        Run manually: <code className="mono">bun ~/.claude/LIFEOS/TOOLS/CostTracker.ts log</code>
+        暂无账本记录。CostTracker 定时任务每小时运行 — 下次记录在整点。
+        手动运行：<code className="mono">bun ~/.claude/LIFEOS/TOOLS/CostTracker.ts log</code>
       </div>
     );
 
@@ -375,7 +375,7 @@ function AnthropicTab({ data }: { data: AnthropicData | null }) {
         >
           <div className="flex items-center gap-2 mb-2">
             <AlertTriangle className="w-4 h-4 text-err" />
-            <span className="text-sm font-medium text-err">Active Alerts</span>
+            <span className="text-sm font-medium text-err">活跃告警</span>
           </div>
           <ul className="text-sm space-y-1" style={{ color: "var(--err)" }}>
             {snap.alerts.map((a, i) => (
@@ -390,40 +390,40 @@ function AnthropicTab({ data }: { data: AnthropicData | null }) {
         <StatTile
           icon={ShieldCheck}
           dim="freedom"
-          label="Subscription 5h"
+          label="订阅 5 小时"
           value={`${fiveH}%`}
-          sub={fiveH > 80 ? "approaching cap" : "healthy"}
+          sub={fiveH > 80 ? "接近上限" : "正常"}
         />
         <StatTile
           icon={TrendingUp}
           dim="freedom"
-          label="Subscription 7d"
+          label="订阅 7 天"
           value={`${sevenD}%`}
-          sub={sevenD > 80 ? "approaching cap" : "healthy"}
+          sub={sevenD > 80 ? "接近上限" : "正常"}
         />
         <StatTile
           icon={DollarSign}
           dim="money"
-          label="API Spend MTD"
+          label="本月 API 支出"
           value={apiSpend !== null ? `$${apiSpend.toFixed(2)}` : "—"}
-          sub={apiSpend !== null ? snap.api_spend.source : "set ANTHROPIC_ADMIN_API_KEY"}
+          sub={apiSpend !== null ? snap.api_spend.source : "设置 ANTHROPIC_ADMIN_API_KEY"}
         />
         <StatTile
           icon={bypassSites.length > 0 ? XCircle : CheckCircle2}
           dim={bypassSites.length > 0 ? "err" : "health"}
-          label="Bypass call sites"
+          label="绕过调用点"
           value={String(bypassSites.length)}
-          sub={bypassSites.length === 0 ? "✅ all guarded" : "🚨 review and patch"}
+          sub={bypassSites.length === 0 ? "✅ 全部已防护" : "🚨 检查并修补"}
         />
       </div>
 
       {/* Call sites inventory */}
       <Panel>
         <PanelHeader
-          title={`Call Sites (${data.sites.length})`}
+          title={`调用点 (${data.sites.length})`}
           actions={
             <span className="text-xs text-ink-3">
-              baseline: {data.baseline_updated ? new Date(data.baseline_updated).toLocaleString() : "none"}
+              基线：{data.baseline_updated ? new Date(data.baseline_updated).toLocaleString() : "无"}
             </span>
           }
         />
@@ -466,10 +466,10 @@ function AnthropicTab({ data }: { data: AnthropicData | null }) {
 
       {/* 24h trend */}
       <Panel>
-        <PanelHeader title="Last 24h — subscription usage" />
+        <PanelHeader title="最近 24 小时 — 订阅使用情况" />
         <div className="flex items-end gap-1" style={{ height: 80 }}>
           {data.history.length === 0 ? (
-            <span className="text-ink-3 text-xs">Waiting for hourly samples…</span>
+            <span className="text-ink-3 text-xs">等待每小时采样…</span>
           ) : (
             data.history.map((h, i) => {
               const pct = h.subscription.five_hour_pct ?? 0;
@@ -491,9 +491,9 @@ function AnthropicTab({ data }: { data: AnthropicData | null }) {
           )}
         </div>
         <div className="flex items-center justify-between mt-2">
-          <span className="text-[12px] text-ink-3">{data.total_entries} total ledger entries</span>
+          <span className="text-[12px] text-ink-3">{data.total_entries} 条账本记录</span>
           <span className="text-[12px] text-ink-3 mono">
-            last sample: {new Date(snap.ts).toLocaleTimeString()}
+            最近采样：{new Date(snap.ts).toLocaleTimeString()}
           </span>
         </div>
       </Panel>
@@ -505,19 +505,19 @@ function AnthropicTab({ data }: { data: AnthropicData | null }) {
             <span className="mono" style={{ color: "var(--money)" }}>
               bun ~/.claude/LIFEOS/TOOLS/CostTracker.ts status
             </span>{" "}
-            — human-readable snapshot
+            — 可读状态快照
           </div>
           <div>
             <span className="mono" style={{ color: "var(--money)" }}>
               bun ~/.claude/LIFEOS/TOOLS/CostTracker.ts scan
             </span>{" "}
-            — re-run static scan
+            — 重新静态扫描
           </div>
           <div>
             <span className="mono" style={{ color: "var(--money)" }}>
               bun ~/.claude/LIFEOS/TOOLS/CostTracker.ts baseline
             </span>{" "}
-            — lock a new known-good snapshot
+            — 锁定新的已知良好快照
           </div>
         </div>
       </Panel>
@@ -526,8 +526,8 @@ function AnthropicTab({ data }: { data: AnthropicData | null }) {
 }
 
 const TABS: TabSpec<Tab>[] = [
-  { id: "cost", label: "Cost", icon: DollarSign, dim: "money" },
-  { id: "failures", label: "Failures", icon: AlertTriangle, dim: "creative" },
+  { id: "cost", label: "成本", icon: DollarSign, dim: "money" },
+  { id: "failures", label: "失败", icon: AlertTriangle, dim: "creative" },
   { id: "anthropic", label: "Anthropic", icon: ShieldCheck, dim: "freedom" },
 ];
 
@@ -594,8 +594,8 @@ export default function PerformancePage() {
     <PageShell>
       <PageHeader
         icon={BarChart3}
-        title="Performance"
-        subtitle="Runtime cost, tool failures, and Anthropic subscription guardrails."
+        title="性能"
+        subtitle="运行成本、工具失败和 Anthropic 订阅防护。"
         actions={tab === "cost" ? daysSwitcher : undefined}
       />
       <TabBar tabs={TABS} active={tab} onChange={setTab} />

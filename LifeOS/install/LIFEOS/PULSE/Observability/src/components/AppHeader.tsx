@@ -36,7 +36,13 @@ export default function AppHeader() {
   // title to the layout default, so re-assert via a short-lived observer until it settles.
   useEffect(() => {
     const seg = pathname.split("/")[1] ?? "";
-    const page = seg === "" ? "Home" : seg === "telos" ? "TELOS" : seg.charAt(0).toUpperCase() + seg.slice(1);
+    const pageNames: Record<string, string> = {
+      "": "首页", telos: "TELOS", work: "工作台", content: "内容", health: "健康",
+      finances: "财务", business: "商业", growth: "增长", local: "本地", gear: "装备",
+      atlas: "ATLAS", memory: "CORTEX", synapse: "SYNAPSE", agents: "代理",
+      assistant: "助手", system: "系统", docs: "文档",
+    };
+    const page = pageNames[seg] ?? seg.charAt(0).toUpperCase() + seg.slice(1);
     const want = `Pulse | ${page}`;
     const assert = () => { if (document.title !== want) document.title = want; };
     assert();
@@ -151,7 +157,7 @@ export default function AppHeader() {
                     : "text-ink-3 hover:text-ink-2 hover:bg-white/5"
                 )}
                 style={observerMode ? { background: "rgba(251,191,36,0.14)", border: "1px solid rgba(251,191,36,0.3)" } : undefined}
-                title={observerMode ? "Observer mode ON — sensitive data hidden" : "Toggle observer mode"}
+                title={observerMode ? "观察模式已开启 — 敏感数据已隐藏" : "切换观察模式"}
               >
                 {observerMode ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                 <span className="hidden sm:inline" style={fontStyle}>OBSERVER</span>
@@ -178,7 +184,7 @@ export default function AppHeader() {
                 className="text-[10px] tracking-[0.18em] text-ink-3 uppercase shrink-0 pr-3 pt-2 border-r border-line-1"
                 style={fontStyle}
               >
-                System
+                系统
               </span>
               <nav className="flex flex-wrap flex-1 items-center justify-start gap-1 gap-y-1.5 min-w-0">
                 {system.map((item) => {
@@ -210,7 +216,7 @@ export default function AppHeader() {
       {mobileMenuOpen && (
         <div ref={mobileMenuRef} className="md:hidden border-b border-line-1 backdrop-blur-md" style={{ background: "rgba(6, 11, 26, 0.95)" }}>
           <nav className="flex flex-col px-4 py-3 gap-1">
-            <div className="text-xs uppercase tracking-wider text-ink-3 px-3 py-1">Sections</div>
+            <div className="text-xs uppercase tracking-wider text-ink-3 px-3 py-1">分区</div>
             {tier1.map((item) => {
               const active = isActive(item.href);
               const Icon = item.icon;
@@ -223,7 +229,7 @@ export default function AppHeader() {
                 </Link>
               );
             })}
-            <div className="text-xs uppercase tracking-wider text-ink-3 px-3 py-1 mt-2">Meta</div>
+            <div className="text-xs uppercase tracking-wider text-ink-3 px-3 py-1 mt-2">元视图</div>
             {metaNav.map((item) => {
               const active = isActive(item.href);
               const Icon = item.icon;
@@ -236,7 +242,7 @@ export default function AppHeader() {
                 </Link>
               );
             })}
-            <div className="text-xs uppercase tracking-wider text-ink-3 px-3 py-1 mt-2">System</div>
+            <div className="text-xs uppercase tracking-wider text-ink-3 px-3 py-1 mt-2">系统</div>
             {system.map((item) => {
               const active = isActive(item.href);
               const Icon = item.icon;

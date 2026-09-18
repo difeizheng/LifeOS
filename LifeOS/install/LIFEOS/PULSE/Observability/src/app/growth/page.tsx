@@ -76,35 +76,35 @@ function Hero({ nl }: { nl: NonNullable<GrowthData["newsletter"]> }) {
         <TrendingUp className="w-10 h-10 shrink-0" color={GREEN} />
         <div className="flex-1 min-w-0">
           <div className="text-xs uppercase tracking-widest mb-2 text-ink-3">
-            Audience Growth
+            受众增长
           </div>
           <div className="flex items-baseline gap-8 flex-wrap">
             <div>
-              <div className="text-xs uppercase tracking-wider text-ink-3">New subscribers today</div>
+              <div className="text-xs uppercase tracking-wider text-ink-3">今日新订阅</div>
               <div className="text-5xl lg:text-6xl font-medium tabular-nums leading-tight" style={{ color: GREEN }}>
                 {nl.newToday}
               </div>
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wider text-ink-3">Total active</div>
+              <div className="text-xs uppercase tracking-wider text-ink-3">活跃总数</div>
               <div className="text-3xl lg:text-4xl font-medium tabular-nums leading-tight text-ink-1">
                 {fmt(nl.totalActive)}
               </div>
               <div className="text-xs mt-1 text-ink-2">
-                {fmt(nl.free)} free · {nl.premium.toLocaleString()} premium
+                {fmt(nl.free)} 免费 · {nl.premium.toLocaleString()} 付费
               </div>
             </div>
             <div className="text-sm space-y-1 text-ink-2">
               <div>
-                <span className="tabular-nums" style={{ color: BLUE }}>{nl.new7d}</span> in 7d ·{" "}
-                {nl.avgPerDay7d}/day
+                <span className="tabular-nums" style={{ color: BLUE }}>{nl.new7d}</span> 7 天内 ·{" "}
+                {nl.avgPerDay7d}/天
               </div>
               <div>
-                <span className="tabular-nums" style={{ color: BLUE }}>{nl.new30d.toLocaleString()}</span> in 30d ·{" "}
-                {nl.avgPerDay30d}/day
+                <span className="tabular-nums" style={{ color: BLUE }}>{nl.new30d.toLocaleString()}</span> 30 天内 ·{" "}
+                {nl.avgPerDay30d}/天
               </div>
               <div className="text-xs">
-                Open {nl.openRate}% · Click {nl.clickRate}%
+                打开率 {nl.openRate}% · 点击率 {nl.clickRate}%
               </div>
             </div>
           </div>
@@ -119,7 +119,7 @@ function TrendChart({ nl }: { nl: NonNullable<GrowthData["newsletter"]> }) {
   return (
     <section>
       <h2 className="text-sm font-medium uppercase tracking-widest mb-4 text-ink-3">
-        New Subscribers · 30 Days
+        新订阅 · 30 天
       </h2>
       <Panel style={{ borderLeft: `3px solid ${GREEN}` }}>
         <div style={{ height: 260 }}>
@@ -136,7 +136,7 @@ function TrendChart({ nl }: { nl: NonNullable<GrowthData["newsletter"]> }) {
               <YAxis stroke="var(--ink-3)" fontSize={10} width={32} tickLine={false} axisLine={false} />
               <Tooltip
                 contentStyle={CHART_TOOLTIP}
-                formatter={(v: number) => [`${v} new`, "Subscribers"]}
+                formatter={(v: number) => [`${v} 新增`, "订阅"]}
               />
               <Area type="monotone" dataKey="count" stroke={GREEN} strokeWidth={2} fill="url(#subGrad)" />
             </AreaChart>
@@ -155,7 +155,7 @@ function Channels({ nl }: { nl: NonNullable<GrowthData["newsletter"]> }) {
   return (
     <section>
       <h2 className="text-sm font-medium uppercase tracking-widest mb-4 text-ink-3">
-        Where They Came From · 30 Days
+        来源渠道 · 30 天
       </h2>
       <Panel style={{ borderLeft: `3px solid ${BLUE}` }}>
         <div style={{ height: 200 }}>
@@ -165,7 +165,7 @@ function Channels({ nl }: { nl: NonNullable<GrowthData["newsletter"]> }) {
               <YAxis type="category" dataKey="name" stroke="var(--ink-3)" fontSize={11} width={120} tickLine={false} axisLine={false} />
               <Tooltip
                 contentStyle={CHART_TOOLTIP}
-                formatter={(v: number) => [`${v} (${((v / total) * 100).toFixed(0)}%)`, "Subs"]}
+                formatter={(v: number) => [`${v} (${((v / total) * 100).toFixed(0)}%)`, "订阅"]}
               />
               <Bar dataKey="count" radius={[0, 4, 4, 0]}>
                 {rows.map((_, i) => (
@@ -177,7 +177,7 @@ function Channels({ nl }: { nl: NonNullable<GrowthData["newsletter"]> }) {
         </div>
         {today.length > 0 && (
           <div className="text-xs text-ink-2 mt-4 pt-4" style={{ borderTop: "1px solid var(--line-1)" }}>
-            Today: {today.map(([k, v]) => `${k} ${v}`).join(" · ")}
+            今日：{today.map(([k, v]) => `${k} ${v}`).join(" · ")}
           </div>
         )}
       </Panel>
@@ -192,9 +192,9 @@ function NotConnected({ icon: Icon, accent, label, envVar, note }: { icon: Lucid
         <Icon className="w-4 h-4 shrink-0" color={accent} />
         <h3 className="text-xs uppercase tracking-wider text-ink-3">{label}</h3>
       </div>
-      <div className="text-sm text-ink-2">Not connected</div>
+      <div className="text-sm text-ink-2">未连接</div>
       <div className="text-xs text-ink-3 mt-1">
-        {note} Set <code style={{ color: accent }}>{envVar}</code> in <code>~/.claude/.env</code>.
+        {note} 在 <code>~/.claude/.env</code> 中设置 <code style={{ color: accent }}>{envVar}</code>。
       </div>
     </Panel>
   );
@@ -213,9 +213,9 @@ export default function GrowthPage() {
   if (error) {
     return (
       <PageShell>
-        <PageHeader title="Growth" subtitle="Audience across newsletter, YouTube, and web." />
+        <PageHeader title="增长" subtitle="跨新闻通讯、YouTube 和网络的受众。" />
         <Panel style={{ borderLeft: `3px solid ${RED}` }}>
-          <h2 className="font-medium" style={{ color: RED }}>Failed to load growth</h2>
+          <h2 className="font-medium" style={{ color: RED }}>加载增长数据失败</h2>
           <p className="text-sm text-err">{error}</p>
         </Panel>
       </PageShell>
@@ -224,8 +224,8 @@ export default function GrowthPage() {
   if (!data) {
     return (
       <PageShell>
-        <PageHeader title="Growth" subtitle="Audience across newsletter, YouTube, and web." />
-        <div className="text-sm text-ink-2">Loading Growth…</div>
+        <PageHeader title="增长" subtitle="跨新闻通讯、YouTube 和网络的受众。" />
+        <div className="text-sm text-ink-2">正在加载增长…</div>
       </PageShell>
     );
   }
@@ -235,14 +235,14 @@ export default function GrowthPage() {
   return (
     <PageShell>
       <PageHeader
-        title="Growth"
-        subtitle="Audience across newsletter, YouTube, and web."
+        title="增长"
+        subtitle="跨新闻通讯、YouTube 和网络的受众。"
         actions={
           <div className="text-xs text-ink-3 mono">
             {data.generatedAt && (
-              <>Updated {new Date(data.generatedAt).toLocaleString("en-US", { timeZone: "America/Los_Angeles" })} PT</>
+              <>更新于 {new Date(data.generatedAt).toLocaleString("en-US", { timeZone: "America/Los_Angeles" })} PT</>
             )}
-            {(data.errors?.length ?? 0) > 0 && <span> · {data.errors.length} source(s) need credentials</span>}
+            {(data.errors?.length ?? 0) > 0 && <span> · {data.errors.length} 个来源需要凭据</span>}
           </div>
         }
       />
@@ -257,12 +257,12 @@ export default function GrowthPage() {
         </>
       ) : (
         <Panel style={{ borderLeft: `3px solid ${RED}` }}>
-          <h2 className="font-medium" style={{ color: RED }}>Newsletter not connected</h2>
-          <p className="text-sm text-ink-2">Set BEEHIIV_API_KEY and BEEHIIV_PUB_ID in ~/.claude/.env.</p>
+          <h2 className="font-medium" style={{ color: RED }}>新闻通讯未连接</h2>
+          <p className="text-sm text-ink-2">在 ~/.claude/.env 中设置 BEEHIIV_API_KEY 和 BEEHIIV_PUB_ID。</p>
         </Panel>
       )}
 
-      <h2 className="text-sm font-medium uppercase tracking-widest text-ink-3">Other Channels</h2>
+      <h2 className="text-sm font-medium uppercase tracking-widest text-ink-3">其他渠道</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {data.youtube ? (
           <StatTile
@@ -270,33 +270,33 @@ export default function GrowthPage() {
             dim="creative"
             label="YouTube"
             value={fmt(data.youtube.subscribers)}
-            sub={`${fmt(data.youtube.totalViews)} views · ${data.youtube.videoCount} videos`}
+            sub={`${fmt(data.youtube.totalViews)} 次观看 · ${data.youtube.videoCount} 个视频`}
           />
         ) : (
-          <NotConnected icon={Video} accent={RED} label="YouTube" envVar="GOOGLE_API_KEY" note="Enable YouTube Data API v3 on this key's project." />
+          <NotConnected icon={Video} accent={RED} label="YouTube" envVar="GOOGLE_API_KEY" note="在此密钥的项目中启用 YouTube Data API v3。" />
         )}
         {data.web ? (
           <StatTile
             icon={Globe}
             dim="money"
-            label={`Web traffic (${data.web.range})`}
+            label={`网站流量 (${data.web.range})`}
             value={fmt(data.web.pageviews)}
-            sub={`${fmt(data.web.visitors)} visitors`}
+            sub={`${fmt(data.web.visitors)} 位访客`}
           />
         ) : (
-          <NotConnected icon={Globe} accent={GOLD} label="Web traffic" envVar="CLOUDFLARE_API_TOKEN" note="Needs Account Analytics Read scope." />
+          <NotConnected icon={Globe} accent={GOLD} label="网站流量" envVar="CLOUDFLARE_API_TOKEN" note="需要 Account Analytics Read 权限。" />
         )}
         {nl && (
           <StatTile
             icon={Mail}
             dim="relationships"
-            label="List health"
+            label="列表健康"
             value={`${nl.openRate}%`}
-            sub={`open · ${nl.clickRate}% click · ${nl.premium.toLocaleString()} premium`}
+            sub={`打开率 ${nl.openRate}% · 点击率 ${nl.clickRate}% · ${nl.premium.toLocaleString()} 付费`}
           />
         )}
         {nl && (
-          <StatTile icon={Users} dim="health" label="Free / Premium" value={fmt(nl.free)} sub={`free · ${nl.premium.toLocaleString()} premium`} />
+          <StatTile icon={Users} dim="health" label="免费 / 付费" value={fmt(nl.free)} sub={`免费 · ${nl.premium.toLocaleString()} 付费`} />
         )}
       </div>
     </PageShell>

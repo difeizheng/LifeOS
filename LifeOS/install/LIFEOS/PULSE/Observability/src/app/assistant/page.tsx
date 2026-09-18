@@ -348,7 +348,7 @@ export default function AssistantPage() {
   // used to stack into one page you had to scroll past to reach the cron table
   // you actually wanted; sub-tabs put each scheduler one click away instead.
   const scheduleTabs: TabSpec<typeof scheduleTab>[] = [
-    { id: "pulse", label: "Pulse Cron", dim: "rhythms", hint: cronData ? `${cronData.counts.enabled}/${cronData.counts.total}` : undefined },
+    { id: "pulse", label: "Pulse 定时", dim: "rhythms", hint: cronData ? `${cronData.counts.enabled}/${cronData.counts.total}` : undefined },
     { id: "launchd", label: "launchd", dim: "freedom", hint: tasksData?.by_source.launchd || undefined },
     { id: "claude-code", label: "Claude Code", dim: "freedom", hint: tasksData?.by_source["claude-code"] || undefined },
     { id: "arbol", label: "Arbol", dim: "creative", hint: tasksData?.by_source.arbol || undefined },
@@ -356,10 +356,10 @@ export default function AssistantPage() {
   ];
 
   const tabs: TabSpec<typeof activeTab>[] = [
-    { id: "tasks", label: "Scheduled Tasks", dim: "creative" },
-    { id: "personality", label: "Personality", dim: "relationships" },
+    { id: "tasks", label: "定时任务", dim: "creative" },
+    { id: "personality", label: "个性", dim: "relationships" },
     { id: "hermes", label: "Hermes", dim: "freedom" },
-    { id: "diary", label: "Diary", dim: "rhythms" },
+    { id: "diary", label: "日志", dim: "rhythms" },
   ];
 
   const isFreshInstall = health ? !health.identity_loaded : !identity;
@@ -369,14 +369,14 @@ export default function AssistantPage() {
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 flex flex-col gap-6">
 
         <PageHeader
-          title="Assistant"
-          subtitle="Your DA's identity, schedule, personality, and work diary."
+          title="助手"
+          subtitle="你的 DA 的身份、日程、个性与工作日志。"
         />
 
         {isFreshInstall && (
           <EmptyStateGuide
             section="DA Identity"
-            description="Your DA's name, voice, personality, and the diary they keep about your work together."
+            description="你的 DA 的名字、声音、个性，以及他们记录你们共同工作的日志。"
             userDir="DA"
             daPromptExample="set up my DA's identity and personality"
           />
@@ -386,13 +386,13 @@ export default function AssistantPage() {
         {health && (
           <div className="grid grid-cols-4 gap-3">
             <StatTile
-              label="Status"
+              label="状态"
               icon={Activity}
-              value={health.status === "ok" ? "Online" : health.status}
+              value={health.status === "ok" ? "在线" : health.status}
               dim={health.status === "ok" ? "ok" : "err"}
             />
-            <StatTile label="CC Scheduled" icon={Terminal} value={String(tasksData?.by_source["claude-code"] ?? 0)} />
-            <StatTile label="Cron Jobs" icon={Zap} value={String(tasksData?.by_source.pulse ?? 0)} />
+            <StatTile label="CC 定时" icon={Terminal} value={String(tasksData?.by_source["claude-code"] ?? 0)} />
+            <StatTile label="定时任务" icon={Zap} value={String(tasksData?.by_source.pulse ?? 0)} />
             <StatTile label="launchd" icon={Activity} value={String(tasksData?.by_source.launchd ?? 0)} />
             <StatTile label="Arbol" icon={Cloud} value={String(tasksData?.by_source.arbol ?? 0)} />
             <StatTile label="Hermes" icon={MessageSquare} value={String(tasksData?.by_source.hermes ?? 0)} />
@@ -408,17 +408,17 @@ export default function AssistantPage() {
             <TabBar tabs={scheduleTabs} active={scheduleTab} onChange={setScheduleTab} />
 
             {scheduleTab === "launchd" && (
-            <Section title="Background Services · launchd" icon={Activity} dimension="freedom">
+            <Section title="后台服务 · launchd" icon={Activity} dimension="freedom">
               <div className="text-xs mono mb-1 text-ink-2">
-                ~/Library/LaunchAgents/com.lifeos.*.plist <span className="text-ink-3">(read-only — manage via LIFEOS/TOOLS/Services.ts)</span>
+                ~/Library/LaunchAgents/com.lifeos.*.plist <span className="text-ink-3">（只读 — 通过 LIFEOS/TOOLS/Services.ts 管理）</span>
               </div>
               <div className="text-xs mb-3 text-ink-3">
-                macOS launchd agents installed by LifeOS — deterministic background jobs (inbox sweep, Conduit, backups) that run outside Pulse and survive Pulse restarts.
+                LifeOS 安装的 macOS launchd 代理 — 在 Pulse 之外运行并在 Pulse 重启后继续运行的确定性后台任务（收件箱扫描、Conduit、备份）。
               </div>
               {(() => {
                 const svcTasks = tasksData?.tasks.filter((t) => t.source === "launchd") ?? [];
                 if (svcTasks.length === 0) {
-                  return <div className="text-[13px] text-ink-3">No com.lifeos launchd agents found.</div>;
+                  return <div className="text-[13px] text-ink-3">未找到 com.lifeos launchd 代理。</div>;
                 }
                 return (
                   <div className="space-y-1">
@@ -442,17 +442,17 @@ export default function AssistantPage() {
             )}
 
             {scheduleTab === "arbol" && (
-            <Section title="Scheduled Tasks · Arbol (Cloudflare)" icon={Cloud} dimension="freedom">
+            <Section title="定时任务 · Arbol（Cloudflare）" icon={Cloud} dimension="freedom">
               <div className="text-xs mono mb-1 text-ink-2">
-                ARBOL/Workers/*/wrangler.jsonc <span className="text-ink-3">(cron triggers, read from each worker&apos;s deploy config)</span>
+                ARBOL/Workers/*/wrangler.jsonc <span className="text-ink-3">（定时触发器，从每个 worker 的部署配置读取）</span>
               </div>
               <div className="text-xs mb-3 text-ink-3">
-                Cloud-side scheduled work on Cloudflare Workers. A cron here is scheduled by definition — whether its last run <em>succeeded</em> is a separate question this view does not answer.
+                Cloudflare Workers 上的云端定时任务。此处的 cron 本身就是定时调度 — 其上次运行是否<em>成功</em>是另一个此视图不回答的问题。
               </div>
               {(() => {
                 const arbolTasks = tasksData?.tasks.filter((t) => t.source === "arbol") ?? [];
                 if (arbolTasks.length === 0) {
-                  return <div className="text-[13px] text-ink-3">No Arbol workers with cron triggers found.</div>;
+                  return <div className="text-[13px] text-ink-3">未找到带有 cron 触发器的 Arbol worker。</div>;
                 }
                 return (
                   <div className="space-y-1">
@@ -471,17 +471,17 @@ export default function AssistantPage() {
             )}
 
             {scheduleTab === "hermes" && (
-            <Section title="Hermes (sidecar)" icon={MessageSquare} dimension="rhythms">
+            <Section title="Hermes（边车）" icon={MessageSquare} dimension="rhythms">
               {/* The gateway process, above its jobs. Job rows say nothing about
                   whether the sidecar serving them is alive, and a crash loop
                   reads as running at any instant you happen to look. */}
               {(() => {
                 const h = tasksData?.hermes;
                 if (!h) {
-                  return <div className="text-[13px] text-ink-3 mb-4">Sidecar health unavailable.</div>;
+                  return <div className="text-[13px] text-ink-3 mb-4">边车健康状态不可用。</div>;
                 }
                 if (!h.installed) {
-                  return <div className="text-[13px] text-ink-3 mb-4">Hermes sidecar not installed on this machine.</div>;
+                  return <div className="text-[13px] text-ink-3 mb-4">此机器未安装 Hermes 边车。</div>;
                 }
                 const color = HERMES_STATUS_COLOR[h.status];
                 return (
@@ -523,17 +523,17 @@ export default function AssistantPage() {
                 );
               })()}
               <div className="text-xs mono mb-1 text-ink-2">
-                $HERMES_HOME/cron/jobs.json <span className="text-ink-3">(manage via <code className="mono">hermes cron</code>)</span>
+                $HERMES_HOME/cron/jobs.json <span className="text-ink-3">（通过 <code className="mono">hermes cron</code> 管理）</span>
               </div>
               <div className="text-xs mb-3 text-ink-3">
-                Scheduled <em>agent turns</em> delivered to a channel — the one thing launchd can&apos;t do (&ldquo;text me the morning brief at 7&rdquo;).
+                定时<em>代理轮次</em>发送到频道 — 这是 launchd 无法做到的事（&ldquo;早上 7 点给我发早间简报&rdquo;）。
               </div>
               {(() => {
                 const hermesTasks = tasksData?.tasks.filter((t) => t.source === "hermes") ?? [];
                 if (hermesTasks.length === 0) {
                   return (
                     <div className="text-[13px] text-ink-3">
-                      No Hermes cron jobs. <span className="muted">Create one with <code className="mono">hermes cron create</code>.</span>
+                      暂无 Hermes 定时任务。<span className="muted">使用 <code className="mono">hermes cron create</code> 创建。</span>
                     </div>
                   );
                 }
@@ -559,19 +559,19 @@ export default function AssistantPage() {
             )}
 
             {scheduleTab === "claude-code" && (
-            <Section title="Scheduled Tasks · Claude Code" icon={Terminal} dimension="freedom">
+            <Section title="定时任务 · Claude Code" icon={Terminal} dimension="freedom">
               <div className="text-xs mono mb-1 text-ink-2">
-                Claude Code harness · <code className="mono">claude triggers list</code> (not under ~/.claude/LIFEOS/)
+                Claude Code 调度器 · <code className="mono">claude triggers list</code>（不在 ~/.claude/LIFEOS/ 下）
               </div>
               <div className="text-xs mb-3 text-ink-3">
-                Built into Claude Code — triggers and active <code className="mono bg-surface-1 px-1.5 py-px rounded">/loop</code> sessions managed by the harness, not by Pulse. Pulse polls every 60s.
+                Claude Code 内置功能 — 由调度器管理的触发器和活跃 <code className="mono bg-surface-1 px-1.5 py-px rounded">/loop</code> 会话，而非 Pulse。Pulse 每 60 秒轮询一次。
               </div>
               {(() => {
                 const ccTasks = tasksData?.tasks.filter((t) => t.source === "claude-code") ?? [];
                 if (ccTasks.length === 0) {
                   return (
                     <div className="text-[13px] text-ink-3">
-                      No Claude Code triggers or loops detected. <span className="muted">(Pulse polls <code className="mono">claude triggers list</code> every 60s.)</span>
+                      未检测到 Claude Code 触发器或循环。<span className="muted">（Pulse 每 60 秒轮询 <code className="mono">claude triggers list</code>。）</span>
                     </div>
                   );
                 }
@@ -589,9 +589,9 @@ export default function AssistantPage() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
                               <span className="text-sm truncate text-ink-1">{task.name}</span>
-                              <Pill dim="freedom" className={TAG_CLS} title="Source: Claude Code harness">Claude Code</Pill>
+                              <Pill dim="freedom" className={TAG_CLS} title="来源：Claude Code 调度器">Claude Code</Pill>
                               {isLoop && (
-                                <Pill dim="creative" className={TAG_CLS} title="Active /loop session">Loop</Pill>
+                                <Pill dim="creative" className={TAG_CLS} title="活跃 /loop 会话">循环</Pill>
                               )}
                             </div>
                             <div className="text-xs mono muted">{task.schedule}</div>
@@ -612,16 +612,16 @@ export default function AssistantPage() {
 
             {scheduleTab === "pulse" && (
             <Section
-              title="Pulse Cron Jobs · LifeOS"
+              title="Pulse 定时任务 · LifeOS"
               icon={Zap}
               dimension="rhythms"
               action={
                 <div className="flex items-center gap-3">
                   {cronData && (
                     <span className="text-xs mono muted">
-                      {cronData.counts.enabled}/{cronData.counts.total} enabled
+                      {cronData.counts.enabled}/{cronData.counts.total} 已启用
                       {" · "}
-                      {cronData.counts.system} sys / {cronData.counts.user} user
+                      {cronData.counts.system} 系统 / {cronData.counts.user} 用户
                     </span>
                   )}
                   <button
@@ -629,34 +629,34 @@ export default function AssistantPage() {
                     className="flex items-center gap-1.5 text-sm"
                     style={{ color: "var(--rhythms)" }}
                   >
-                    <Plus className="w-4 h-4" /> Add
+                    <Plus className="w-4 h-4" /> 添加
                   </button>
                 </div>
               }
             >
               <div className="text-xs mono mb-1 space-y-0.5 text-ink-2">
-                <div>~/.claude/LIFEOS/PULSE/PULSE.toml <span className="text-ink-3">(system · ships with LifeOS, never written by this UI)</span></div>
-                <div>~/.claude/LIFEOS/USER/CONFIG/PULSE.user.toml <span style={{ color: "var(--creative)" }}>(user · all edits/deletes from this UI write here)</span></div>
+                <div>~/.claude/LIFEOS/PULSE/PULSE.toml <span className="text-ink-3">（系统 · 随 LifeOS 附带，此 UI 从不写入）</span></div>
+                <div>~/.claude/LIFEOS/USER/CONFIG/PULSE.user.toml <span style={{ color: "var(--creative)" }}>（用户 · 此 UI 的所有编辑/删除写入此处）</span></div>
               </div>
               <div className="text-xs mb-3 text-ink-3">
-                LifeOS&apos;s scheduling system — runs inside Pulse on this machine. Click any row to see full detail and edit interval / command / output.
+                LifeOS 的调度系统 — 在此机器上的 Pulse 内运行。点击任意行查看完整详情并编辑间隔 / 命令 / 输出。
               </div>
               {showAddCron && (
                 <div className="mb-5 p-4 rounded-md space-y-3 bg-surface-1 border border-line-1">
                   <input
-                    placeholder='name (e.g. "my-monitor")'
+                    placeholder='名称（例如 "my-monitor"）'
                     value={newCronName}
                     onChange={(e) => setNewCronName(e.target.value)}
                     className="w-full text-sm rounded px-4 py-2 mono bg-ground border border-line-1 text-ink-1"
                   />
                   <input
-                    placeholder="cron schedule (5 fields, e.g. */5 * * * *)"
+                    placeholder="cron 调度（5 字段，例如 */5 * * * *）"
                     value={newCronSchedule}
                     onChange={(e) => setNewCronSchedule(e.target.value)}
                     className="w-full text-sm rounded px-4 py-2 mono bg-ground border border-line-1 text-ink-1"
                   />
                   <input
-                    placeholder='shell command (e.g. "bun run checks/foo.ts")'
+                    placeholder='shell 命令（例如 "bun run checks/foo.ts"）'
                     value={newCronCommand}
                     onChange={(e) => setNewCronCommand(e.target.value)}
                     className="w-full text-sm rounded px-4 py-2 mono bg-ground border border-line-1 text-ink-1"
@@ -666,7 +666,7 @@ export default function AssistantPage() {
                       onClick={() => setShowAddCron(false)}
                       className="text-sm px-4 py-2 rounded bg-transparent text-ink-2"
                     >
-                      Cancel
+                      取消
                     </button>
                     <button
                       onClick={() => {
@@ -683,12 +683,12 @@ export default function AssistantPage() {
                       className="text-sm px-3.5 py-1.5 rounded-full font-medium cursor-pointer"
                       style={dimStyle("rhythms", true)}
                     >
-                      Create
+                      创建
                     </button>
                   </div>
                   {createCron.isError && (
                     <div className="text-xs text-err">
-                      {(createCron.error as Error)?.message ?? "Create failed"}
+                      {(createCron.error as Error)?.message ?? "创建失败"}
                     </div>
                   )}
                 </div>
@@ -698,7 +698,7 @@ export default function AssistantPage() {
                 const jobs = [...(cronData?.jobs ?? [])].sort((a, b) =>
                   a.enabled === b.enabled ? 0 : a.enabled ? -1 : 1
                 );
-                if (jobs.length === 0) return <div className="text-sm text-ink-3">No cron jobs defined</div>;
+                if (jobs.length === 0) return <div className="text-sm text-ink-3">未定义定时任务</div>;
                 const pageCount = Math.max(1, Math.ceil(jobs.length / CRON_PAGE_SIZE));
                 const safePage = Math.min(cronPage, pageCount - 1);
                 const start = safePage * CRON_PAGE_SIZE;
@@ -724,7 +724,7 @@ export default function AssistantPage() {
                           >
                             <button
                               onClick={(e) => { e.stopPropagation(); toggleCron.mutate({ name: job.name, enabled: !job.enabled }); }}
-                              title={job.enabled ? "Click to disable" : "Click to enable"}
+                              title={job.enabled ? "点击禁用" : "点击启用"}
                               className="shrink-0"
                               style={{
                                 width: 36, height: 18, borderRadius: 9,
@@ -740,8 +740,8 @@ export default function AssistantPage() {
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
                                 <span className={`text-sm truncate ${job.enabled ? "text-ink-1" : "text-ink-3"}`}>{job.name}</span>
-                                <Pill dim={job.source === "user" ? "creative" : "neutral"} className={TAG_CLS}>{job.source}</Pill>
-                                <Pill dim="rhythms" className={TAG_CLS} title={job.type === "claude" ? "Runs as claude subprocess" : "Shell command"}>{job.type}</Pill>
+                                <Pill dim={job.source === "user" ? "creative" : "neutral"} className={TAG_CLS}>{job.source === "user" ? "用户" : "系统"}</Pill>
+                                <Pill dim="rhythms" className={TAG_CLS} title={job.type === "claude" ? "作为 claude 子进程运行" : "Shell 命令"}>{job.type}</Pill>
                               </div>
                               <div className="text-xs mono muted truncate" style={{ marginTop: 2 }}>
                                 {job.schedule}
@@ -749,19 +749,19 @@ export default function AssistantPage() {
                                 {!job.command && job.prompt && <span style={{ marginLeft: 8, opacity: 0.7 }}>· {job.prompt.slice(0, 80)}{job.prompt.length > 80 ? "…" : ""}</span>}
                               </div>
                             </div>
-                            <span className="text-xs mono shrink-0 text-ink-3" title="output target">
+                            <span className="text-xs mono shrink-0 text-ink-3" title="输出目标">
                               {Array.isArray(job.output) ? job.output.join(",") : job.output}
                             </span>
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 const msg = job.source === "system"
-                                  ? `Disable system job "${job.name}"? (writes user-file override; system file untouched)`
-                                  : `Delete user job "${job.name}"?`;
+                                  ? `禁用系统任务 "${job.name}"？（写入用户文件覆盖；系统文件不变）`
+                                  : `删除用户任务 "${job.name}"？`;
                                 if (confirm(msg)) deleteCron.mutate(job.name);
                               }}
                               className="opacity-0 group-hover:opacity-100 transition-all shrink-0 text-ink-3 hover:text-err"
-                              title={job.source === "system" ? "Disable via override" : "Delete from user file"}
+                              title={job.source === "system" ? "通过覆盖禁用" : "从用户文件删除"}
                             >
                               <Trash2 className="w-5 h-5" />
                             </button>
@@ -773,7 +773,7 @@ export default function AssistantPage() {
                           {isOpen && (
                             <div className="px-12 pb-4 pt-1 space-y-3" style={{ borderTop: "1px solid var(--line-1)" }}>
                               <div className="grid grid-cols-[120px_1fr] gap-3 items-center pt-3">
-                                <label className="text-[13px] uppercase tracking-wider text-ink-3">Schedule</label>
+                                <label className="text-[13px] uppercase tracking-wider text-ink-3">调度</label>
                                 <input
                                   value={(buf.schedule as string) ?? job.schedule}
                                   onChange={(e) => setEditBuffer((b) => ({ ...b, schedule: e.target.value }))}
@@ -783,7 +783,7 @@ export default function AssistantPage() {
 
                                 {bufType === "script" ? (
                                   <>
-                                    <label className="text-[13px] uppercase tracking-wider text-ink-3">Command</label>
+                                    <label className="text-[13px] uppercase tracking-wider text-ink-3">命令</label>
                                     <input
                                       value={(buf.command as string) ?? job.command ?? ""}
                                       onChange={(e) => setEditBuffer((b) => ({ ...b, command: e.target.value }))}
@@ -792,7 +792,7 @@ export default function AssistantPage() {
                                   </>
                                 ) : (
                                   <>
-                                    <label className="text-xs uppercase tracking-wider self-start pt-1 text-ink-3">Prompt</label>
+                                    <label className="text-xs uppercase tracking-wider self-start pt-1 text-ink-3">提示词</label>
                                     <textarea
                                       value={(buf.prompt as string) ?? job.prompt ?? ""}
                                       onChange={(e) => setEditBuffer((b) => ({ ...b, prompt: e.target.value }))}
@@ -800,13 +800,13 @@ export default function AssistantPage() {
                                       className="text-sm rounded px-3 py-1.5 mono w-full bg-ground border border-line-1 text-ink-1"
                                       style={{ resize: "vertical" }}
                                     />
-                                    <label className="text-[13px] uppercase tracking-wider text-ink-3">Model</label>
+                                    <label className="text-[13px] uppercase tracking-wider text-ink-3">模型</label>
                                     <select
                                       value={(buf.model as string) ?? job.model ?? ""}
                                       onChange={(e) => setEditBuffer((b) => ({ ...b, model: e.target.value || null }))}
                                       className="text-sm rounded px-3 py-1.5 mono w-full bg-ground border border-line-1 text-ink-1"
                                     >
-                                      <option value="">(default)</option>
+                                      <option value="">（默认）</option>
                                       <option value="haiku">haiku</option>
                                       <option value="sonnet">sonnet</option>
                                       <option value="opus">opus</option>
@@ -814,7 +814,7 @@ export default function AssistantPage() {
                                   </>
                                 )}
 
-                                <label className="text-xs uppercase tracking-wider self-start pt-1 text-ink-3">Output</label>
+                                <label className="text-xs uppercase tracking-wider self-start pt-1 text-ink-3">输出</label>
                                 <div className="flex flex-wrap gap-2">
                                   {(["log", "voice", "ntfy", "email"] as const).map((opt) => {
                                     const active = bufOutputs.includes(opt);
@@ -847,15 +847,15 @@ export default function AssistantPage() {
 
                               <div className="flex items-center justify-between pt-2" style={{ borderTop: "1px solid var(--line-1)" }}>
                                 <div className="text-xs mono text-ink-3">
-                                  source: <span style={{ color: job.source === "user" ? "var(--creative)" : "var(--ink-2)" }}>{job.source}</span>
-                                  {" · "}type: <span className="text-ink-1">{job.type}</span>
+                                  source: <span style={{ color: job.source === "user" ? "var(--creative)" : "var(--ink-2)" }}>{job.source === "user" ? "用户" : "系统"}</span>
+                                  {" · "}类型: <span className="text-ink-1">{job.type}</span>
                                 </div>
                                 <div className="flex gap-2">
                                   <button
                                     onClick={closeExpand}
                                     className="text-sm px-3 py-1 rounded bg-transparent text-ink-2 border border-line-1"
                                   >
-                                    Cancel
+                                    取消
                                   </button>
                                   <button
                                     onClick={() => {
@@ -875,7 +875,7 @@ export default function AssistantPage() {
                                     style={dimStyle("rhythms", true)}
                                     disabled={patchCron.isPending}
                                   >
-                                    {patchCron.isPending ? "Saving…" : "Save"}
+                                    {patchCron.isPending ? "保存中…" : "保存"}
                                   </button>
                                 </div>
                               </div>
@@ -896,7 +896,7 @@ export default function AssistantPage() {
                 return (
                   <div className="mt-3 flex items-center justify-between text-xs pt-2" style={{ borderTop: "1px solid var(--line-1)" }}>
                     <span className="mono muted">
-                      Showing <span className="text-ink-1">{start + 1}–{end}</span> of <span className="text-ink-1">{cronData.jobs.length}</span>
+                      显示 <span className="text-ink-1">{start + 1}–{end}</span> / <span className="text-ink-1">{cronData.jobs.length}</span>
                     </span>
                     <div className="flex items-center gap-2">
                       <button
@@ -908,10 +908,10 @@ export default function AssistantPage() {
                           ? { background: "transparent", color: "var(--ink-3)", cursor: "not-allowed" }
                           : { background: "var(--surface-1)", color: "var(--rhythms)", cursor: "pointer" }}
                       >
-                        ← Prev
+                        ← 上一页
                       </button>
                       <span className="mono muted">
-                        Page <span className="text-ink-1">{safePage + 1}</span> / {pageCount}
+                        第 <span className="text-ink-1">{safePage + 1}</span> / {pageCount} 页
                       </span>
                       <button
                         type="button"
@@ -922,7 +922,7 @@ export default function AssistantPage() {
                           ? { background: "transparent", color: "var(--ink-3)", cursor: "not-allowed" }
                           : { background: "var(--surface-1)", color: "var(--rhythms)", cursor: "pointer" }}
                       >
-                        Next →
+                        下一页 →
                       </button>
                     </div>
                   </div>
@@ -937,7 +937,7 @@ export default function AssistantPage() {
         {/* PERSONALITY TAB */}
         {activeTab === "personality" && personality && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Section title="Personality Traits" icon={Brain} dimension="creative">
+            <Section title="个性特征" icon={Brain} dimension="creative">
               {personality.base_description && (
                 <p className="mb-5 leading-relaxed text-sm text-ink-1">
                   {personality.base_description}
@@ -957,7 +957,7 @@ export default function AssistantPage() {
             </Section>
 
             <div className="space-y-6">
-              <Section title="What I Love" icon={Heart} dimension="money">
+              <Section title="我喜欢的" icon={Heart} dimension="money">
                 <ul className="space-y-2">
                   {personality.preferences.what_i_love.map((item, i) => (
                     <li key={i} className="leading-relaxed flex gap-2 text-sm text-ink-1">
@@ -968,7 +968,7 @@ export default function AssistantPage() {
                 </ul>
               </Section>
 
-              <Section title="What I Dislike" dimension="money">
+              <Section title="我不喜欢的" dimension="money">
                 <ul className="space-y-2">
                   {personality.preferences.what_i_dislike.map((item, i) => (
                     <li key={i} className="leading-relaxed flex gap-2 text-sm text-ink-1">
@@ -981,7 +981,7 @@ export default function AssistantPage() {
             </div>
 
             {personality.anchors.length > 0 && (
-              <Section title="Key Moments" dimension="relationships">
+              <Section title="关键时刻" dimension="relationships">
                 <div className="space-y-4">
                   {personality.anchors.map((anchor, i) => (
                     <div key={i}>
@@ -994,7 +994,7 @@ export default function AssistantPage() {
             )}
 
             {personality.companion && (
-              <Section title="Companion" dimension="relationships">
+              <Section title="伙伴" dimension="relationships">
                 <div className="flex items-center gap-4">
                   <div className="text-3xl">🐱</div>
                   <div>
@@ -1007,16 +1007,16 @@ export default function AssistantPage() {
               </Section>
             )}
 
-            <Section title="Autonomy" icon={Shield} dimension="freedom">
+            <Section title="自主权" icon={Shield} dimension="freedom">
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <div className="text-xs tracking-wider uppercase mb-2 green-up">Can Initiate</div>
+                  <div className="text-xs tracking-wider uppercase mb-2 green-up">可主动发起</div>
                   {personality.autonomy.can_initiate.map((item, i) => (
                     <div key={i} className="py-1 text-sm text-ink-1">{item.replace(/_/g, " ")}</div>
                   ))}
                 </div>
                 <div>
-                  <div className="text-xs tracking-wider uppercase mb-2" style={{ color: "var(--money)" }}>Must Ask</div>
+                  <div className="text-xs tracking-wider uppercase mb-2" style={{ color: "var(--money)" }}>必须询问</div>
                   {personality.autonomy.must_ask.map((item, i) => (
                     <div key={i} className="py-1 text-sm text-ink-1">{item.replace(/_/g, " ")}</div>
                   ))}
@@ -1024,9 +1024,9 @@ export default function AssistantPage() {
               </div>
             </Section>
 
-            <Section title="Formed Opinions" dimension="creative">
+            <Section title="已形成的观点" dimension="creative">
               {!opinionsData?.raw ? (
-                <div className="text-sm text-ink-3">No opinions yet</div>
+                <div className="text-sm text-ink-3">暂无观点</div>
               ) : (
                 <div className="space-y-3">
                   {opinionsData.raw.split(/^\s*- topic:/m).slice(1).slice(0, 10).map((block, i) => {
@@ -1061,9 +1061,9 @@ export default function AssistantPage() {
 
         {/* DIARY TAB */}
         {activeTab === "diary" && (
-          <Section title="Diary Entries" dimension="rhythms">
+          <Section title="日志条目" dimension="rhythms">
             {!diaryData || diaryData.entries.length === 0 ? (
-              <div className="text-sm text-ink-3">No diary entries</div>
+              <div className="text-sm text-ink-3">暂无日志条目</div>
             ) : (
               <div className="space-y-4">
                 {diaryData.entries.slice().reverse().map((entry) => (
@@ -1074,7 +1074,7 @@ export default function AssistantPage() {
                     <div className="flex items-center justify-between">
                       <span className="mono text-ink-1" style={{ fontSize: 15 }}>{entry.date}</span>
                       <div className="flex items-center gap-4 text-sm text-ink-2">
-                        <span>{entry.interaction_count} sessions</span>
+                        <span>{entry.interaction_count} 次会话</span>
                         <span className={entry.mood === "positive" ? "green-up" : entry.mood === "frustrated" ? "coral-down" : "flat-muted"}>
                           {entry.mood}
                         </span>
@@ -1140,7 +1140,7 @@ export default function AssistantPage() {
                 <span>Up {formatUptime(identity.uptime_ms)}</span>
               </div>
               <div>Principal: <span className="text-ink-1">{identity.principal}</span></div>
-              <div>{health?.opinions_count ?? 0} opinions formed</div>
+              <div>{health?.opinions_count ?? 0} 条观点已形成</div>
             </div>
           </Panel>
         )}

@@ -37,7 +37,7 @@ export default function EmptyStateGuide({
         </div>
         <div className="flex-1">
           <h3 className="text-base font-semibold text-blue-50">
-            {section} is empty — let's fill it in
+            {section} 为空 — 让我们来填充它
           </h3>
           <p className="text-sm text-ink-2 mt-1">{description}</p>
         </div>
@@ -48,12 +48,12 @@ export default function EmptyStateGuide({
           <div className="flex items-start gap-2.5 text-sm">
             <MessageSquare className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
             <div>
-              <span className="text-ink-1">Run </span>
+              <span className="text-ink-1">运行 </span>
               <code className="px-1.5 py-0.5 rounded bg-surface-3 text-blue-300 text-xs font-mono">
                 {interviewCommand}
               </code>
               <span className="text-ink-2">
-                {" "}— your DA walks you through the questions and writes the answers to disk.
+                {" "}— 你的 DA 会引导你回答问题并将答案写入磁盘。
               </span>
             </div>
           </div>
@@ -62,35 +62,35 @@ export default function EmptyStateGuide({
         <div className="flex items-start gap-2.5 text-sm">
           <FolderOpen className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
           <div>
-            <span className="text-ink-1">Edit files at </span>
+            <span className="text-ink-1">编辑文件于 </span>
             <code className="px-1.5 py-0.5 rounded bg-surface-3 text-blue-300 text-xs font-mono">
               {userPath}
             </code>
             <span className="text-ink-2">
-              {" "}— or import existing data (Obsidian, Notion, journals) with the{" "}
+              {" "}— 或使用{" "}
             </span>
             <code className="px-1.5 py-0.5 rounded bg-surface-3 text-blue-300 text-xs font-mono">
               Migrate
             </code>
-            <span className="text-ink-2"> skill.</span>
+            <span className="text-ink-2"> 技能导入已有数据（Obsidian、Notion、日记）。</span>
           </div>
         </div>
 
         <div className="flex items-start gap-2.5 text-sm">
           <BookOpen className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
           <div>
-            <span className="text-ink-1">Read </span>
+            <span className="text-ink-1">阅读 </span>
             <code className="px-1.5 py-0.5 rounded bg-surface-3 text-blue-300 text-xs font-mono">
               {readmePath}
             </code>
-            <span className="text-ink-2"> for the full layout and customization guide.</span>
+            <span className="text-ink-2"> 了解完整布局和自定义指南。</span>
           </div>
         </div>
 
         <div className="flex items-start gap-2.5 text-sm pt-1">
           <Sparkles className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
           <div>
-            <span className="text-ink-1">Or just ask your DA: </span>
+            <span className="text-ink-1">或者直接问你的 DA：</span>
             <span className="text-blue-300 italic">"{defaultDaPrompt}"</span>
           </div>
         </div>

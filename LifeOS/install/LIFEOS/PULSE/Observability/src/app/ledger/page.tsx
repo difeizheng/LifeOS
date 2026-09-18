@@ -71,10 +71,10 @@ function timeAgo(iso: string | null | undefined): string {
   const ms = Date.now() - new Date(iso).getTime();
   if (!Number.isFinite(ms) || ms < 0) return "—";
   const mins = Math.floor(ms / 60_000);
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 60) return `${mins}分钟前`;
   const hrs = Math.floor(mins / 60);
-  if (hrs < 48) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
+  if (hrs < 48) return `${hrs}小时前`;
+  return `${Math.floor(hrs / 24)}天前`;
 }
 
 export default function LedgerPage() {
@@ -102,8 +102,8 @@ export default function LedgerPage() {
   if (error) {
     return (
       <PageShell>
-        <PageHeader title="Ledger" icon={ScrollText} subtitle="Change tracking" />
-        <EmptyState icon={ScrollText} title="Ledger API unreachable" hint={error} />
+        <PageHeader title="台账" icon={ScrollText} subtitle="变更追踪" />
+        <EmptyState icon={ScrollText} title="台账 API 不可达" hint={error} />
       </PageShell>
     );
   }
@@ -114,9 +114,9 @@ export default function LedgerPage() {
   return (
     <PageShell>
       <PageHeader
-        title="Ledger"
+        title="台账"
         icon={ScrollText}
-        subtitle="What changed, when, at what version — system edits and estate deploys"
+        subtitle="变更了什么、何时变更、什么版本 — 系统编辑与项目部署"
       />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -124,34 +124,34 @@ export default function LedgerPage() {
         <StatTile label="Algorithm" value={data?.versions?.algorithm ?? "—"} icon={Workflow} />
         <StatTile label="Prompt" value={data?.versions?.system_prompt ?? "—"} icon={ScrollText} />
         <StatTile
-          label="Updates"
+          label="更新"
           value={data?.registry?.total_updates ?? "—"}
           icon={GitCommitVertical}
-          sub={data?.registry?.last_updated ? `last ${timeAgo(data.registry.last_updated)}` : undefined}
+          sub={data?.registry?.last_updated ? `最后 ${timeAgo(data.registry.last_updated)}` : undefined}
         />
         <StatTile
-          label="Integrity"
-          value={integrityClean == null ? "—" : integrityClean ? "clean" : "blocked"}
+          label="完整性"
+          value={integrityClean == null ? "—" : integrityClean ? "正常" : "阻塞"}
           dim={integrityClean == null ? "neutral" : integrityClean ? "ok" : "err"}
           icon={ShieldCheck}
-          sub={data?.integrity?.last_run ? timeAgo(data.integrity.last_run.ts) : "no run recorded"}
+          sub={data?.integrity?.last_run ? timeAgo(data.integrity.last_run.ts) : "无运行记录"}
         />
         <StatTile
-          label="Drift"
+          label="偏移"
           value={driftCount}
-          unit="files"
+          unit="文件"
           dim={driftCount >= 10 ? "warn" : "ok"}
           icon={Rocket}
-          sub={data?.drift?.tag ? `since ${data.drift.tag}` : undefined}
+          sub={data?.drift?.tag ? `自 ${data.drift.tag}` : undefined}
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Panel>
           <PanelHeader
-            title="System updates"
+            title="系统更新"
             icon={GitCommitVertical}
-            meta={data?.registry ? `latest ${data.registry.recent.length}` : undefined}
+            meta={data?.registry ? `最近 ${data.registry.recent.length}` : undefined}
           />
           {data?.registry?.recent?.length ? (
             <ul className="flex flex-col divide-y divide-line-2">
@@ -164,22 +164,22 @@ export default function LedgerPage() {
                       {timeAgo(u.timestamp)}
                       {u.version ? ` · v${u.version}` : ""}
                       {u.change_type ? ` · ${u.change_type}` : ""}
-                      {u.files ? ` · ${u.files} files` : ""}
+                      {u.files ? ` · ${u.files} 个文件` : ""}
                     </div>
                   </div>
                 </li>
               ))}
             </ul>
           ) : (
-            <EmptyState icon={GitCommitVertical} title="No registry entries readable" />
+            <EmptyState icon={GitCommitVertical} title="无可读取的注册表条目" />
           )}
         </Panel>
 
         <Panel>
           <PanelHeader
-            title="Estate deploys"
+            title="项目部署"
             icon={Rocket}
-            meta={data ? `latest ${data.deploys.length}` : undefined}
+            meta={data ? `最近 ${data.deploys.length}` : undefined}
           />
           {data?.deploys?.length ? (
             <ul className="flex flex-col divide-y divide-line-2">
@@ -202,8 +202,8 @@ export default function LedgerPage() {
           ) : (
             <EmptyState
               icon={Rocket}
-              title="No deploy events yet"
-              hint="Every gated deploy records here via LedgerDeployEvent — events accumulate as projects ship."
+              title="暂无部署事件"
+              hint="每一次受控部署都会通过 LedgerDeployEvent 记录在此 — 随着项目发布，事件会逐步累积。"
             />
           )}
         </Panel>

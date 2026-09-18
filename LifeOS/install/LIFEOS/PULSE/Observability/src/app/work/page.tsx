@@ -102,28 +102,28 @@ function Banner({
           <div
             className="text-[13px] uppercase tracking-widest mb-2 text-ink-3"
           >
-            Current Focus
+            当前专注
           </div>
           {focus ? (
             <p className="text-2xl lg:text-3xl font-medium leading-snug text-ink-1" data-sensitive="strong">
               {focus}
             </p>
           ) : (
-            <p className="text-xl italic text-ink-2">No current focus set in TELOS/CURRENT.md</p>
+            <p className="text-xl italic text-ink-2">TELOS/CURRENT.md 中未设置当前专注</p>
           )}
           {current && (
             <p className="text-sm mt-3 text-ink-2" data-sensitive>
-              <span>Primary project:</span> {current}
+              <span>主项目：</span> {current}
             </p>
           )}
           {streams && (
             <p className="text-xs mt-2 text-ink-2" data-sensitive>
-              Streams: {streams}
+              工作流：{streams}
             </p>
           )}
           <div className="mt-4 flex gap-2 flex-wrap">
-            <Pill dim="creative">{sessionCount} active sessions</Pill>
-            <Pill dim="money">{projectCount} projects</Pill>
+            <Pill dim="creative">{sessionCount} 个活跃会话</Pill>
+            <Pill dim="money">{projectCount} 个项目</Pill>
           </div>
         </div>
       </div>
@@ -136,7 +136,7 @@ function AlgorithmSessions({ sessions }: { sessions?: AlgorithmSession[] }) {
   return (
     <section>
       <h2 className="text-sm font-medium uppercase tracking-widest text-ink-3 mb-4 flex items-center gap-2">
-        <Cpu className="w-4 h-4" style={{ color: "var(--freedom)" }} /> Algorithm Sessions
+        <Cpu className="w-4 h-4" style={{ color: "var(--freedom)" }} /> 算法会话
         <span className="text-xs text-ink-3 font-normal">({sessions.length})</span>
       </h2>
       <Panel className="p-0">
@@ -217,11 +217,11 @@ function statusRank(col: string): number {
 }
 
 function ageStr(h: number): string {
-  if (h < 1) return "just now";
-  if (h < 24) return h + "h";
+  if (h < 1) return "刚刚";
+  if (h < 24) return h + "小时";
   const d = Math.floor(h / 24);
-  if (d < 7) return d + "d";
-  return Math.floor(d / 7) + "w";
+  if (d < 7) return d + "天";
+  return Math.floor(d / 7) + "周";
 }
 
 function cleanTitle(t: string): string {
@@ -290,13 +290,13 @@ function relativeUpdated(iso: string): string {
   const diff = Date.now() - Date.parse(iso);
   if (Number.isNaN(diff)) return "";
   const m = Math.floor(diff / 60000);
-  if (m < 1) return "now";
-  if (m < 60) return m + "m";
+  if (m < 1) return "刚刚";
+  if (m < 60) return m + "分钟";
   const h = Math.floor(m / 60);
-  if (h < 24) return h + "h";
+  if (h < 24) return h + "小时";
   const d = Math.floor(h / 24);
-  if (d < 7) return d + "d";
-  return Math.floor(d / 7) + "w";
+  if (d < 7) return d + "天";
+  return Math.floor(d / 7) + "周";
 }
 
 // Internal sync-marker labels hidden from Kanban chips. A set (not a single
@@ -358,7 +358,7 @@ function KanbanView({ data }: { data: KanbanData }) {
           onClick={() => scrollByCol(-1)}
           className="pill"
           style={{ display: "inline-flex", alignItems: "center", gap: 4, cursor: "pointer", padding: "2px 6px" }}
-          aria-label="Scroll columns left"
+          aria-label="向左滚动列"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -366,7 +366,7 @@ function KanbanView({ data }: { data: KanbanData }) {
           onClick={() => scrollByCol(1)}
           className="pill"
           style={{ display: "inline-flex", alignItems: "center", gap: 4, cursor: "pointer", padding: "2px 6px" }}
-          aria-label="Scroll columns right"
+          aria-label="向右滚动列"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
@@ -413,7 +413,7 @@ function KanbanView({ data }: { data: KanbanData }) {
               <div style={{ padding: 8, minHeight: 80, overflowY: "auto", flex: 1 }}>
                 {items.length === 0 ? (
                   <div className="text-[12px] italic text-center text-ink-3 py-4">
-                    empty
+                    空
                   </div>
                 ) : (
                   items.map((issue) => <KanbanCard key={issue.number} issue={issue} />)
@@ -554,7 +554,7 @@ function WorkList({ data }: { data: KanbanData }) {
   if (allItems.length === 0) {
     return (
       <Panel>
-        <EmptyState icon={Inbox} title="No work items. You're clear." />
+        <EmptyState icon={Inbox} title="暂无工作项。一切已清空。" />
       </Panel>
     );
   }
@@ -563,13 +563,13 @@ function WorkList({ data }: { data: KanbanData }) {
     <Panel className="p-0 overflow-hidden">
       {/* Filter toolbar */}
       <div className="flex items-center gap-2.5 px-3.5 py-2.5 border-b border-line-1 flex-wrap">
-        <span className="text-[11px] uppercase tracking-[0.05em] font-semibold text-ink-3">Type</span>
+        <span className="text-[11px] uppercase tracking-[0.05em] font-semibold text-ink-3">类型</span>
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
           className="bg-surface-1 text-ink-1 border border-line-2 rounded px-2 py-[3px] text-[12px] cursor-pointer"
         >
-          <option value="all">all ({allItems.length})</option>
+          <option value="all">全部 ({allItems.length})</option>
           {typesPresent.map((t) => (
             <option key={t} value={t}>{t} ({typeCount(t)})</option>
           ))}
@@ -580,11 +580,11 @@ function WorkList({ data }: { data: KanbanData }) {
             className="pill"
             style={{ fontSize: 11, padding: "2px 8px", cursor: "pointer" }}
           >
-            clear
+            清除
           </button>
         )}
         <span className="flex-1" />
-        <span className="text-[11px] mono text-ink-3">{sorted.length} shown</span>
+        <span className="text-[11px] mono text-ink-3">显示 {sorted.length} 项</span>
       </div>
       {/* Header row */}
       <div
@@ -594,12 +594,12 @@ function WorkList({ data }: { data: KanbanData }) {
         <span />
         <SortHeader label="P" col="priority" active={sortKey === "priority"} dir={sortDir} onSort={onSort} />
         <SortHeader label="#" col="number" active={sortKey === "number"} dir={sortDir} onSort={onSort} align="right" />
-        <SortHeader label="Title" col="title" active={sortKey === "title"} dir={sortDir} onSort={onSort} />
-        <span className="text-[11px] uppercase tracking-[0.05em] font-semibold text-ink-3">Type</span>
-        <SortHeader label="Status" col="status" active={sortKey === "status"} dir={sortDir} onSort={onSort} />
-        <span className="text-[11px] uppercase tracking-[0.05em] font-semibold text-ink-3">Property</span>
-        <SortHeader label="Age" col="age" active={sortKey === "age"} dir={sortDir} onSort={onSort} align="right" />
-        <SortHeader label="Updated" col="updated" active={sortKey === "updated"} dir={sortDir} onSort={onSort} align="right" />
+        <SortHeader label="标题" col="title" active={sortKey === "title"} dir={sortDir} onSort={onSort} />
+        <span className="text-[11px] uppercase tracking-[0.05em] font-semibold text-ink-3">类型</span>
+        <SortHeader label="状态" col="status" active={sortKey === "status"} dir={sortDir} onSort={onSort} />
+        <span className="text-[11px] uppercase tracking-[0.05em] font-semibold text-ink-3">属性</span>
+        <SortHeader label="存在时间" col="age" active={sortKey === "age"} dir={sortDir} onSort={onSort} align="right" />
+        <SortHeader label="更新于" col="updated" active={sortKey === "updated"} dir={sortDir} onSort={onSort} align="right" />
         <span />
       </div>
 
@@ -607,7 +607,7 @@ function WorkList({ data }: { data: KanbanData }) {
       <div>
         {sorted.length === 0 && (
           <div className="text-ink-3 text-center text-[12px] italic px-4 py-6">
-            No {typeFilter} items match.
+            没有匹配的 {typeFilter} 项。
           </div>
         )}
         {sorted.map((it) => {
@@ -708,7 +708,7 @@ function WorkList({ data }: { data: KanbanData }) {
                   onClick={(e) => e.stopPropagation()}
                   className="text-ink-3 hover:text-ink-1 transition-colors"
                   style={{ display: "inline-flex", justifyContent: "center" }}
-                  aria-label="Open in GitHub"
+                  aria-label="在 GitHub 中打开"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
@@ -736,7 +736,7 @@ function WorkList({ data }: { data: KanbanData }) {
                     {it.source && <span>source: {it.source}</span>}
                     <span>age {ageStr(it.ageHours)}</span>
                     <a href={it.url} target="_blank" rel="noreferrer" style={{ color: "var(--accent-soft)", display: "inline-flex", alignItems: "center", gap: 4 }}>
-                      <ExternalLink className="w-3 h-3" /> Open in GitHub
+                      <ExternalLink className="w-3 h-3" /> 在 GitHub 中打开
                     </a>
                   </div>
                 </div>
@@ -788,10 +788,10 @@ function WorkItemsPanel() {
     return (
       <section>
         <h2 className="text-sm font-medium uppercase tracking-widest text-ink-3 mb-4 flex items-center gap-2">
-          <Kanban className="w-4 h-4" style={{ color: "var(--freedom)" }} /> Work
+          <Kanban className="w-4 h-4" style={{ color: "var(--freedom)" }} /> 工作
         </h2>
         <Panel className="border-l-[3px] [border-left-color:var(--err)]">
-          <p className="text-sm text-err">Failed to load /api/work — {error}</p>
+          <p className="text-sm text-err">加载 /api/work 失败 — {error}</p>
         </Panel>
       </section>
     );
@@ -801,9 +801,9 @@ function WorkItemsPanel() {
     return (
       <section>
         <h2 className="text-sm font-medium uppercase tracking-widest text-ink-3 mb-4 flex items-center gap-2">
-          <Kanban className="w-4 h-4" style={{ color: "var(--freedom)" }} /> Work
+          <Kanban className="w-4 h-4" style={{ color: "var(--freedom)" }} /> 工作
         </h2>
-        <div className="text-sm text-ink-2">Loading work items...</div>
+        <div className="text-sm text-ink-2">加载工作项中...</div>
       </section>
     );
   }
@@ -812,7 +812,7 @@ function WorkItemsPanel() {
     return (
       <section>
         <h2 className="text-sm font-medium uppercase tracking-widest text-ink-3 mb-4 flex items-center gap-2">
-          <Kanban className="w-4 h-4" style={{ color: "var(--freedom)" }} /> Work — setup required
+          <Kanban className="w-4 h-4" style={{ color: "var(--freedom)" }} /> 工作 — 需要设置
         </h2>
         <Panel className="border-l-[3px] [border-left-color:var(--warn)]">
           <p className="text-sm text-ink-2">{data.reason}</p>
@@ -829,8 +829,8 @@ function WorkItemsPanel() {
   const meta = (
     <>
       <span className="text-xs text-ink-3 mono hidden sm:inline">
-        {total} issues · <span data-sensitive>{data.config?.repo}</span> · poll {data.config?.poll_interval_seconds}s
-        {data.lastFetch && ` · last fetch ${new Date(data.lastFetch).toLocaleTimeString()}`}
+        {total} 个问题 · <span data-sensitive>{data.config?.repo}</span> · 轮询 {data.config?.poll_interval_seconds}秒
+        {data.lastFetch && ` · 最后获取 ${new Date(data.lastFetch).toLocaleTimeString()}`}
       </span>
       <button
         onClick={handleRefresh}
@@ -839,7 +839,7 @@ function WorkItemsPanel() {
         style={{ display: "inline-flex", alignItems: "center", gap: 4, cursor: "pointer" }}
       >
         <RefreshCw className="w-3 h-3" style={{ animation: refreshing ? "spin 1s linear infinite" : undefined }} />
-        {refreshing ? "Refreshing" : "Refresh"}
+        {refreshing ? "刷新中" : "刷新"}
       </button>
     </>
   );
@@ -849,8 +849,8 @@ function WorkItemsPanel() {
       <TabBar<"list" | "kanban">
         className="mb-4"
         tabs={[
-          { id: "list", label: "List", icon: ListIcon },
-          { id: "kanban", label: "Kanban", icon: Kanban },
+          { id: "list", label: "列表", icon: ListIcon },
+          { id: "kanban", label: "看板", icon: Kanban },
         ]}
         active={tab}
         onChange={setTab}
@@ -860,7 +860,7 @@ function WorkItemsPanel() {
       {data.stale && (
         <Panel className="border-l-[3px] [border-left-color:var(--warn)] mb-3 py-3">
           <p className="text-xs text-warn">
-            ⚠ Stale data — {data.stale_reason || "gh fetch failed; showing cached snapshot"}
+            ⚠ 数据过期 — {data.stale_reason || "gh 获取失败；显示缓存快照"}
           </p>
         </Panel>
       )}
@@ -920,9 +920,9 @@ export default function WorkPage() {
   if (error) {
     return (
       <PageShell>
-        <PageHeader title="Work" icon={Briefcase} subtitle="Focus, work items, sessions, and projects" />
+        <PageHeader title="工作台" icon={Briefcase} subtitle="焦点、工作项、会话和项目" />
         <Panel className="border-l-[3px] [border-left-color:var(--err)]">
-          <h2 className="font-medium text-err">Failed to load work</h2>
+          <h2 className="font-medium text-err">加载工作失败</h2>
           <p className="text-sm text-err">{error}</p>
         </Panel>
       </PageShell>
@@ -931,8 +931,8 @@ export default function WorkPage() {
   if (!data) {
     return (
       <PageShell>
-        <PageHeader title="Work" icon={Briefcase} subtitle="Focus, work items, sessions, and projects" />
-        <div className="text-sm text-ink-2">Loading Work...</div>
+        <PageHeader title="工作台" icon={Briefcase} subtitle="焦点、工作项、会话和项目" />
+        <div className="text-sm text-ink-2">加载工作中...</div>
       </PageShell>
     );
   }
@@ -945,13 +945,13 @@ export default function WorkPage() {
 
   return (
     <PageShell>
-      <PageHeader title="Work" icon={Briefcase} subtitle="Focus, work items, sessions, and projects" />
+      <PageHeader title="工作台" icon={Briefcase} subtitle="焦点、工作项、会话和项目" />
       {showEmptyGuide && (
         <EmptyStateGuide
-          section="Work Hub"
-          description="Active tasks, projects, and team work. Wire it up to GitHub Issues, Linear, ClickUp, or another PM tool to populate."
+          section="工作台"
+          description="活跃任务、项目和团队工作。接入 GitHub Issues、Linear、ClickUp 或其他项目管理工具以填充数据。"
           hideInterview
-          daPromptExample="set up my work hub against my project tracker"
+          daPromptExample="将我的工作台连接到项目管理工具"
         />
       )}
       <Banner
@@ -966,8 +966,8 @@ export default function WorkPage() {
         active={activeGroup ? tab : tab === "sessions" ? "sessions" : "board"}
         onChange={selectTab}
         tabs={[
-          { id: "board", label: "Board", icon: Kanban, dim: "blue" },
-          { id: "sessions", label: "Sessions", icon: Cpu, dim: "creative", hint: sessionCount || undefined },
+          { id: "board", label: "看板", icon: Kanban, dim: "blue" },
+          { id: "sessions", label: "会话", icon: Cpu, dim: "creative", hint: sessionCount || undefined },
           ...groups.map((g) => ({
             id: g.key,
             label: g.label,

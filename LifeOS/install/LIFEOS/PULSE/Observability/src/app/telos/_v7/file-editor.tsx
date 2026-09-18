@@ -37,7 +37,7 @@ export function FileEditor({ open, filename, onClose, onSaved }: FileEditorProps
   const dirty = content !== original;
 
   const closeWithConfirm = useCallback(() => {
-    if (dirty && !window.confirm("Discard unsaved changes?")) return;
+    if (dirty && !window.confirm("放弃未保存的更改？")) return;
     onClose();
   }, [dirty, onClose]);
 
@@ -54,7 +54,7 @@ export function FileEditor({ open, filename, onClose, onSaved }: FileEditorProps
       });
       if (!res.ok) throw new Error(await responseError(res));
       setOriginal(content);
-      setStatus("Saved");
+      setStatus("已保存");
       onSaved?.();
       onClose();
     } catch (err) {
@@ -133,7 +133,7 @@ export function FileEditor({ open, filename, onClose, onSaved }: FileEditorProps
       >
         <header style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
           <div style={{ fontFamily: "monospace", fontSize: 14 }}>{filename}</div>
-          <button type="button" onClick={closeWithConfirm} aria-label="Close editor" style={{ marginLeft: "auto" }}>x</button>
+          <button type="button" onClick={closeWithConfirm} aria-label="关闭编辑器" style={{ marginLeft: "auto" }}>x</button>
         </header>
         <textarea
           value={content}
@@ -156,11 +156,11 @@ export function FileEditor({ open, filename, onClose, onSaved }: FileEditorProps
         />
         <footer style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 14 }}>
           <div style={{ color: error ? "#F87171" : "#9BB0D6", fontSize: 13 }}>
-            {error ?? status ?? (loading ? "Loading..." : dirty ? "Unsaved changes" : "Ready")}
+            {error ?? status ?? (loading ? "加载中..." : dirty ? "有未保存的更改" : "就绪")}
           </div>
-          <button type="button" onClick={closeWithConfirm} disabled={saving} style={{ marginLeft: "auto" }}>Cancel</button>
+          <button type="button" onClick={closeWithConfirm} disabled={saving} style={{ marginLeft: "auto" }}>取消</button>
           <button type="button" onClick={() => void save()} disabled={loading || saving || !dirty}>
-            {saving ? "Saving..." : "Save"}
+            {saving ? "保存中..." : "保存"}
           </button>
         </footer>
       </div>

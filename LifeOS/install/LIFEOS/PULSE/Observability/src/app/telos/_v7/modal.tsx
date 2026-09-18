@@ -44,12 +44,12 @@ export function GoalModal({ telos, goal, onClose, showIds }: GoalModalProps) {
         </header>
 
         <div className="modal-kpis">
-          <div className="mk"><div className="mk-l">where it is</div><div className="mk-v mono">{goal.kpi}</div></div>
-          <div className="mk"><div className="mk-l">aiming for</div><div className="mk-v mono">{goal.target}</div></div>
-          <div className="mk"><div className="mk-l">progress</div><div className="mk-v mono">{goal.pct}%</div></div>
-          <div className="mk"><div className="mk-l">last month</div><div className="mk-v mono" style={{color:goal.delta>0?'var(--ok)':goal.delta<0?'var(--bad)':'var(--text-3)'}}>{goal.delta>0?'+':''}{goal.delta}</div></div>
+          <div className="mk"><div className="mk-l">当前位置</div><div className="mk-v mono">{goal.kpi}</div></div>
+          <div className="mk"><div className="mk-l">目标</div><div className="mk-v mono">{goal.target}</div></div>
+          <div className="mk"><div className="mk-l">进度</div><div className="mk-v mono">{goal.pct}%</div></div>
+          <div className="mk"><div className="mk-l">上月</div><div className="mk-v mono" style={{color:goal.delta>0?'var(--ok)':goal.delta<0?'var(--bad)':'var(--text-3)'}}>{goal.delta>0?'+':''}{goal.delta}</div></div>
           <div className="mk mk-wide">
-            <div className="mk-l">last eleven weeks</div>
+            <div className="mk-l">近十一周</div>
             <Spark points={seed} color={`var(${dim?.color ?? '--accent'})`}/>
           </div>
         </div>

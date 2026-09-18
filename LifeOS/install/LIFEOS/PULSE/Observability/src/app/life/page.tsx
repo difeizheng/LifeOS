@@ -132,9 +132,9 @@ const DIMENSION_COLOR: Record<Dimension, string> = {
 };
 
 const RING_GRADIENT: Record<string, [string, string]> = {
-  Mood: [DIMENSION_COLOR.relationships, DIMENSION_COLOR.health],
-  Energy: [DIMENSION_COLOR.health, DIMENSION_COLOR.rhythms],
-  Focus: [DIMENSION_COLOR.freedom, DIMENSION_COLOR.creative],
+  心情: [DIMENSION_COLOR.relationships, DIMENSION_COLOR.health],
+  精力: [DIMENSION_COLOR.health, DIMENSION_COLOR.rhythms],
+  专注: [DIMENSION_COLOR.freedom, DIMENSION_COLOR.creative],
 };
 
 function parseRatio(value?: string): number | null {
@@ -269,8 +269,8 @@ function NarrativeBanner({ home }: { home: HomeData | null }) {
       <div className="flex items-start justify-between gap-8 flex-wrap">
         <div className="flex-1 min-w-0 max-w-4xl">
           <div className="text-[13px] uppercase tracking-widest mb-3 text-ink-3">
-            How is life going
-            {home.updated && <span className="ml-3 normal-case tracking-normal">as of {home.updated}{home.updatedBy ? ` · via ${home.updatedBy}` : ""}</span>}
+            近况如何
+            {home.updated && <span className="ml-3 normal-case tracking-normal">截至 {home.updated}{home.updatedBy ? ` · 来自 ${home.updatedBy}` : ""}</span>}
           </div>
           {home.oneSentence ? (
             <p className="text-2xl lg:text-3xl font-medium leading-snug text-ink-1" data-sensitive>
@@ -297,29 +297,29 @@ function NarrativeBanner({ home }: { home: HomeData | null }) {
             </div>
           ) : (
             <p className="text-sm text-ink-3 italic">
-              No Current State yet — run an interview or add a Current State section to Telos.
+              还没有近况 — 运行一次访谈，或在 Telos 中添加 Current State 部分。
             </p>
           )}
           {home.current?.top_intent && (
             <p className="mt-4 text-sm text-ink-2" data-sensitive>
-              <span>Top intent:</span> {home.current.top_intent}
+              <span>首要意图：</span> {home.current.top_intent}
             </p>
           )}
         </div>
         {hasRings && (
           <div className="flex items-center gap-6" data-sensitive>
-            <RingMetric label="Mood" score={mood} valueText={home.current?.mood} />
-            <RingMetric label="Energy" score={energy} valueText={home.current?.energy} />
-            <RingMetric label="Focus" score={focus} valueText={home.current?.focus} />
+            <RingMetric label="心情" score={mood} valueText={home.current?.mood} />
+            <RingMetric label="精力" score={energy} valueText={home.current?.energy} />
+            <RingMetric label="专注" score={focus} valueText={home.current?.focus} />
           </div>
         )}
       </div>
       {(home.current?.location || home.current?.sleep_last_night || home.current?.calendar_load) && (
         <div className="mt-6 flex flex-wrap gap-2 text-xs pt-4 border-t border-line-1" data-sensitive>
-          {home.current?.location && <Pill dim="freedom">Location · {home.current.location}</Pill>}
-          {home.current?.sleep_last_night && <Pill dim="rhythms">Sleep · {home.current.sleep_last_night}</Pill>}
-          {home.current?.calendar_load && <Pill dim="creative">Calendar · {home.current.calendar_load}</Pill>}
-          {home.current?.last_meal && <Pill dim="health">Meal · {home.current.last_meal}</Pill>}
+          {home.current?.location && <Pill dim="freedom">位置 · {home.current.location}</Pill>}
+          {home.current?.sleep_last_night && <Pill dim="rhythms">睡眠 · {home.current.sleep_last_night}</Pill>}
+          {home.current?.calendar_load && <Pill dim="creative">日历 · {home.current.calendar_load}</Pill>}
+          {home.current?.last_meal && <Pill dim="health">餐饮 · {home.current.last_meal}</Pill>}
         </div>
       )}
     </Panel>
@@ -349,54 +349,54 @@ function DomainGrid({
     ?? null;
   const airHeadline = worstAqi !== null ? `AQI ${worstAqi}` : null;
   const airSecondary = airMonitorCount > 0
-    ? `${airMonitorCount} monitors${air?.worst_label ? ` · ${air.worst_label}` : ""}${indoorCo2 !== null ? ` · indoor CO₂ ${indoorCo2}ppm` : ""}`
+    ? `${airMonitorCount} 个监测器${air?.worst_label ? ` · ${air.worst_label}` : ""}${indoorCo2 !== null ? ` · 室内 CO₂ ${indoorCo2}ppm` : ""}`
     : null;
 
   return (
     <section>
-      <PanelHeader title="Domains" className="mb-4" />
+      <PanelHeader title="域" className="mb-4" />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <DomainCard title="Business" icon={Building2} href="/business"
           dimension="creative"
           headline={rev.total || null}
-          secondary={rev.deals ? `${rev.deals} deals · largest ${rev.largest ?? "—"}` : null}
-          empty={!rev.total ? "Wire finances pipeline to surface revenue" : undefined}
+          secondary={rev.deals ? `${rev.deals} 笔交易 · 最大 ${rev.largest ?? "—"}` : null}
+          empty={!rev.total ? "连接财务管道以显示收入" : undefined}
         />
         <DomainCard title="Health" icon={Activity} href="/health"
           dimension="health"
-          headline={healthFileCount > 0 ? `${healthFileCount} sources` : null}
-          secondary="Labs, fitness, nutrition tracked"
-          empty={healthFileCount === 0 ? "Add health files to surface trends" : undefined}
+          headline={healthFileCount > 0 ? `${healthFileCount} 个来源` : null}
+          secondary="追踪实验室、健身、营养"
+          empty={healthFileCount === 0 ? "添加健康文件以显示趋势" : undefined}
         />
         <DomainCard title="Work" icon={Briefcase} href="/work"
           dimension="creative"
           pulse={projectCount > 0}
-          headline={projectCount > 0 ? `${projectCount} active` : null}
-          secondary="Projects in flight"
-          empty={projectCount === 0 ? "No active projects tracked" : undefined}
+          headline={projectCount > 0 ? `${projectCount} 个进行中` : null}
+          secondary="进行中的项目"
+          empty={projectCount === 0 ? "未追踪活跃项目" : undefined}
         />
         <DomainCard title="Finances" icon={DollarSign} href="/finances"
           dimension="money"
-          headline={accountCount > 0 ? `${accountCount} accounts` : null}
-          secondary="Tracked accounts & categories"
-          empty={accountCount === 0 ? "Add accounts to Finances/ domain" : undefined}
+          headline={accountCount > 0 ? `${accountCount} 个账户` : null}
+          secondary="追踪的账户和分类"
+          empty={accountCount === 0 ? "将账户添加到 Finances/ 域" : undefined}
         />
         <DomainCard title="Telos Goals" icon={Target} href="/telos"
           dimension="relationships"
-          headline={goalCount > 0 ? `${goalCount} active` : null}
-          secondary={goals?.mission?.[0]?.body?.slice(0, 80) ?? "Telos mission & goals"}
-          empty={goalCount === 0 ? "Define goals in Telos/" : undefined}
+          headline={goalCount > 0 ? `${goalCount} 个活跃` : null}
+          secondary={goals?.mission?.[0]?.body?.slice(0, 80) ?? "Telos 使命和目标"}
+          empty={goalCount === 0 ? "在 Telos/ 中定义目标" : undefined}
         />
         <DomainCard title="Telos" icon={Compass} href="/telos"
           dimension="freedom"
-          headline={`${goals?.mission?.length ?? 0} missions`}
-          secondary={goals?.problems?.length ? `${goals.problems.length} problems · ${goals?.status?.length ?? 0} status entries` : null}
+          headline={`${goals?.mission?.length ?? 0} 个使命`}
+          secondary={goals?.problems?.length ? `${goals.problems.length} 个问题 · ${goals?.status?.length ?? 0} 个状态条目` : null}
         />
         <DomainCard title="Air Quality" icon={Wind} href="/air"
           dimension="rhythms"
           headline={airHeadline}
           secondary={airSecondary}
-          empty={airMonitorCount === 0 ? "Run the AirGradient poller to prime cache" : undefined}
+          empty={airMonitorCount === 0 ? "运行 AirGradient 轮询器以预填充缓存" : undefined}
         />
       </div>
     </section>
@@ -409,8 +409,8 @@ function ActiveGoals({ goals }: { goals: GoalsData | null }) {
   return (
     <section>
       <div className="flex items-center justify-between mb-4">
-        <PanelHeader title="Active Goals" />
-        <Link href="/telos" className="text-xs text-ink-3 hover:text-ink-2">see all →</Link>
+        <PanelHeader title="活跃目标" />
+        <Link href="/telos" className="text-xs text-ink-3 hover:text-ink-2">查看全部 →</Link>
       </div>
       <Panel style={{ borderLeft: `3px solid ${DIMENSION_COLOR.relationships}` }}>
         <div className="space-y-3" data-sensitive>
@@ -418,12 +418,12 @@ function ActiveGoals({ goals }: { goals: GoalsData | null }) {
             <div key={g.id} className="flex items-center gap-4">
               <span className="text-xs mono text-ink-3 w-8 shrink-0">{g.id}</span>
               <span className="text-sm flex-1 truncate text-ink-1" title={g.text}>{g.text}</span>
-              <Pill dim="relationships" className="shrink-0">active</Pill>
+              <Pill dim="relationships" className="shrink-0">活跃</Pill>
             </div>
           ))}
         </div>
         <div className="mt-4 pt-4 text-xs text-ink-3 italic border-t border-line-1">
-          Progress tracking appears once each goal has a `progress` field in Telos/Goals.md
+          当每个目标在 Telos/Goals.md 中有 `progress` 字段时，进度追踪将显示
         </div>
       </Panel>
     </section>
@@ -438,7 +438,7 @@ function NextActionsSpark({ home }: { home: HomeData | null }) {
       <Panel style={{ borderLeft: `3px solid ${DIMENSION_COLOR.rhythms}` }}>
         <div className="flex items-center gap-2 mb-1">
           <CheckSquare className="w-4 h-4" color={DIMENSION_COLOR.rhythms} />
-          <h3 className="text-sm font-medium uppercase tracking-widest" style={{ color: DIMENSION_COLOR.rhythms }}>Next Actions</h3>
+          <h3 className="text-sm font-medium uppercase tracking-widest" style={{ color: DIMENSION_COLOR.rhythms }}>下一步行动</h3>
         </div>
         {actions.length > 0 ? (
           <ul className="space-y-2 text-ink-1" data-sensitive>
@@ -450,18 +450,18 @@ function NextActionsSpark({ home }: { home: HomeData | null }) {
             ))}
           </ul>
         ) : (
-          <p className="text-xs text-ink-3 italic">No actions in `current.md` yet.</p>
+          <p className="text-xs text-ink-3 italic">`current.md` 中暂无行动项</p>
         )}
       </Panel>
       <Panel style={{ borderLeft: `3px solid ${DIMENSION_COLOR.creative}` }}>
         <div className="flex items-center gap-2 mb-1">
           <Lightbulb className="w-4 h-4" color={DIMENSION_COLOR.creative} />
-          <h3 className="text-sm font-medium uppercase tracking-widest" style={{ color: DIMENSION_COLOR.creative }}>Spark</h3>
+          <h3 className="text-sm font-medium uppercase tracking-widest" style={{ color: DIMENSION_COLOR.creative }}>灵感</h3>
         </div>
         {spark ? (
           <p className="text-base font-serif italic leading-relaxed text-ink-1">{spark}</p>
         ) : (
-          <p className="text-xs text-ink-3 italic">Sparks surfaces random entries from Telos/Sparks.md</p>
+          <p className="text-xs text-ink-3 italic">灵感从 Telos/Sparks.md 中随机展示条目</p>
         )}
       </Panel>
     </section>
@@ -487,12 +487,12 @@ function SystemContextDrawer({ index }: { index: UserIndex | null }) {
         >
           <div className="flex items-center gap-3">
             {open ? <ChevronDown className="w-4 h-4 text-ink-3" /> : <ChevronRight className="w-4 h-4 text-ink-3" />}
-            <span className="text-xs font-medium uppercase tracking-widest text-ink-3">System Context</span>
+            <span className="text-xs font-medium uppercase tracking-widest text-ink-3">系统上下文</span>
             <span className="text-xs text-ink-3">
-              {index.stats.total_files} files · {daemonCount} broadcast · {index.interview_gaps.length} gaps
+              {index.stats.total_files} 个文件 · {daemonCount} 个广播 · {index.interview_gaps.length} 个缺口
             </span>
           </div>
-          <Pill dim="neutral">{open ? "collapse" : "expand"}</Pill>
+          <Pill dim="neutral">{open ? "收起" : "展开"}</Pill>
         </button>
       </Panel>
       {open && (
@@ -501,7 +501,7 @@ function SystemContextDrawer({ index }: { index: UserIndex | null }) {
             const files = byCat[cat] ?? [];
             if (files.length === 0) return null;
             return (
-              <StatTile key={cat} label={cat} value={files.length} sub="files" />
+              <StatTile key={cat} label={cat} value={files.length} sub="个文件" />
             );
           })}
         </div>
@@ -542,7 +542,7 @@ export default function LifePage() {
         <Panel style={{ borderLeft: "3px solid var(--err)" }}>
           <div className="flex items-center gap-2 mb-2 text-err">
             <AlertCircle className="w-4 h-4" />
-            <h2 className="font-medium">Dashboard unavailable</h2>
+            <h2 className="font-medium">仪表盘不可用</h2>
           </div>
           <p className="text-sm text-err">{error}</p>
         </Panel>
@@ -552,7 +552,7 @@ export default function LifePage() {
 
   return (
     <PageShell className="max-w-[1920px]">
-      <PageHeader icon={Activity} title="Life" subtitle="Your current state across every domain — mood, goals, work, and the numbers behind them." />
+      <PageHeader icon={Activity} title="Life" subtitle="您在各个领域的当前状态 — 心情、目标、工作以及背后的数据。" />
       <NarrativeBanner home={home} />
       <DomainGrid business={business} health={health} finances={finances} work={work} goals={goals} air={air} />
       <ActiveGoals goals={goals} />

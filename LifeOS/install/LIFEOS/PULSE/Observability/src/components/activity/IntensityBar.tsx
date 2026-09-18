@@ -34,7 +34,7 @@ export default function IntensityBar({
       {/* Events per minute */}
       <div className="flex items-center gap-1 shrink-0 transition-colors duration-[2s]" style={{ color }}>
         <span className="text-base font-semibold tabular-nums">{eventsPerMinute}</span>
-        <span className="text-[14px] font-semibold opacity-70 uppercase">ev/min</span>
+        <span className="text-[14px] font-semibold opacity-70 uppercase">事件/分钟</span>
       </div>
 
       {/* Intensity bar */}
@@ -46,7 +46,7 @@ export default function IntensityBar({
             width: `${Math.max(5, intensity * 100)}%`,
             transition: "background-color 2s ease-in-out, width 0.5s ease-out",
           }}
-          title={`Activity: ${label} (${Math.round(intensity * 100)}%)`}
+          title={`活动：${label} (${Math.round(intensity * 100)}%)`}
         >
           <div
             className="absolute inset-0"

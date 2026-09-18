@@ -30,13 +30,13 @@ function findItem(telos: Telos, id: string): ItemDetail | null {
   const d = telos.dimensions.find((x) => x.id === id);
   if (d)
     return {
-      kind: "Ideal State",
+      kind: "理想状态",
       id,
       title: d.label,
       facts: [
-        { k: "current", v: String(d.cur) },
-        { k: "ideal", v: String(d.ideal) },
-        { k: "velocity", v: `${d.velo}/mo` },
+        { k: "当前", v: String(d.cur) },
+        { k: "理想", v: String(d.ideal) },
+        { k: "速度", v: `${d.velo}/月` },
       ],
       relations: [],
     };
@@ -44,94 +44,94 @@ function findItem(telos: Telos, id: string): ItemDetail | null {
   const p = telos.problems.find((x) => x.id === id);
   if (p)
     return {
-      kind: "Problem",
+      kind: "问题",
       id,
       title: p.title,
       summary: p.summary,
       body: p.note,
-      facts: [{ k: "severity", v: p.severity }],
-      relations: [{ label: "affects", ids: p.affects }],
+      facts: [{ k: "严重度", v: p.severity }],
+      relations: [{ label: "影响", ids: p.affects }],
     };
 
   const m = telos.missions.find((x) => x.id === id);
   if (m)
     return {
-      kind: "Mission",
+      kind: "使命",
       id,
       title: m.title,
       summary: m.summary,
-      facts: [{ k: "horizon", v: m.horizon }],
-      relations: [{ label: "addresses", ids: m.addresses ?? [] }],
+      facts: [{ k: "视野", v: m.horizon }],
+      relations: [{ label: "应对", ids: m.addresses ?? [] }],
     };
 
   const g = telos.goals.find((x) => x.id === id);
   if (g)
     return {
-      kind: "Goal",
+      kind: "目标",
       id,
       title: g.title,
       summary: g.summary,
       facts: [
-        { k: "kpi", v: g.kpi },
-        { k: "target", v: g.target },
-        { k: "progress", v: `${g.pct}%` },
+        { k: "指标", v: g.kpi },
+        { k: "目标值", v: g.target },
+        { k: "进度", v: `${g.pct}%` },
       ],
       relations: [
-        { label: "dimensions", ids: g.dims },
-        { label: "metrics", ids: g.metrics },
+        { label: "维度", ids: g.dims },
+        { label: "指标", ids: g.metrics },
       ],
     };
 
   const mt = telos.metrics.find((x) => x.id === id);
   if (mt)
     return {
-      kind: "Metric",
+      kind: "指标",
       id,
       title: mt.label,
       facts: [
-        { k: "value", v: `${mt.value}${mt.unit}` },
-        { k: "trend", v: String(mt.trend) },
+        { k: "数值", v: `${mt.value}${mt.unit}` },
+        { k: "趋势", v: String(mt.trend) },
       ],
-      relations: [{ label: "feeds", ids: mt.feeds }],
+      relations: [{ label: "服务于", ids: mt.feeds }],
     };
 
   const c = telos.challenges.find((x) => x.id === id);
   if (c)
     return {
-      kind: "Challenge",
+      kind: "挑战",
       id,
       title: c.title,
       summary: c.summary,
       body: c.note,
       facts: [],
-      relations: [{ label: "blocks", ids: c.blocks }],
+      relations: [{ label: "阻碍", ids: c.blocks }],
     };
 
   const s = telos.strategies.find((x) => x.id === id);
   if (s)
     return {
-      kind: "Strategy",
+      kind: "策略",
       id,
       title: s.title,
       summary: s.summary,
       facts: [],
       relations: [
-        { label: "overcomes", ids: s.overcomes },
-        { label: "implements", ids: s.implements },
+        { label: "克服", ids: s.overcomes },
+        { label: "实施", ids: s.implements },
       ],
     };
 
   const pr = telos.projects.find((x) => x.id === id);
   if (pr)
     return {
-      kind: "Project",
+      kind: "项目",
       id,
       title: pr.title,
-      facts: [{ k: "status", v: pr.status }],
+      facts: [{ k: "状态", v: pr.status }],
       relations: [
-        { label: "strategy", ids: [pr.strategy] },
-        { label: "dimensions", ids: pr.dims },
-        { label: "work", ids: pr.work.map((w) => w.id) },
+        { label: "策略", ids: [pr.strategy] },
+        { label: "维度", ids: pr.dims },
+        { label: "工作", ids: pr.work.map((w) => w.id) },
       ],
     };
 
@@ -139,17 +139,17 @@ function findItem(telos: Telos, id: string): ItemDetail | null {
     const w = proj.work.find((x) => x.id === id);
     if (w)
       return {
-        kind: "Work",
+        kind: "工作",
         id,
         title: w.title,
         facts: [
-          { k: "status", v: w.status },
-          { k: "eta", v: w.eta },
-          { k: "owner", v: w.owner },
+          { k: "状态", v: w.status },
+          { k: "预计完成", v: w.eta },
+          { k: "负责人", v: w.owner },
         ],
         relations: [
-          { label: "strategy", ids: [w.strategy] },
-          { label: "project", ids: [proj.id] },
+          { label: "策略", ids: [w.strategy] },
+          { label: "项目", ids: [proj.id] },
         ],
       };
   }
@@ -157,45 +157,45 @@ function findItem(telos: Telos, id: string): ItemDetail | null {
   const t = telos.team.find((x) => x.id === id);
   if (t)
     return {
-      kind: "Team",
+      kind: "团队",
       id,
       title: t.name,
       body: t.note,
       facts: [
-        { k: "role", v: t.role },
-        { k: "kind", v: t.kind },
+        { k: "角色", v: t.role },
+        { k: "类型", v: t.kind },
       ],
-      relations: [{ label: "owns", ids: t.owns }],
+      relations: [{ label: "负责", ids: t.owns }],
     };
 
   const b = telos.budget.find((x) => x.id === id);
   if (b)
     return {
-      kind: "Budget",
+      kind: "预算",
       id,
       title: b.label,
       body: b.note,
       facts: [
-        { k: "kind", v: b.kind },
-        { k: "value", v: b.value },
-        { k: "of", v: b.of },
-        { k: "pct", v: `${b.pct}%` },
+        { k: "类型", v: b.kind },
+        { k: "数值", v: b.value },
+        { k: "占比", v: b.of },
+        { k: "百分比", v: `${b.pct}%` },
       ],
-      relations: [{ label: "funds", ids: b.funds }],
+      relations: [{ label: "资助", ids: b.funds }],
     };
 
   const r = telos.recommendations.find((x) => x.id === id);
   if (r)
     return {
-      kind: "Recommendation",
+      kind: "建议",
       id,
       title: r.action,
       body: r.because,
       facts: [
-        { k: "effort", v: r.effort },
-        { k: "impact", v: r.impact },
+        { k: "投入", v: r.effort },
+        { k: "影响", v: r.impact },
       ],
-      relations: [{ label: "upstream", ids: r.upstream }],
+      relations: [{ label: "上游", ids: r.upstream }],
     };
 
   return null;
@@ -222,9 +222,9 @@ function ItemView() {
       {!item ? (
         <div className="telos-item-empty">
           <p>
-            No TELOS item with id <span className="mono">{id || "(none)"}</span>.
+            未找到 id 为 <span className="mono">{id || "(无)"}</span> 的 TELOS 条目。
           </p>
-          <Link href="/telos" className="telos-item-back">Back to TELOS</Link>
+          <Link href="/telos" className="telos-item-back">返回 TELOS</Link>
         </div>
       ) : (
         <article className="telos-item-card">
@@ -277,7 +277,7 @@ function ItemView() {
 
 export default function TelosItemPage() {
   return (
-    <Suspense fallback={<div style={{ padding: 40, color: "var(--ink-1)" }}>Loading…</div>}>
+    <Suspense fallback={<div style={{ padding: 40, color: "var(--ink-1)" }}>加载中…</div>}>
       <ItemView />
     </Suspense>
   );

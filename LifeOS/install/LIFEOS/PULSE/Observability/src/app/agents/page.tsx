@@ -13,7 +13,7 @@ import { Mountain, Activity } from "lucide-react";
 // chunk so the shell (vitals + strip + tabs) paints instantly and the active
 // tab's code streams in; the inactive tab never downloads until it's opened.
 const TabFallback = () => (
-  <div className="flex items-center justify-center h-64 text-ink-3 text-sm">Loading…</div>
+  <div className="flex items-center justify-center h-64 text-ink-3 text-sm">加载中…</div>
 );
 const WorkBoard = dynamic(() => import("@/components/activity/WorkBoard"), {
   ssr: false,
@@ -39,8 +39,8 @@ const ObservabilityDashboard = dynamic(() => import("@/components/activity/Obser
 type Tab = "work" | "activity";
 
 const tabs: TabSpec<Tab>[] = [
-  { id: "work", label: "Work", icon: Mountain, dim: "creative" },
-  { id: "activity", label: "Activity", icon: Activity, dim: "rhythms" },
+  { id: "work", label: "工作", icon: Mountain, dim: "creative" },
+  { id: "activity", label: "动态", icon: Activity, dim: "rhythms" },
 ];
 
 export default function AgentsPage() {

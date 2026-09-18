@@ -32,7 +32,7 @@ function veloMark(velo: number): { glyph: string; cls: string; pct: number } {
 }
 
 function fmtDelta(velo: number): string {
-  if (Math.abs(velo) < 0.05) return "steady";
+  if (Math.abs(velo) < 0.05) return "平稳";
   const sign = velo > 0 ? "+" : "";
   // Trim trailing zeros; show one decimal max for compactness.
   return `${sign}${velo.toFixed(1).replace(/\.0$/, "")}`;
@@ -55,7 +55,7 @@ function DimensionBarRow({ d, onClick }: DimensionBarRowProps) {
     >
       <div className="dim-bar-label">{d.label}</div>
 
-      <div className="dim-bar-track" aria-label={`${d.label}: ${Math.round(cur)} of ${Math.round(ideal)}, velocity ${d.velo}`}>
+      <div className="dim-bar-track" aria-label={`${d.label}：${Math.round(cur)} / ${Math.round(ideal)}，速度 ${d.velo}`}>
         {/* The full track represents 100. Ideal marker is a vertical line. */}
         <div className="dim-bar-fill" style={{ width: `${curPct}%`, background: `var(${d.color})` }}>
           <div className="dim-bar-leading-edge" style={{ background: `var(${d.color})` }} />
@@ -70,7 +70,7 @@ function DimensionBarRow({ d, onClick }: DimensionBarRowProps) {
         <span className="dim-bar-ideal mono">{Math.round(ideal)}</span>
       </div>
 
-      <div className={`dim-bar-velo ${v.cls}`} title={`velocity ${d.velo}`}>
+      <div className={`dim-bar-velo ${v.cls}`} title={`速度 ${d.velo}`}>
         <span className="dim-bar-velo-glyph">{v.glyph}</span>
         <span className="dim-bar-velo-num mono">{fmtDelta(d.velo)}</span>
       </div>
@@ -82,7 +82,7 @@ export function DimensionBars({ dimensions, onDimClick }: DimensionBarsProps) {
   if (dimensions.length === 0) {
     return (
       <div className="dim-bars-empty">
-        No life-area dimensions populated yet. Run <code>/interview ideal-state</code> or drop files into <code>LIFEOS/USER/TELOS/IDEAL_STATE/</code>.
+        暂无生活维度数据。请运行 <code>/interview ideal-state</code> 或将文件放入 <code>LIFEOS/USER/TELOS/IDEAL_STATE/</code>。
       </div>
     );
   }
@@ -95,13 +95,13 @@ export function DimensionBars({ dimensions, onDimClick }: DimensionBarsProps) {
   return (
     <div className="dim-bars">
       <div className="dim-bars-header">
-        <span className="dim-bars-title">Life Dimensions</span>
+        <span className="dim-bars-title">生活维度</span>
         <span className="dim-bars-aggregate">
           <span className="mono">{Math.round(avg)}</span>
-          <span className="dim-bars-sep">of</span>
+          <span className="dim-bars-sep">/</span>
           <span className="mono">{Math.round(idealAvg)}</span>
           <span className="dim-bars-sep">·</span>
-          <span className="mono dim-bars-gap">{compositeGap > 0 ? `${Math.round(compositeGap)} to go` : "at ideal"}</span>
+          <span className="mono dim-bars-gap">{compositeGap > 0 ? `还差 ${Math.round(compositeGap)}` : "已达理想"}</span>
         </span>
       </div>
       <div className="dim-bars-list">

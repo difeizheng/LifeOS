@@ -120,8 +120,8 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
 };
 
 const EVENT_TYPE_LABELS: Record<string, string> = {
-  PreToolUse: "Pre-Tool",
-  PostToolUse: "Post-Tool",
+  PreToolUse: "预工具",
+  PostToolUse: "后工具",
   UserPromptSubmit: "UserPromptSubmit",
   SessionStart: "SessionStart",
   SessionEnd: "SessionEnd",
@@ -167,23 +167,23 @@ function getToolInfo(event: HookEvent): { tool: string; detail?: string } | null
   const payload = event.payload;
 
   if (event.hook_event_type === "Completed") {
-    return { tool: "", detail: payload.task || event.summary || "Task completed" };
+    return { tool: "", detail: payload.task || event.summary || "任务已完成" };
   }
 
   if (event.hook_event_type === "UserPromptSubmit" && payload.prompt) {
     const preview = payload.prompt.slice(0, 300);
-    return { tool: "Prompt:", detail: `"${preview}${payload.prompt.length > 300 ? "..." : ""}"` };
+    return { tool: "提示：", detail: `"${preview}${payload.prompt.length > 300 ? "..." : ""}"` };
   }
 
   if (event.hook_event_type === "PreCompact") {
     const trigger = payload.trigger || "unknown";
-    return { tool: "Compaction:", detail: trigger === "manual" ? "Manual compaction" : "Auto-compaction" };
+    return { tool: "压缩：", detail: trigger === "manual" ? "手动压缩" : "自动压缩" };
   }
 
   if (event.hook_event_type === "SessionStart") {
     const source = payload.source || "unknown";
-    const labels: Record<string, string> = { startup: "New session", resume: "Resuming session", clear: "Fresh session" };
-    return { tool: "Session:", detail: labels[source] || source };
+    const labels: Record<string, string> = { startup: "新会话", resume: "恢复会话", clear: "全新会话" };
+    return { tool: "会话：", detail: labels[source] || source };
   }
 
   if (payload.tool_name) {
@@ -212,7 +212,7 @@ interface EventRowProps {
 
 export default function EventRow({ event }: EventRowProps) {
   const [expanded, setExpanded] = useState(false);
-  const [copyText, setCopyText] = useState("Copy");
+  const [copyText, setCopyText] = useState("复制");
 
   const agentId =
     event.hook_event_type === "UserPromptSubmit"
@@ -235,11 +235,11 @@ export default function EventRow({ event }: EventRowProps) {
   const copyPayload = async () => {
     try {
       await navigator.clipboard.writeText(JSON.stringify(event.payload, null, 2));
-      setCopyText("Copied!");
-      setTimeout(() => setCopyText("Copy"), 2000);
+      setCopyText("已复制！");
+      setTimeout(() => setCopyText("复制"), 2000);
     } catch {
-      setCopyText("Failed");
-      setTimeout(() => setCopyText("Copy"), 2000);
+      setCopyText("失败");
+      setTimeout(() => setCopyText("复制"), 2000);
     }
   };
 
@@ -331,7 +331,7 @@ export default function EventRow({ event }: EventRowProps) {
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-sm font-medium text-[var(--ink-2)] flex items-center gap-1.5">
                   <Package size={14} strokeWidth={2} />
-                  Payload
+                  载荷
                 </h4>
                 <button
                   onClick={(e) => {

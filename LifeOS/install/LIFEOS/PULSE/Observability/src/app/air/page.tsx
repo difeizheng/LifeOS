@@ -58,20 +58,20 @@ function co2Color(co2: number | null): string {
 
 function co2Label(co2: number | null): string {
   if (co2 === null) return "";
-  if (co2 < 800) return "fresh";
-  if (co2 < 1200) return "elevated";
-  if (co2 < 2000) return "stuffy";
-  return "poor";
+  if (co2 < 800) return "新鲜";
+  if (co2 < 1200) return "偏高";
+  if (co2 < 2000) return "闷热";
+  return "差";
 }
 
 function freshness(iso: string | null): string {
-  if (!iso) return "unknown";
+  if (!iso) return "未知";
   const age = Date.now() - new Date(iso).getTime();
   const m = Math.round(age / 60000);
-  if (m < 2) return "just now";
-  if (m < 60) return `${m}m ago`;
+  if (m < 2) return "刚刚";
+  if (m < 60) return `${m} 分钟前`;
   const h = Math.floor(m / 60);
-  return `${h}h ${m % 60}m ago`;
+  return `${h} 小时 ${m % 60} 分钟前`;
 }
 
 function monitorIcon(m: AirMonitor) {
@@ -91,13 +91,13 @@ function Banner({ air }: { air: AirData | null }) {
       className="relative p-8"
       style={{ background: "linear-gradient(90deg, rgba(52,211,153,0.08), var(--surface-1))" }}
     >
-      <div className="absolute top-5 right-5 text-[12px] text-ink-3 mono">cached {fetched}</div>
+      <div className="absolute top-5 right-5 text-[12px] text-ink-3 mono">缓存于 {fetched}</div>
       <div className="flex items-start gap-6 flex-wrap">
         <Wind className="w-10 h-10 shrink-0" style={{ color: "var(--health)" }} />
         <div className="flex-1 min-w-0">
-          <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink-3">Air Quality</div>
+          <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink-3">空气质量</div>
           <p className="leading-snug text-ink-1 mt-1.5" style={{ fontSize: "clamp(22px, 2.5vw, 30px)", fontWeight: 500 }}>
-            Worst AQI across {count} monitor{count === 1 ? "" : "s"}:{" "}
+            {count} 个监测器中最差 AQI：{" "}
             <span className="tabular-nums" style={{ color: aqiTextColor(worstAqi), fontWeight: 700 }}>
               {worstAqi ?? "—"}
             </span>
@@ -108,7 +108,7 @@ function Banner({ air }: { air: AirData | null }) {
             )}
           </p>
           <p className="mt-2 text-sm text-ink-2">
-            Live from AirGradient · updated every 5 min by Pulse poller
+            来自 AirGradient · Pulse 轮询器每 5 分钟更新
           </p>
         </div>
       </div>
@@ -190,14 +190,14 @@ function MonitorCard({ m }: { m: AirMonitor }) {
         />
         <Metric
           icon={Thermometer}
-          label="Temp"
+          label="温度"
           value={m.temp !== null ? m.temp.toFixed(1) : null}
           unit="°C"
           color="var(--rhythms)"
         />
         <Metric
           icon={Droplets}
-          label="Humidity"
+          label="湿度"
           value={m.rh !== null ? String(m.rh) : null}
           unit="%"
           color="var(--health)"
@@ -234,15 +234,15 @@ function MonitorCard({ m }: { m: AirMonitor }) {
 function Legend() {
   return (
     <Panel className="p-4">
-      <PanelHeader title="US AQI (PM2.5) scale" />
+      <PanelHeader title="美国 AQI（PM2.5）等级" />
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
         {[
-          { color: "var(--ok)", label: "0–50 Good" },
-          { color: "var(--warn)", label: "51–100 Moderate" },
-          { color: "#F59E0B", label: "101–150 USG" },
-          { color: "var(--err)", label: "151–200 Unhealthy" },
-          { color: "#A855F7", label: "201–300 Very Unhealthy" },
-          { color: "#B91C1C", label: "300+ Hazardous" },
+          { color: "var(--ok)", label: "0–50 优" },
+          { color: "var(--warn)", label: "51–100 良" },
+          { color: "#F59E0B", label: "101–150 敏感人群不健康" },
+          { color: "var(--err)", label: "151–200 不健康" },
+          { color: "#A855F7", label: "201–300 非常不健康" },
+          { color: "#B91C1C", label: "300+ 危险" },
         ].map((band) => (
           <div key={band.label} className="flex items-center gap-2">
             <span className="w-3 h-3 rounded" style={{ background: band.color }} />
@@ -251,10 +251,10 @@ function Legend() {
         ))}
       </div>
       <div className="mt-3 pt-3 text-[12px] text-ink-3" style={{ borderTop: "1px solid var(--line-1)" }}>
-        <span style={{ color: "var(--ok)" }}>CO₂ &lt; 800</span> fresh ·{" "}
-        <span style={{ color: "var(--warn)" }}>800–1200</span> elevated ·{" "}
-        <span style={{ color: "#F59E0B" }}>1200–2000</span> stuffy ·{" "}
-        <span style={{ color: "var(--err)" }}>&gt; 2000</span> poor
+        <span style={{ color: "var(--ok)" }}>CO₂ &lt; 800</span> 新鲜 ·{" "}
+        <span style={{ color: "var(--warn)" }}>800–1200</span> 偏高 ·{" "}
+        <span style={{ color: "#F59E0B" }}>1200–2000</span> 闷热 ·{" "}
+        <span style={{ color: "var(--err)" }}>&gt; 2000</span> 差
       </div>
     </Panel>
   );
@@ -282,7 +282,7 @@ export default function AirPage() {
     return (
       <PageShell>
         <Panel style={{ borderLeft: "3px solid var(--err)" }}>
-          <div className="text-err text-sm">Air Quality unavailable: {error}</div>
+          <div className="text-err text-sm">空气质量不可用：{error}</div>
         </Panel>
       </PageShell>
     );
@@ -297,24 +297,24 @@ export default function AirPage() {
 
   return (
     <PageShell>
-      <PageHeader icon={Wind} title="Air" subtitle="Indoor and outdoor air quality across your AirGradient monitors." />
+      <PageHeader icon={Wind} title="空气" subtitle="你的 AirGradient 监测器的室内外空气质量。" />
       <Banner air={air} />
       <Legend />
       {sorted.length === 0 ? (
         <>
           <EmptyStateGuide
-            section="Air Quality"
-            description="Indoor air monitoring data. Add an AirGradient (or compatible) device and wire its API key to populate."
+            section="空气质量"
+            description="你的 AirGradient 监测器数据。添加监测器后，室内/室外空气质量、温度、湿度、CO₂ 等指标会显示在这里。"
             hideInterview
-            daPromptExample="walk me through connecting an air quality sensor"
+            daPromptExample="带我了解如何连接空气质量传感器"
           />
           <Panel>
             <div className="p-4 text-center text-sm text-ink-2">
-              No monitors in cache yet. Run{" "}
+              缓存中暂无监测器数据。运行{" "}
               <code className="px-2 py-0.5 rounded mono bg-surface-1 text-ink-1">
                 bun ~/.claude/LIFEOS/PULSE/checks/airgradient-poll.ts
               </code>{" "}
-              to prime, or wait for the next 5-minute poll.
+              进行初始化，或等待下一次 5 分钟轮询。
             </div>
           </Panel>
         </>

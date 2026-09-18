@@ -288,7 +288,7 @@ export default function CapabilityStrip() {
   return (
     <div className="flex items-center flex-wrap gap-x-5 gap-y-1 px-4 py-1.5 bg-[rgba(15,26,51,0.5)] border-b border-white/[0.04] shrink-0">
       <span className="text-[13px] font-semibold text-ink-2 tracking-wide shrink-0 uppercase">
-        Capabilities
+        能力
       </span>
 
       {data.series?.buckets?.length > 1 && <Sparkline buckets={data.series.buckets} />}
@@ -300,7 +300,7 @@ export default function CapabilityStrip() {
       {quiet.length > 0 && (
         <span
           className="text-[12px] text-ink-3 opacity-60 shrink-0 whitespace-nowrap"
-          title="No use inside the selected window"
+          title="所选窗口内无使用"
         >
           quiet: {quiet.map((c) => c.label).join(" · ")}
         </span>

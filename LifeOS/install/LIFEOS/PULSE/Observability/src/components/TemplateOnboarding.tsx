@@ -32,7 +32,7 @@ export default function TemplateOnboarding() {
     setDismissed(true);
   };
 
-  const daName = state.daName || "your DA";
+  const daName = state.daName || "你的 DA";
   const cmd = state.interviewCommand || "/interview";
 
   return (
@@ -45,36 +45,36 @@ export default function TemplateOnboarding() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm font-semibold text-blue-50">
-                You're looking at template content.
+                你正在查看模板内容。
               </span>
               <span className="text-sm text-ink-2">
-                This is what Pulse looks like before you've made it yours.
+                这是 Pulse 在你自定义之前的样子。
               </span>
             </div>
             <div className="mt-1.5 flex items-center gap-x-5 gap-y-1.5 flex-wrap text-[13px]">
               <span className="flex items-center gap-1.5 text-ink-2">
                 <MessageSquare className="w-3.5 h-3.5 text-blue-300 shrink-0" />
-                Talk to <span className="text-blue-200 font-medium">{daName}</span> — run
+                与 <span className="text-blue-200 font-medium">{daName}</span> 对话 — 运行
                 <code className="px-1.5 py-0.5 rounded bg-surface-3 text-blue-200 text-xs font-mono">
                   {cmd}
                 </code>
-                to walk through your TELOS, identity, goals, and projects.
+                来引导你完成 TELOS、身份、目标和项目的设置。
               </span>
               <span className="flex items-center gap-1.5 text-ink-2">
                 <FolderOpen className="w-3.5 h-3.5 text-blue-300 shrink-0" />
-                Or edit
+                或直接编辑
                 <code className="px-1.5 py-0.5 rounded bg-surface-3 text-blue-200 text-xs font-mono">
                   ~/.claude/LIFEOS/USER/
                 </code>
-                directly.
+                。
               </span>
             </div>
           </div>
           <button
             onClick={handleDismiss}
-            aria-label="Hide for this session"
+            aria-label="本次会话隐藏"
             className="shrink-0 rounded-md text-ink-3 hover:text-ink-1 hover:bg-surface-3 p-1.5 transition-colors"
-            title="Hide for this session — banner returns until you customize your USER/ files"
+            title="本次会话隐藏 — 在你自定义 USER/ 文件之前，横幅会持续显示"
           >
             <X className="w-4 h-4" />
           </button>

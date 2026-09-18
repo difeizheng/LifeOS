@@ -36,9 +36,9 @@ import {
 type BoardFilter = "all" | "tracked" | "untracked";
 
 const FILTERS: { value: BoardFilter; label: string }[] = [
-  { value: "all", label: "All" },
-  { value: "tracked", label: "Climbs" },
-  { value: "untracked", label: "Sessions" },
+  { value: "all", label: "全部" },
+  { value: "tracked", label: "攀登" },
+  { value: "untracked", label: "会话" },
 ];
 
 // ─── ISA badge — marks a tracked run, carries the ISC count ───
@@ -58,7 +58,7 @@ function NoISAChip({ size = "sm" }: { size?: "sm" | "xs" }) {
       className={`inline-flex items-center rounded-full border border-white/[0.08] bg-white/[0.02] text-ink-3 shrink-0 ${
         size === "sm" ? "px-2 py-0.5 text-[11px]" : "px-1.5 py-px text-[10px]"
       } font-medium tracking-wide`}
-      title="Untracked session — no ISA, no claims; liveness only"
+      title="未追踪会话 — 无 ISA、无声明；仅活跃状态"
     >
       NO ISA
     </span>
@@ -72,11 +72,11 @@ function NoISAChip({ size = "sm" }: { size?: "sm" | "xs" }) {
 // tool-activity.jsonl. Shown only while fresh (< 5 min since last tool call).
 
 const ACTIVITY_META: Record<ActivityClass, { label: string; color: string }> = {
-  exploring: { label: "Exploring", color: "#7dcfff" },
-  building: { label: "Building", color: "#e0af68" },
-  verifying: { label: "Verifying", color: "#34d399" },
-  delegating: { label: "Delegating", color: "#bb9af7" },
-  other: { label: "Working", color: "#c0caf5" },
+  exploring: { label: "探索中", color: "#7dcfff" },
+  building: { label: "构建中", color: "#e0af68" },
+  verifying: { label: "验证中", color: "#34d399" },
+  delegating: { label: "委派中", color: "#bb9af7" },
+  other: { label: "工作中", color: "#c0caf5" },
 };
 
 const ACTIVITY_FRESH_MS = 5 * 60 * 1000;
@@ -146,8 +146,8 @@ const CLAIM_COLUMNS: {
 }[] = [
   // "In progress" column removed 2026-07-22: no writer has ever emitted
   // in_progress (parser is pending|completed) — the column was permanently empty.
-  { key: "open", label: "Open", color: "#7dcfff", match: (c) => c.status !== "completed" && c.status !== "failed" },
-  { key: "verified", label: "Verified", color: "#34d399", match: (c) => c.status === "completed" },
+  { key: "open", label: "待处理", color: "#7dcfff", match: (c) => c.status !== "completed" && c.status !== "failed" },
+  { key: "verified", label: "已验证", color: "#34d399", match: (c) => c.status === "completed" },
 ];
 
 function splitEvidence(c: AlgorithmCriterion): [string, string] {
@@ -163,7 +163,7 @@ function ClaimsKanban({ s }: { s: AlgorithmState }) {
   const cols = [
     ...CLAIM_COLUMNS,
     ...(failed.length > 0
-      ? [{ key: "failed", label: "Failed", color: "#f7768e", match: (c: AlgorithmCriterion) => c.status === "failed" }]
+      ? [{ key: "failed", label: "失败", color: "#f7768e", match: (c: AlgorithmCriterion) => c.status === "failed" }]
       : []),
   ];
 
@@ -188,7 +188,7 @@ function ClaimsKanban({ s }: { s: AlgorithmState }) {
                   <div
                     key={c.id}
                     className="rounded px-2 py-1.5 bg-white/[0.02] border border-white/[0.04]"
-                    title={evidenceText ? `${claimText}\n\nEvidence: ${evidenceText}` : claimText}
+                    title={evidenceText ? `${claimText}\n\n证据：${evidenceText}` : claimText}
                     data-sensitive
                   >
                     <div className="text-[11px] font-mono mb-0.5" style={{ color: `${col.color}99` }}>
@@ -240,12 +240,13 @@ function ClaimRow({ c }: { c: AlgorithmCriterion }) {
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2">
           <span className="text-[13px] font-mono text-ink-3 shrink-0">{c.id}</span>
-          {isAnti && <span className="text-[11px] uppercase tracking-wider text-rose-300/60 shrink-0">guardrail</span>}
+          {isAnti && <span className="text-[11px] uppercase tracking-wider text-rose-300/60 shrink-0">护栏</span>}
         </div>
         <p className={`text-sm leading-snug ${c.status === "completed" ? "text-ink-2" : "text-ink-1"}`}>{claimText}</p>
         {evidenceText && c.status === "completed" && (
           <p className="text-[13px] text-ink-3 leading-snug mt-0.5 line-clamp-2">
-            <span className="text-emerald-400/60">evidence</span> {evidenceText}
+            <span className="text-emerald-400/60">证据 </span>
+            {evidenceText}
           </p>
         )}
       </div>
@@ -278,19 +279,19 @@ function SessionExpanded({ s, bare = false }: { s: AlgorithmState; bare?: boolea
       <div className="px-5 py-4 space-y-3">
         {s.rawTask && (
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-ink-3 mb-1">Opening ask</div>
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-ink-3 mb-1">初始任务</div>
             <p className="text-sm text-ink-1 leading-relaxed" data-sensitive>“{s.rawTask}”</p>
           </div>
         )}
         <div className="flex flex-wrap gap-x-6 gap-y-1 text-[13px] text-ink-2">
           <span>
-            <span className="text-ink-3">started </span>
+            <span className="text-ink-3">开始于 </span>
             {new Date(s.algorithmStartedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-            <span className="text-ink-3"> · running </span>
+            <span className="text-ink-3"> · 运行 </span>
             {formatElapsed(Date.now() - (s.algorithmStartedAt || Date.now()))}
           </span>
           <span>
-            <span className="text-ink-3">last activity </span>
+            <span className="text-ink-3">最近活动 </span>
             {formatAgo(s.phaseStartedAt || s.algorithmStartedAt)}
           </span>
           {s.sessionUUID && (
@@ -298,8 +299,7 @@ function SessionExpanded({ s, bare = false }: { s: AlgorithmState; bare?: boolea
           )}
         </div>
         <p className="text-[12px] text-ink-3 leading-snug">
-          Untracked session — no ISA, so no claims, no climb. If this becomes real work, the run writes an ISA and
-          this card graduates to a tracked climb automatically.
+          未追踪会话 — 无 ISA，因此无声明、无攀登。若成为正式工作，运行会写入 ISA，此卡片自动晋升为已追踪攀登。
         </p>
       </div>
     </Wrapper>
@@ -344,11 +344,11 @@ function ClimbExpanded({ s, bare = false }: { s: AlgorithmState; bare?: boolean 
             <div className="flex items-center gap-2 mb-1.5">
               <Target className="w-3.5 h-3.5 text-sky-400" />
               <span className="text-xs font-semibold uppercase tracking-wider text-ink-2">
-                Claims {claimCounts(s).done}/{claimCounts(s).total}
+                声明 {claimCounts(s).done}/{claimCounts(s).total}
               </span>
               {s.iscDeltas && (s.iscDeltas.addedTotal > 0 || s.iscDeltas.closedTotal > 0) && (
                 <span className="text-[11px] font-mono text-ink-3">
-                  {s.iscDeltas.addedTotal} added · {s.iscDeltas.closedTotal} closed
+                  {s.iscDeltas.addedTotal} 新增 · {s.iscDeltas.closedTotal} 已关闭
                   {deltaText(s) && <span className="text-amber-400/80"> · {deltaText(s)}</span>}
                 </span>
               )}
@@ -361,7 +361,7 @@ function ClimbExpanded({ s, bare = false }: { s: AlgorithmState; bare?: boolean 
           <div className="space-y-1">
             <div className="flex items-center gap-2 mb-1.5">
               <Shield className="w-3.5 h-3.5 text-rose-300/70" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-ink-2">Guardrails</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-ink-2">护栏</span>
             </div>
             {guards.map((c) => (
               <ClaimRow key={c.id} c={c} />
@@ -371,7 +371,7 @@ function ClimbExpanded({ s, bare = false }: { s: AlgorithmState; bare?: boolean 
 
         {s.criteriaParseWarning && (
           <p className="text-[13px] text-amber-400/70">
-            ISA criteria could not be parsed ({s.criteriaParseWarning}) — showing frontmatter progress only.
+            ISA 标准无法解析（{s.criteriaParseWarning}）— 仅显示前言进度。
           </p>
         )}
 
@@ -460,7 +460,7 @@ function BoardRow({
 
         {/* rework badge */}
         {rework && (
-          <span className="flex items-center gap-1 text-amber-400/80 shrink-0" title={`Iteration ${s.iteration}`}>
+          <span className="flex items-center gap-1 text-amber-400/80 shrink-0" title={`迭代 ${s.iteration}`}>
             <RotateCcw className="w-3.5 h-3.5" />
             <span className="text-[12px] font-mono">×{s.iteration}</span>
           </span>
@@ -717,7 +717,7 @@ function BoardKanban({
             <span className="text-sm text-ink-1 truncate">{displayed.taskDescription}</span>
             {!selected && (
               <span className="text-[11px] uppercase tracking-wider text-sky-400/60 ml-auto shrink-0">
-                live spotlight
+                实时聚焦
               </span>
             )}
           </div>
@@ -815,7 +815,7 @@ export default function WorkBoard() {
     return (
       <div className="flex items-center justify-center h-full text-ink-3">
         <Loader2 className="w-4 h-4 animate-spin mr-2" />
-        <span className="text-sm">Loading work...</span>
+        <span className="text-sm">加载工作中…</span>
       </div>
     );
   }
@@ -827,8 +827,8 @@ export default function WorkBoard() {
     return (
       <div className="px-6 pt-5">
         <EmptyStateGuide
-          section="Work"
-          description="Tracked runs land here as climbs — claims closing on evidence until the summit. Untracked sessions show as live activity. Start work in any session and the board fills in."
+          section="工作"
+          description="跟踪的运行作为攀登落在这里 — 声明在证据充分时关闭直至登顶。未跟踪的会话显示为实时活动。在任何会话中开始工作，看板就会填充。"
           hideInterview
           daPromptExample="run the Algorithm on my next task"
         />
@@ -868,12 +868,12 @@ export default function WorkBoard() {
           {totalClaims > 0 && (
             <div className="flex items-center gap-2 text-xs">
               <Target className="w-3.5 h-3.5 text-sky-400" />
-              <span className="text-ink-3">Claims</span>
+              <span className="text-ink-3">声明</span>
               <span className="font-mono text-ink-1">
                 {totalDone}/{totalClaims}
               </span>
               {(added1h > 0 || closed1h > 0) && (
-                <span className="font-mono text-amber-400/80" title="ISC movement across active climbs, last hour">
+                <span className="font-mono text-amber-400/80" title="过去一小时活跃攀登的 ISC 变动">
                   {added1h > 0 && `+${added1h}`}
                   {added1h > 0 && closed1h > 0 && " · "}
                   {closed1h > 0 && `✓${closed1h}`}
@@ -887,18 +887,18 @@ export default function WorkBoard() {
               className={`px-2.5 py-1 flex items-center gap-1 text-[12px] transition-colors ${
                 view === "list" ? "bg-white/[0.08] text-ink-1" : "text-ink-3 hover:text-ink-2"
               }`}
-              title="List view"
+              title="列表视图"
             >
-              <List className="w-3.5 h-3.5" /> List
+              <List className="w-3.5 h-3.5" /> 列表
             </button>
             <button
               onClick={() => switchView("kanban")}
               className={`px-2.5 py-1 flex items-center gap-1 text-[12px] transition-colors ${
                 view === "kanban" ? "bg-white/[0.08] text-ink-1" : "text-ink-3 hover:text-ink-2"
               }`}
-              title="Kanban view — lifecycle lanes"
+              title="看板视图 — 生命周期泳道"
             >
-              <Columns3 className="w-3.5 h-3.5" /> Kanban
+              <Columns3 className="w-3.5 h-3.5" /> 看板
             </button>
           </div>
         </div>
@@ -922,7 +922,7 @@ export default function WorkBoard() {
           <div>
             <SectionHeader
               icon={<Mountain className="w-3.5 h-3.5" style={{ color: "#7dcfff" }} />}
-              label="Active climbs"
+              label="活跃攀登"
               count={activeClimbs.length}
               tone="#7dcfff"
             />
@@ -941,7 +941,7 @@ export default function WorkBoard() {
           <div>
             <SectionHeader
               icon={<Terminal className="w-3.5 h-3.5" style={{ color: "#c0caf5" }} />}
-              label="Live sessions"
+              label="实时会话"
               count={liveSessions.length}
               tone="#c0caf5"
             />
@@ -962,7 +962,7 @@ export default function WorkBoard() {
           <div>
             <SectionHeader
               icon={<Clock className="w-3.5 h-3.5" style={{ color: "#e0af68" }} />}
-              label="Resumable"
+              label="可恢复"
               count={resumable.length}
               tone="#e0af68"
             />

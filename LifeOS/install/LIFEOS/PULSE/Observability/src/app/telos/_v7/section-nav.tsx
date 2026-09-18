@@ -12,16 +12,16 @@ interface SectionTab {
 }
 
 const SECTION_TABS: readonly SectionTab[] = [
-  { id: "sec-current",    label: "Current & Ideal" },
-  { id: "sec-problems",   label: "Problems" },
-  { id: "sec-mission",    label: "Mission" },
-  { id: "sec-goals",      label: "Goals" },
-  { id: "sec-metrics",    label: "Metrics" },
-  { id: "sec-challenges", label: "Challenges" },
-  { id: "sec-strategies", label: "Strategies" },
-  { id: "sec-projects",   label: "Projects" },
-  { id: "sec-team",       label: "Team" },
-  { id: "sec-budget",     label: "Budget" },
+  { id: "sec-current",    label: "现状与理想" },
+  { id: "sec-problems",   label: "问题" },
+  { id: "sec-mission",    label: "使命" },
+  { id: "sec-goals",      label: "目标" },
+  { id: "sec-metrics",    label: "指标" },
+  { id: "sec-challenges", label: "挑战" },
+  { id: "sec-strategies", label: "策略" },
+  { id: "sec-projects",   label: "项目" },
+  { id: "sec-team",       label: "团队" },
+  { id: "sec-budget",     label: "预算" },
 ];
 
 export function SectionNav() {
@@ -65,7 +65,7 @@ export function SectionNav() {
   };
 
   return (
-    <nav className="telos-section-nav" aria-label="TELOS sections">
+    <nav className="telos-section-nav" aria-label="TELOS 板块">
       {tabs.map((t) => (
         <button
           key={t.id}

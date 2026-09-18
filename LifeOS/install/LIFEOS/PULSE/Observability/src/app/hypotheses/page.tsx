@@ -15,7 +15,7 @@ export default function HypothesesRedirect() {
   return (
     <div className="flex-1 flex items-center justify-center">
       <div className="text-ink-3 text-sm">
-        Hypotheses moved — redirecting to /upgrades…
+        假设已迁移 — 正在跳转到 /upgrades…
       </div>
     </div>
   );

@@ -84,7 +84,7 @@ export default function GearPage() {
   const [data, setData] = useState<AssetsData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [q, setQ] = useState("");
-  const [cat, setCat] = useState<string>("All");
+  const [cat, setCat] = useState<string>("全部");
 
   useEffect(() => {
     fetch("/api/assets", { cache: "no-store" })
@@ -99,7 +99,7 @@ export default function GearPage() {
     const all = (data?.gear?.sections ?? []).filter((s) => s.items.length > 0 || s.todos.length > 0);
     const needle = q.trim().toLowerCase();
     return all
-      .filter((s) => cat === "All" || s.category === cat)
+      .filter((s) => cat === "全部" || s.category === cat)
       .map((s) =>
         needle
           ? { ...s, items: s.items.filter((i) => matches(needle, i.name, i.detail, i.use, i.subgroup, s.category)) }
@@ -113,7 +113,7 @@ export default function GearPage() {
     return (data?.assets ?? []).filter(
       (a) =>
         a.source === "topology-snapshot" &&
-        (cat === "All" || cat === "Network & Smart Home (live)") &&
+        (cat === "全部" || cat === "网络与智能家居（实时）") &&
         (!needle || matches(needle, a.name, a.detail, a.category, a.ip)),
     );
   }, [data, q, cat]);
@@ -122,8 +122,8 @@ export default function GearPage() {
     const cats = (data?.gear?.sections ?? [])
       .filter((s) => s.items.length > 0 || s.todos.length > 0)
       .map((s) => s.category);
-    if (data?.assets?.some((a) => a.source === "topology-snapshot")) cats.push("Network & Smart Home (live)");
-    return ["All", ...cats];
+    if (data?.assets?.some((a) => a.source === "topology-snapshot")) cats.push("网络与智能家居（实时）");
+    return ["全部", ...cats];
   }, [data]);
 
   const itemCount = useMemo(
@@ -134,15 +134,15 @@ export default function GearPage() {
   return (
     <PageShell>
       <PageHeader
-        title="Gear"
+        title="装备"
         icon={Boxes}
         subtitle={
           <>
-            Everything you own, by category — rendered live from{" "}
-            <code className="text-ink-2">USER/GEAR.md</code>.
-            {itemCount ? ` ${itemCount} items.` : ""}
-            {data?.networkEndpoints ? ` ${data.networkEndpoints} endpoints seen on the LAN.` : ""}
-            {data?.gear?.updated ? ` Inventory updated ${data.gear.updated}.` : ""}
+            按分类列出你拥有的一切 — 从{" "}
+            <code className="text-ink-2">USER/GEAR.md</code> 实时渲染。
+            {itemCount ? ` ${itemCount} 件物品。` : ""}
+            {data?.networkEndpoints ? ` ${data.networkEndpoints} 个局域网端点已发现。` : ""}
+            {data?.gear?.updated ? ` 清单更新于 ${data.gear.updated}。` : ""}
           </>
         }
       />
@@ -155,7 +155,7 @@ export default function GearPage() {
               type="text"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Filter by name, model, category…"
+              placeholder="按名称、型号、分类筛选…"
               className="w-full pl-9 pr-3 py-2 rounded-lg bg-surface-1 border border-line-2 text-sm text-ink-1 placeholder:text-ink-3 focus:outline-none focus:border-line-3"
             />
           </div>
@@ -178,13 +178,13 @@ export default function GearPage() {
         </div>
       )}
 
-      {error && <div className="text-warn text-sm">Couldn&apos;t reach Gear API: {error}</div>}
-      {!data && !error && <div className="text-ink-3 text-sm">Loading…</div>}
+      {error && <div className="text-warn text-sm">无法连接装备 API：{error}</div>}
+      {!data && !error && <div className="text-ink-3 text-sm">加载中…</div>}
       {data && itemCount === 0 && !error && (
         <EmptyState
           icon={Boxes}
-          title={data.error ? "Couldn't read GEAR.md" : "No gear yet"}
-          hint={data.error ?? "Add categories and items to LIFEOS/USER/GEAR.md and they'll appear here."}
+          title={data.error ? "无法读取 GEAR.md" : "暂无装备"}
+          hint={data.error ?? "在 LIFEOS/USER/GEAR.md 中添加分类和条目，它们会显示在这里。"}
         />
       )}
 
@@ -197,11 +197,11 @@ export default function GearPage() {
           <div className="flex items-center gap-2 mb-3">
             <Network className="w-4 h-4 text-dim-health" />
             <h2 className="text-sm font-semibold text-ink-2 tracking-wide uppercase">
-              Network &amp; Smart Home (live)
+              网络与智能家居（实时）
             </h2>
             <span className="text-[11px] text-ink-3">{networkDevices.length}</span>
             <Pill dim="health" className="text-[10px]">
-              topology snapshot
+              拓扑快照
             </Pill>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -273,7 +273,7 @@ function GearSectionBlock({ section }: { section: GearSection }) {
         <div className="mt-3 flex flex-wrap gap-1.5">
           {section.todos.map((t, i) => (
             <Pill key={i} dim="warn" className="text-[10px]" title={t}>
-              TODO: {t.length > 60 ? `${t.slice(0, 60)}…` : t}
+              待办：{t.length > 60 ? `${t.slice(0, 60)}…` : t}
             </Pill>
           ))}
         </div>

@@ -252,12 +252,12 @@ const SANKEY_INCOME_PALETTE = ["#34D399", "#E0A458"];
 const SANKEY_OUTFLOW_PALETTE = ["#F0A35E", "#F87B7B"];
 
 const SANKEY_COLORS: Record<string, string> = {
-  "Gross Income": "#E0A458",
-  "Net": "#7DD3FC",
-  "Expenses": "#F87B7B",
-  "Vendors": "#F0A35E",
-  "Obligations": "#F87B7B",
-  "Other": "#F0A35E",
+  "总收入": "#E0A458",
+  "净额": "#7DD3FC",
+  "支出": "#F87B7B",
+  "供应商": "#F0A35E",
+  "义务": "#F87B7B",
+  "其他": "#F0A35E",
 };
 
 const INCOME_ICON: Record<string, LucideIcon> = {
@@ -370,9 +370,9 @@ function LineRow({ line, tone }: { line: ResolvedLine; tone: "income" | "outboun
             >
               {fmtHero(line.monthly_usd)}
             </span>
-            <span className="text-xs text-ink-2">/mo</span>
+            <span className="text-xs text-ink-2">/月</span>
             <span className="ml-auto text-xs tabular-nums text-ink-2" data-sensitive>
-              {fmtHero(line.annual_usd)}/yr
+              {fmtHero(line.annual_usd)}/年
             </span>
           </div>
           {line.notes && (
@@ -400,9 +400,9 @@ function StreamCard({ stream }: { stream: Stream }) {
             >
               {fmtHero(stream.annual)}
             </span>
-            <span className="text-xs text-ink-2">/yr</span>
+            <span className="text-xs text-ink-2">/年</span>
             <span className="ml-auto text-xs tabular-nums text-ink-2" data-sensitive>
-              {fmtHero(stream.annual / 12)}/mo
+              {fmtHero(stream.annual / 12)}/月
             </span>
           </div>
         </div>
@@ -425,7 +425,7 @@ function IncomeHero({
       <div className="absolute top-5 right-5 md:top-6 md:right-6 z-10">
         <FreshnessIndicator freshness={freshness} />
       </div>
-      <span className="text-[13px] font-medium uppercase tracking-wider text-ink-2">Total Annual Income</span>
+      <span className="text-[13px] font-medium uppercase tracking-wider text-ink-2">年度总收入</span>
       <div className="flex items-baseline gap-3 mt-1">
         <span
           className="text-5xl font-medium tabular-nums"
@@ -435,17 +435,17 @@ function IncomeHero({
           {fmtHero(data.annual)}
         </span>
         <span className="text-sm text-ink-2" data-sensitive>
-          {fmtHero(data.monthly)}/mo
+          {fmtHero(data.monthly)}/月
         </span>
       </div>
       <span className="text-sm mt-1 block text-ink-2">
-        <Lock className="inline w-3 h-3 mr-1" /> Private. Toggle Observer mode to blur.
+        <Lock className="inline w-3 h-3 mr-1" /> 私密。切换观察者模式以模糊。
       </span>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5">
-        <KpiChip label="Monthly Recurring" value={fmtHero(data.mrr_monthly)} tone="income" />
-        <KpiChip label="MRR Annualized" value={fmtHero(data.mrr_annual)} tone="income" />
-        <KpiChip label="Streams" value={`${data.streams.length}`} tone="neutral" sensitive={false} />
-        <KpiChip label="Monthly Income" value={fmtHero(data.monthly)} tone="income" />
+        <KpiChip label="月度循环" value={fmtHero(data.mrr_monthly)} tone="income" />
+        <KpiChip label="MRR 年化" value={fmtHero(data.mrr_annual)} tone="income" />
+        <KpiChip label="收入来源" value={`${data.streams.length}`} tone="neutral" sensitive={false} />
+        <KpiChip label="月收入" value={fmtHero(data.monthly)} tone="income" />
       </div>
     </Panel>
   );
@@ -463,7 +463,7 @@ function OutboundHero({
       <div className="absolute top-5 right-5 md:top-6 md:right-6 z-10">
         <FreshnessIndicator freshness={freshness} />
       </div>
-      <span className="text-[13px] font-medium uppercase tracking-wider text-ink-2">Total Annual Expenses</span>
+      <span className="text-[13px] font-medium uppercase tracking-wider text-ink-2">年度总支出</span>
       <div className="flex items-baseline gap-3 mt-1">
         <span
           className="text-5xl font-medium tabular-nums"
@@ -473,18 +473,18 @@ function OutboundHero({
           {fmtHero(data.annual)}
         </span>
         <span className="text-sm text-ink-2" data-sensitive>
-          {fmtHero(data.monthly)}/mo
+          {fmtHero(data.monthly)}/月
         </span>
       </div>
       <span className="text-sm mt-1 block text-ink-2">
-        <Lock className="inline w-3 h-3 mr-1" /> Sum of vendors, personal obligations, and other.
+        <Lock className="inline w-3 h-3 mr-1" /> 供应商、个人义务及其他支出合计。
       </span>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5">
-        <KpiChip label="Vendors" value={fmtHero(data.vendors_annual)} tone="outbound" />
-        <KpiChip label="Obligations" value={fmtHero(data.obligations_annual)} tone="outbound" />
-        <KpiChip label="Other" value={fmtHero(data.other_annual)} tone="outbound" />
+        <KpiChip label="供应商" value={fmtHero(data.vendors_annual)} tone="outbound" />
+        <KpiChip label="义务" value={fmtHero(data.obligations_annual)} tone="outbound" />
+        <KpiChip label="其他" value={fmtHero(data.other_annual)} tone="outbound" />
         <KpiChip
-          label="Lines Tracked"
+          label="追踪项目"
           value={`${data.vendors.length + data.obligations.length + data.other.length}`}
           tone="neutral"
           sensitive={false}
@@ -512,7 +512,7 @@ function OverallHero({
         <FreshnessIndicator freshness={freshness} />
       </div>
       <span className="text-[13px] font-medium uppercase tracking-wider text-ink-2">
-        Net ({periodView === "monthly" ? "Monthly" : "Annual"})
+        净额（{periodView === "monthly" ? "月度" : "年度"}）
       </span>
       <div className="flex items-baseline gap-3 mt-1">
         <span
@@ -522,29 +522,29 @@ function OverallHero({
         >
           {fmtHero(pre)}
         </span>
-        <span className="text-sm text-ink-2">pre-tax</span>
+        <span className="text-sm text-ink-2">税前</span>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5">
         <KpiChip
-          label="Post-Tax Net"
+          label="税后净额"
           value={fmtHero(post)}
           tone={post >= 0 ? "net" : "outbound"}
         />
         <KpiChip
-          label="Effective Tax Rate"
+          label="实际税率"
           value={fmtPct(data.effective_tax_rate)}
           tone="neutral"
           sensitive={false}
         />
         <KpiChip
-          label={periodView === "monthly" ? "Annual Pre-Tax" : "Monthly Pre-Tax"}
+          label={periodView === "monthly" ? "年度税前" : "月度税前"}
           value={fmtHero(
             periodView === "monthly" ? data.net_pre_tax_annual : data.net_pre_tax_monthly,
           )}
           tone="net"
         />
         <KpiChip
-          label={periodView === "monthly" ? "Annual Post-Tax" : "Monthly Post-Tax"}
+          label={periodView === "monthly" ? "年度税后" : "月度税后"}
           value={fmtHero(
             periodView === "monthly" ? data.net_post_tax_annual : data.net_post_tax_monthly,
           )}
@@ -560,7 +560,7 @@ function OverallHero({
 function TrendChart({ trend }: { trend: TrendPoint[] }) {
   return (
     <Panel className="border-l-[3px] [border-left-color:var(--money)]">
-      <PanelHeader icon={ArrowLeftRight} title="Income vs Expenses — 12 Month Trend" />
+      <PanelHeader icon={ArrowLeftRight} title="收入 vs 支出 — 12 个月趋势" />
       <div className="w-full h-64" data-sensitive>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={trend}>
@@ -580,14 +580,14 @@ function TrendChart({ trend }: { trend: TrendPoint[] }) {
               }}
             />
             <Legend wrapperStyle={{ fontSize: 12, color: "var(--ink-2)" }} />
-            <Line type="monotone" dataKey="income" stroke="var(--money)" strokeWidth={2} dot={false} name="Income" />
-            <Line type="monotone" dataKey="outbound" stroke="var(--creative)" strokeWidth={2} dot={false} name="Expenses" />
-            <Line type="monotone" dataKey="net" stroke="var(--freedom)" strokeWidth={2} dot={false} name="Net" />
+            <Line type="monotone" dataKey="income" stroke="var(--money)" strokeWidth={2} dot={false} name="收入" />
+            <Line type="monotone" dataKey="outbound" stroke="var(--creative)" strokeWidth={2} dot={false} name="支出" />
+            <Line type="monotone" dataKey="net" stroke="var(--freedom)" strokeWidth={2} dot={false} name="净额" />
           </LineChart>
         </ResponsiveContainer>
       </div>
       <p className="text-[12px] mt-2 text-ink-2">
-        Flat baseline until Phase 2 collectors accumulate historical monthly data.
+        在阶段二采集器积累历史月度数据之前，基线将保持平稳。
       </p>
     </Panel>
   );
@@ -655,7 +655,7 @@ function SankeyNode(props: SankeyNodeProps) {
         fontSize={11}
         data-sensitive
       >
-        {payload?.value != null ? `${fmtHero(payload.value / 12)}/mo` : ""}
+        {payload?.value != null ? `${fmtHero(payload.value / 12)}/月` : ""}
       </text>
     </g>
   );
@@ -727,25 +727,25 @@ function FinancesSankey({
     incomeStreams.forEach((s, i) =>
       nodes.push({ name: s.label, category: "income", colorIndex: i }),
     );
-    nodes.push({ name: "Gross Income", category: "pool" });
+    nodes.push({ name: "总收入", category: "pool" });
     const grossIdx = nodes.length - 1;
     incomeStreams.forEach((s, i) => {
       if (s.annual > 0) links.push({ source: i, target: grossIdx, value: s.annual });
     });
-    nodes.push({ name: "Expenses", category: "pool" });
+    nodes.push({ name: "支出", category: "pool" });
     const outboundIdx = nodes.length - 1;
     if (outbound.annual > 0)
       links.push({ source: grossIdx, target: outboundIdx, value: outbound.annual });
     if (net > 0) {
-      nodes.push({ name: "Net", category: "net" });
+      nodes.push({ name: "净额", category: "net" });
       links.push({ source: grossIdx, target: nodes.length - 1, value: net });
     }
     if (outbound.vendors_annual > 0) {
-      nodes.push({ name: "Vendors", category: "outbound" });
+      nodes.push({ name: "供应商", category: "outbound" });
       links.push({ source: outboundIdx, target: nodes.length - 1, value: outbound.vendors_annual });
     }
     if (outbound.obligations_annual > 0) {
-      nodes.push({ name: "Obligations", category: "outbound" });
+      nodes.push({ name: "义务", category: "outbound" });
       links.push({
         source: outboundIdx,
         target: nodes.length - 1,
@@ -753,7 +753,7 @@ function FinancesSankey({
       });
     }
     if (outbound.other_annual > 0) {
-      nodes.push({ name: "Other", category: "outbound" });
+      nodes.push({ name: "其他", category: "outbound" });
       links.push({ source: outboundIdx, target: nodes.length - 1, value: outbound.other_annual });
     }
     return { nodes, links };
@@ -792,15 +792,15 @@ function FinancesSankey({
 
 type TabKey = "income" | "outbound" | "overall" | "plan";
 const TABS: TabSpec<TabKey>[] = [
-  { id: "income", label: "Income", icon: ArrowUpCircle, dim: "money", hint: "1" },
-  { id: "outbound", label: "Expenses", icon: ArrowDownCircle, dim: "creative", hint: "2" },
-  { id: "overall", label: "Overall", icon: ArrowLeftRight, dim: "freedom", hint: "3" },
-  { id: "plan", label: "Flywheel", icon: TrendingUp, dim: "relationships", hint: "4" },
+  { id: "income", label: "收入", icon: ArrowUpCircle, dim: "money", hint: "1" },
+  { id: "outbound", label: "支出", icon: ArrowDownCircle, dim: "creative", hint: "2" },
+  { id: "overall", label: "总览", icon: ArrowLeftRight, dim: "freedom", hint: "3" },
+  { id: "plan", label: "飞轮", icon: TrendingUp, dim: "relationships", hint: "4" },
 ];
 
 const PERIOD_TABS: TabSpec<"monthly" | "annual">[] = [
-  { id: "monthly", label: "Monthly", dim: "freedom" },
-  { id: "annual", label: "Annual", dim: "freedom" },
+  { id: "monthly", label: "月度", dim: "freedom" },
+  { id: "annual", label: "年度", dim: "freedom" },
 ];
 
 // ─── Section renderers ───
@@ -818,11 +818,11 @@ function SectionGroup({
 }) {
   if (!items || items.length === 0) return null;
   const accent =
-    title === "Investments" ? "var(--health)" : title === "Goals" ? "var(--relationships)" : "var(--money)";
+    title === "投资" ? "var(--health)" : title === "目标" ? "var(--relationships)" : "var(--money)";
   const accentClass =
-    title === "Investments"
+    title === "投资"
       ? "[border-left-color:var(--health)]"
-      : title === "Goals"
+      : title === "目标"
         ? "[border-left-color:var(--relationships)]"
         : "[border-left-color:var(--money)]";
   return (
@@ -858,15 +858,23 @@ function AccountCategory({ item }: { item: Section }) {
     Investments: PiggyBank,
     "Account Processing": Receipt,
   };
+  const ACCOUNT_LABEL: Record<string, string> = {
+    Banking: "银行",
+    "Credit Cards": "信用卡",
+    "Investment Accounts": "投资账户",
+    Investments: "投资",
+    "Account Processing": "账户处理",
+  };
   const Icon = ACCOUNT_ICON[item.heading] || DollarSign;
+  const displayHeading = ACCOUNT_LABEL[item.heading] ?? item.heading;
   const subs = parseSubheadings(item.body);
   return (
     <Panel className="border-l-[3px] [border-left-color:var(--money)]">
       <div className="flex items-center gap-2 mb-1">
         <Icon className="w-4 h-4" color="var(--money)" />
-        <h3 className="text-sm font-medium uppercase tracking-wider">{item.heading}</h3>
+        <h3 className="text-sm font-medium uppercase tracking-wider">{displayHeading}</h3>
         <span className="ml-auto text-xs text-ink-2">
-          {subs.length > 0 ? `${subs.length} items` : ""}
+          {subs.length > 0 ? `${subs.length} 项` : ""}
         </span>
       </div>
       {subs.length > 0 ? (
@@ -905,7 +913,7 @@ function IncomeTab({ data }: { data: FinancesDataV2 }) {
       {streams.length > 0 && (
         <section>
           <h2 className="text-sm font-medium uppercase tracking-widest text-ink-2 mb-4 flex items-center gap-2">
-            <TrendingUp className="w-4 h-4" color="var(--money)" /> Income Streams
+            <TrendingUp className="w-4 h-4" color="var(--money)" /> 收入来源
           </h2>
           <div className="prob-grid">
             {streams.map((s) => (
@@ -936,7 +944,7 @@ function OutboundSubgroup({
           <Icon className="w-4 h-4" color="var(--creative)" /> {title}
         </h3>
         <span className="text-xs tabular-nums text-ink-2" data-sensitive>
-          {fmtHero(total / 12)}/mo · {fmtHero(total)}/yr
+          {fmtHero(total / 12)}/月 · {fmtHero(total)}/年
         </span>
       </div>
       <div className="prob-grid">
@@ -954,12 +962,12 @@ function InsightLineRow({ line, accent }: { line: InsightLine; accent: string })
   const isUncertain = line.cadence === "observed_one_month" || (line.cadence === "one_time" && line.charge_count >= 2);
   const cadenceLabel =
     line.cadence === "monthly_recurring"
-      ? `${line.charge_count}× over ${line.active_months}mo · monthly`
+      ? `${line.charge_count}× / ${line.active_months}个月 · 月度`
       : line.cadence === "annual_subscription"
-        ? "annual subscription"
+        ? "年度订阅"
         : line.cadence === "observed_one_month"
-          ? `${line.charge_count}× in 1mo · observed only`
-          : "one-time";
+          ? `${line.charge_count}× / 1个月 · 仅观测`
+          : "一次性";
   const confidenceColor =
     line.confidence === "high" ? "var(--health)" : line.confidence === "medium" ? "var(--money)" : "var(--ink-2)";
   return (
@@ -971,19 +979,19 @@ function InsightLineRow({ line, accent }: { line: InsightLine; accent: string })
         <span className="text-sm font-medium truncate">{line.display}</span>
         <span className="text-base font-medium tabular-nums" style={{ color: accent }} data-sensitive>
           {isUncertain ? fmtHero(line.observed_usd) : fmtHero(line.annual_usd)}
-          <span className="text-[12px] text-ink-2 ml-1">{isUncertain ? "observed" : "/yr"}</span>
+          <span className="text-[12px] text-ink-2 ml-1">{isUncertain ? "观测值" : "/年"}</span>
         </span>
       </div>
       <div className="flex items-center gap-2 text-[12px] text-ink-2 flex-wrap mt-1">
         {!isUncertain && line.monthly_usd > 0 && (
           <>
-            <span data-sensitive>{fmtHero(line.monthly_usd)}/mo</span>
+            <span data-sensitive>{fmtHero(line.monthly_usd)}/月</span>
             <span>·</span>
           </>
         )}
         <span>{cadenceLabel}</span>
         <span>·</span>
-        <span style={{ color: confidenceColor }}>conf: {line.confidence}</span>
+        <span style={{ color: confidenceColor }}>置信度: {line.confidence}</span>
         {line.tags.length > 0 && (
           <>
             <span>·</span>
@@ -1024,7 +1032,7 @@ function InsightSection({
         </div>
         {lines.length > 0 && (
           <span className="text-xs tabular-nums text-ink-2" data-sensitive>
-            {fmtHero(lines.reduce((s, l) => s + l.annual_usd, 0))}/yr · {lines.length} item{lines.length === 1 ? "" : "s"}
+            {fmtHero(lines.reduce((s, l) => s + l.annual_usd, 0))}/年 · {lines.length} 项
           </span>
         )}
       </div>
@@ -1047,20 +1055,20 @@ function CategoryBreakdown({ categories, total }: { categories: SpendInsights["b
   if (categories.length === 0) return null;
   const max = Math.max(...categories.map(c => c.annual_usd), 1);
   const CATEGORY_LABEL: Record<string, string> = {
-    taxes: "Taxes", payroll: "Payroll / Contractors",
-    ai: "AI", infrastructure: "Infrastructure", saas: "SaaS / Subscriptions",
-    food: "Food", transportation: "Transportation", utilities: "Utilities",
-    entertainment: "Entertainment", health: "Health", news: "News", shopping: "Shopping",
-    travel: "Travel", "business-services": "Business Services", debt: "Debt", advertising: "Advertising",
-    other: "Other",
+    taxes: "税", payroll: "薪资/承包商",
+    ai: "AI", infrastructure: "基础设施", saas: "SaaS/订阅",
+    food: "餐饮", transportation: "交通", utilities: "水电",
+    entertainment: "娱乐", health: "健康", news: "新闻", shopping: "购物",
+    travel: "差旅", "business-services": "商务服务", debt: "债务", advertising: "广告",
+    other: "其他",
   };
   return (
     <section>
       <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <h3 className="text-sm font-medium uppercase tracking-widest text-ink-2 flex items-center gap-2">
-          <PieChart className="w-4 h-4" color="var(--relationships)" /> Spending By Category
+          <PieChart className="w-4 h-4" color="var(--relationships)" /> 分类支出
         </h3>
-        <span className="text-xs tabular-nums text-ink-2" data-sensitive>{fmtHero(total)}/yr total observed</span>
+        <span className="text-xs tabular-nums text-ink-2" data-sensitive>{fmtHero(total)}/年 观测总计</span>
       </div>
       <Panel className="p-4">
         <div className="flex flex-col gap-2.5">
@@ -1072,7 +1080,7 @@ function CategoryBreakdown({ categories, total }: { categories: SpendInsights["b
                 <div className="flex items-baseline justify-between text-xs">
                   <span className="font-medium">{CATEGORY_LABEL[c.category] ?? c.category}</span>
                   <span className="tabular-nums text-ink-2" data-sensitive>
-                    {fmtHero(c.annual_usd)}/yr · {c.merchants} {c.merchants === 1 ? "merchant" : "merchants"} · {pct}%
+                    {fmtHero(c.annual_usd)}/年 · {c.merchants} 商户 · {pct}%
                   </span>
                 </div>
                 <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--surface-1)" }}>
@@ -1096,17 +1104,17 @@ function SpendInsightsSection({ insights }: { insights: SpendInsights }) {
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
           <h2 className="text-sm font-medium uppercase tracking-widest text-ink-2 flex items-center gap-2">
-            <Sparkles className="w-4 h-4" color="var(--money)" /> Spending Analysis
+            <Sparkles className="w-4 h-4" color="var(--money)" /> 支出分析
           </h2>
           <p className="text-[12px] text-ink-2 mt-1">
-            Derived from statement CSVs in <code className="text-ink-1">FINANCES/Statements/*</code>.
-            Re-run with <code className="text-ink-1">bun ~/.claude/LIFEOS/USER/FINANCES/Tools/StatementAnalyzer.ts</code>.
+            来源于 <code className="text-ink-1">FINANCES/Statements/*</code> 中的对账单 CSV。
+            使用 <code className="text-ink-1">bun ~/.claude/LIFEOS/USER/FINANCES/Tools/StatementAnalyzer.ts</code> 重新运行。
           </p>
         </div>
         {insights.statement_spend.generated_at && (
           <span className="text-[12px] text-ink-2">
-            {insights.statement_spend.record_count} merchants · generated{" "}
-            {new Date(insights.statement_spend.generated_at).toLocaleDateString("en-US", {
+            {insights.statement_spend.record_count} 商户 · 生成于{" "}
+            {new Date(insights.statement_spend.generated_at).toLocaleDateString("zh-CN", {
               month: "short", day: "numeric", year: "numeric",
             })}
           </span>
@@ -1116,39 +1124,39 @@ function SpendInsightsSection({ insights }: { insights: SpendInsights }) {
       <CategoryBreakdown categories={insights.by_category} total={insights.total_annualized} />
 
       <InsightSection
-        title="Top Bills"
+        title="主要账单"
         icon={Trophy}
         accent="var(--money)"
-        description="Highest annualized spend across all sources (transfers excluded)."
+        description="所有来源年化支出最高（转账已排除）。"
         lines={insights.top_bills}
-        emptyHint="No statement aggregate yet — run StatementAnalyzer.ts to populate."
+        emptyHint="尚无对账单汇总 — 运行 StatementAnalyzer.ts 生成。"
       />
 
       <InsightSection
-        title="Top AI Services"
+        title="AI 服务排行"
         icon={Cpu}
         accent="var(--relationships)"
-        description="What the AI stack actually costs — sorted by annualized spend."
+        description="AI 工具实际花费 — 按年化支出排序。"
         lines={insights.top_ai_services}
-        emptyHint="No AI services detected yet. Drop more CSV exports under FINANCES/Statements/."
+        emptyHint="暂未检测到 AI 服务。将更多 CSV 导出放入 FINANCES/Statements/ 目录。"
       />
 
       <InsightSection
-        title="Top Infrastructure Services"
+        title="基础设施服务排行"
         icon={Server}
         accent="var(--freedom)"
-        description="Cloud, hosting, dev, monitoring, networking."
+        description="云、托管、开发、监控、网络。"
         lines={insights.top_infrastructure_services}
-        emptyHint="No infrastructure services detected yet."
+        emptyHint="暂未检测到基础设施服务。"
       />
 
       <InsightSection
-        title="Cut Candidates"
+        title="可裁减项"
         icon={Scissors}
         accent="var(--creative)"
-        description="Subscriptions flagged for review — single-use annuals, low-value recurring, overlapping tools."
+        description="标记待审的订阅 — 一次性年费、低值循环、重叠工具。"
         lines={insights.cut_candidates}
-        emptyHint="No obvious cut candidates. Stack is lean (or analyzer needs more data)."
+        emptyHint="无明显可裁减项。工具栈精简（或分析器需要更多数据）。"
       />
     </div>
   );
@@ -1161,11 +1169,11 @@ function OutboundTab({ data }: { data: FinancesDataV2 }) {
     return (
       <Panel>
         <p className="text-sm text-center text-ink-2">
-          Expenses data unavailable. Check{" "}
+          支出数据不可用。请检查{" "}
           <code className="text-ink-1">
             ~/.claude/LIFEOS/USER/FINANCES/vendors.yaml
           </code>
-          .
+          。
         </p>
       </Panel>
     );
@@ -1174,16 +1182,16 @@ function OutboundTab({ data }: { data: FinancesDataV2 }) {
     <div className="space-y-6">
       <OutboundHero data={outbound} freshness={outboundFreshness} />
       <OutboundSubgroup
-        title="Vendors & Services"
+        title="供应商与服务"
         icon={Server}
         lines={outbound.vendors}
       />
       <OutboundSubgroup
-        title="Personal Obligations"
+        title="个人义务"
         icon={Home}
         lines={outbound.obligations}
       />
-      <OutboundSubgroup title="Other" icon={Receipt} lines={outbound.other} />
+      <OutboundSubgroup title="其他" icon={Receipt} lines={outbound.other} />
       {data.insights && <SpendInsightsSection insights={data.insights} />}
     </div>
   );
@@ -1204,7 +1212,7 @@ function OverallTab({
   if (!overall || !income || !outbound) {
     return (
       <Panel>
-        <p className="text-sm text-center text-ink-2">Overall data unavailable.</p>
+        <p className="text-sm text-center text-ink-2">总览数据不可用。</p>
       </Panel>
     );
   }
@@ -1228,7 +1236,7 @@ function OverallTab({
         <section>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <h2 className="text-sm font-medium uppercase tracking-widest text-ink-2 flex items-center gap-2">
-              <Landmark className="w-4 h-4" color="var(--money)" /> Accounts
+              <Landmark className="w-4 h-4" color="var(--money)" /> 账户
             </h2>
             <FreshnessIndicator freshness={data.freshness_per_card?.accounts} />
           </div>
@@ -1240,14 +1248,14 @@ function OverallTab({
         </section>
       )}
       <SectionGroup
-        title="Investments"
+        title="投资"
         items={data.investments}
         icon={PiggyBank}
         freshness={data.freshness_per_card?.investments}
       />
-      <SectionGroup title="Goals" items={data.goals} icon={Target} />
+      <SectionGroup title="目标" items={data.goals} icon={Target} />
       <SectionGroup
-        title="Taxes"
+        title="税务"
         items={data.taxes}
         icon={Receipt}
         freshness={data.freshness_per_card?.taxes}
@@ -1331,8 +1339,8 @@ function FlywheelLoop({ stages }: { stages: { n: number; stage: string; text: st
     <section>
       <div className="flex items-center gap-2 mb-4">
         <TrendingUp className="w-4 h-4" color="var(--accent-blue)" />
-        <h2 className="text-sm font-medium uppercase tracking-widest text-ink-2">The Flywheel</h2>
-        <span className="text-[12px] text-ink-2 ml-1">↻ each turn spins the next</span>
+        <h2 className="text-sm font-medium uppercase tracking-widest text-ink-2">飞轮</h2>
+        <span className="text-[12px] text-ink-2 ml-1">↻ 每一圈驱动下一圈</span>
       </div>
       <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
         {stages.map((s, i) => {
@@ -1366,7 +1374,7 @@ function PlanTab({ data }: { data: FinancesDataV2 }) {
     return (
       <Panel>
         <p className="text-sm text-center text-ink-2">
-          No plan yet. Create <code>USER/FINANCES/PLAN.md</code> — the flywheel, targets, and product ladder render here.
+          尚无规划。创建 <code>USER/FINANCES/PLAN.md</code> — 飞轮、目标和产品阶梯将在此渲染。
         </p>
       </Panel>
     );
@@ -1396,7 +1404,7 @@ function PlanTab({ data }: { data: FinancesDataV2 }) {
         <section>
           <div className="flex items-center gap-2 mb-4">
             <Target className="w-4 h-4" color="var(--health)" />
-            <h2 className="text-sm font-medium uppercase tracking-widest text-ink-2">Targets</h2>
+            <h2 className="text-sm font-medium uppercase tracking-widest text-ink-2">目标</h2>
           </div>
           <Panel className="overflow-x-auto">
             <table className="w-full text-sm" style={{ borderCollapse: "collapse" }}>
@@ -1487,13 +1495,13 @@ export default function FinancesPage() {
     return (
       <PageShell>
         <Panel className="border-l-[3px] [border-left-color:var(--err)]">
-          <h2 className="font-medium text-err">Failed to load finances</h2>
+          <h2 className="font-medium text-err">加载财务数据失败</h2>
           <p className="text-sm text-err">{error}</p>
         </Panel>
       </PageShell>
     );
   }
-  if (!data) return <div className="p-8 text-sm text-ink-2">Loading Finances...</div>;
+  if (!data) return <div className="p-8 text-sm text-ink-2">加载财务数据中...</div>;
 
   const incomeAnnual = data.income?.annual ?? data.annualIncome ?? 0;
   const outboundAnnual = data.outbound?.annual ?? data.annualExpenses ?? 0;
@@ -1508,17 +1516,17 @@ export default function FinancesPage() {
     <PageShell>
       <PageHeader
         icon={DollarSign}
-        title="Finances"
-        subtitle="Income · Expenses · Overall · Flywheel · Press 1/2/3/4 to switch tabs"
+        title="财务"
+        subtitle="收入 · 支出 · 总览 · 飞轮 · 按 1/2/3/4 切换标签页"
       />
       <TabBar tabs={TABS} active={tab} onChange={changeTab} />
 
       {isFreshInstall && (
         <EmptyStateGuide
-          section="Finances"
-          description="Accounts, transactions, P&L, and revenue tracked over time."
+          section="财务"
+          description="账户、交易、损益表及收入趋势追踪。"
           userDir="FINANCES"
-          daPromptExample="help me wire up my financial data"
+          daPromptExample="帮我接入财务数据"
         />
       )}
 

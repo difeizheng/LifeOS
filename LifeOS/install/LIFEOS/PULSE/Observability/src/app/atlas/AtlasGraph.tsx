@@ -197,7 +197,7 @@ export function AtlasGraph({
     <div className="relative">
       <svg ref={svgRef} width="100%" height={600} style={{ background: "var(--surface-1)", borderRadius: 8, touchAction: "none" }} />
       <div className="absolute left-3 top-3 text-[11px] text-ink-3 pointer-events-none">
-        {nodes.length} nodes · {links.length} edges · drag to pull · scroll to zoom{hover != null ? " · hovering" : ""}
+        {nodes.length} 节点 · {links.length} 边 · 拖动以拉动 · 滚动以缩放{hover != null ? " · 悬停中" : ""}
       </div>
     </div>
   );

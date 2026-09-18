@@ -92,12 +92,12 @@ export default function BunkerPage() {
       <PageHeader
         icon={Container}
         title="Bunker"
-        subtitle="Universal application harness · discovery-based registry · the harness speaks ISA"
+        subtitle="通用应用调度器 · 基于发现的注册表 · 调度器使用 ISA 语言"
         actions={
           <>
             <Pill dim="ok">
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--ok)", animation: "pulse 2s ease-in-out infinite" }} />
-              SYSTEMS ONLINE
+              系统在线
             </Pill>
             {data && (
               <Pill dim={data.summary.probesPass === data.summary.probesTotal ? "ok" : "warn"}>
@@ -113,7 +113,7 @@ export default function BunkerPage() {
           <span style={{ color: "var(--err)" }}>SIGNAL LOST · /api/bunker — {error}</span>
         </Panel>
       )}
-      {!data && !error && <EmptyState title="Establishing link…" />}
+      {!data && !error && <EmptyState title="正在建立连接…" />}
 
       {data && !app && (
         <>
@@ -127,7 +127,7 @@ export default function BunkerPage() {
 
       {data && (
         <div className="text-[11px] tracking-[0.12em] text-ink-3">
-          {data.lastFetch ? `LAST SCAN ${new Date(data.lastFetch).toLocaleTimeString()} · ` : ""}discovery-based registry
+          {data.lastFetch ? `最后扫描 ${new Date(data.lastFetch).toLocaleTimeString()} · ` : ""}基于发现的注册表
         </div>
       )}
       <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}`}</style>
@@ -174,20 +174,20 @@ function Bays({ data, onOpen }: { data: Snapshot; onOpen: (n: string) => void })
         disabled={cur === 0}
         className="cursor-pointer disabled:cursor-default"
         style={{ background: "none", border: "none", padding: 0, color: cur === 0 ? "var(--ink-3)" : "var(--accent-blue)" }}
-      >◂ PREV</button>
-      <span className="text-ink-3">PAGE {cur + 1}/{pages} · {data.apps.length} APPS</span>
+      >◂ 上一页</button>
+      <span className="text-ink-3">第 {cur + 1}/{pages} 页 · {data.apps.length} 个应用</span>
       <button
         onClick={() => setPage((p) => Math.min(pages - 1, p + 1))}
         disabled={cur >= pages - 1}
         className="cursor-pointer disabled:cursor-default"
         style={{ background: "none", border: "none", padding: 0, color: cur >= pages - 1 ? "var(--ink-3)" : "var(--accent-blue)" }}
-      >NEXT ▸</button>
+      >下一页 ▸</button>
     </div>
   );
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <PanelHeader title={`Application Bays (${data.apps.length})`} />
+        <PanelHeader title={`应用舱位 (${data.apps.length})`} />
         {pager}
       </div>
       {shown.map((a) => {
@@ -218,12 +218,12 @@ function Bays({ data, onOpen }: { data: Snapshot; onOpen: (n: string) => void })
                 <span style={{ fontSize: 12, color: c, letterSpacing: "0.06em" }}>{total === 0 ? "NO PROBES" : `${a.pass}/${total}`}</span>
               </div>
             </div>
-            <span className="text-ink-3" style={{ fontSize: 12, letterSpacing: "0.14em", flex: "none" }}>OPEN ▸</span>
+            <span className="text-ink-3" style={{ fontSize: 12, letterSpacing: "0.14em", flex: "none" }}>打开 ▸</span>
           </Panel>
         );
       })}
       {pager}
-      <Panel className="border-dashed text-ink-3 text-[12px] tracking-[0.1em]">+ ADOPT AN APP · bunker adopt &lt;dir&gt;</Panel>
+      <Panel className="border-dashed text-ink-3 text-[12px] tracking-[0.1em]">+ 接入一个应用 · bunker adopt &lt;dir&gt;</Panel>
     </div>
   );
 }
@@ -236,7 +236,7 @@ function Readout({ app, onBack }: { app: App; onBack: () => void }) {
 
   return (
     <div className="flex flex-col gap-3.5">
-      <button onClick={onBack} className="self-start text-[12px] tracking-[0.14em] cursor-pointer" style={{ background: "none", border: "none", color: "var(--accent-blue)", padding: 0 }}>◂ ALL BAYS</button>
+      <button onClick={onBack} className="self-start text-[12px] tracking-[0.14em] cursor-pointer" style={{ background: "none", border: "none", color: "var(--accent-blue)", padding: 0 }}>◂ 所有舱位</button>
 
       {(app.shot || app.og) && <Thumb app={app} w={1120} h={280} />}
 
@@ -247,7 +247,7 @@ function Readout({ app, onBack }: { app: App; onBack: () => void }) {
         <span style={{ fontSize: 13, color: c, letterSpacing: "0.08em" }}>{total === 0 ? "NO PROBES" : `${app.pass}/${total} · ${pct}%`}</span>
       </div>
 
-      <RPanel title="Test Harness · ISA Criteria & Probes" live>
+      <RPanel title="测试调度器 · ISA 标准与探针" live>
         {app.probes.map((p) => {
           const pd = stDim(p.status === "pass" ? "ok" : p.status === "fail" ? "down" : "idle");
           const pc = dimVar(pd);
@@ -263,7 +263,7 @@ function Readout({ app, onBack }: { app: App; onBack: () => void }) {
         })}
       </RPanel>
 
-      <RPanel title="Components · Six Planes" live>
+      <RPanel title="组件 · 六面" live>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", columnGap: 34, rowGap: 16 }}>
           {planesForType(app.type).map((pl) => (
             <div key={pl.plane}>
@@ -280,17 +280,17 @@ function Readout({ app, onBack }: { app: App; onBack: () => void }) {
         </div>
       </RPanel>
 
-      <RPanel title="Live Metrics" live={false}>
+      <RPanel title="实时指标" live={false}>
         <p className="text-ink-3" style={{ fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-          NOT WIRED. Planned: admin tracking + a real-time viewers badge for this app, pageviews, per-app cloud cost. No fake numbers here.
+          尚未接入。计划中：管理追踪 + 此应用的实时访客徽章、页面浏览量、每应用云成本。此处无虚假数字。
         </p>
       </RPanel>
-      <RPanel title="Identity & Logs" live={false}>
+      <RPanel title="身份与日志" live={false}>
         <p className="text-ink-3" style={{ fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-          {app.type === "web-enterprise" ? "Auth: OIDC (planned)." : "Auth: none for this type."} User + auth logs sink: pending.
+          {app.type === "web-enterprise" ? "认证：OIDC（计划中）。" : "认证：此类型暂无。"} 用户 + 认证日志接收器：待处理。
         </p>
       </RPanel>
-      <RPanel title="Source" live>
+      <RPanel title="来源" live>
         <div className="text-ink-3" style={{ fontSize: 12, lineHeight: 1.7 }} data-sensitive>
           <div>type&nbsp;&nbsp; {app.type}</div>
           <div>dir&nbsp;&nbsp;&nbsp;&nbsp; {app.dir}</div>
@@ -340,15 +340,15 @@ function CostPanel() {
   return (
     <Panel style={{ borderLeftWidth: 2, borderLeftColor: err ? "var(--err)" : "var(--ok)" }}>
       <PanelHeader
-        title="Monitoring Cost · Cloudflare"
+        title="监控成本 · Cloudflare"
         actions={
           c ? (
             <>
-              <Pill dim="ok">${c.marginalMonthly.toFixed(2)}/mo MARGINAL</Pill>
-              <Pill dim="neutral">{c.pctOfIncluded < 0.1 ? "<0.1" : c.pctOfIncluded.toFixed(1)}% OF INCLUDED</Pill>
+              <Pill dim="ok">${c.marginalMonthly.toFixed(2)}/月 边际</Pill>
+              <Pill dim="neutral">{c.pctOfIncluded < 0.1 ? "<0.1" : c.pctOfIncluded.toFixed(1)}% 已含额度</Pill>
             </>
           ) : (
-            <Pill dim={err ? "err" : "neutral"}>{err ? "OFFLINE" : "…"}</Pill>
+            <Pill dim={err ? "err" : "neutral"}>{err ? "离线" : "…"}</Pill>
           )
         }
       />
@@ -356,10 +356,10 @@ function CostPanel() {
       {c && (
         <>
           <p className="text-ink-2" style={{ fontSize: 13, lineHeight: 1.6, margin: "0 0 10px" }}>
-            The uptime and security monitors run {fmtN(c.totalReqPerMonth)} worker requests/month, about{" "}
-            {c.pctOfIncluded < 0.1 ? "under 0.1" : c.pctOfIncluded.toFixed(1)}% of the {fmtN(c.includedRequests / 1_000_000)}M included in the
-            plan. Marginal cost is <strong style={{ color: "var(--ok)" }}>$0</strong> — it all sits inside the flat {c.plan}.
-            Billed purely per-request it would be about ${c.standaloneMonthly.toFixed(2)}/month.
+            正常运行时间和安全监控每月运行 {fmtN(c.totalReqPerMonth)} 个 worker 请求，约占
+            套餐内 {fmtN(c.includedRequests / 1_000_000)}M 额度的{" "}
+            {c.pctOfIncluded < 0.1 ? "不到 0.1" : c.pctOfIncluded.toFixed(1)}%。边际成本为 <strong style={{ color: "var(--ok)" }}>$0</strong> — 全部包含在固定费用 {c.plan} 中。
+            若按纯按请求计费约为 ${c.standaloneMonthly.toFixed(2)}/月。
           </p>
           {c.workers.map((w) => (
             <div key={w.name} className="flex items-center gap-3 border-b border-line-1" style={{ padding: "5px 0", fontSize: 13 }}>
@@ -369,7 +369,7 @@ function CostPanel() {
             </div>
           ))}
           <div className="text-[11px] tracking-[0.12em] text-ink-3" style={{ paddingTop: 6 }}>
-            LIVE FROM CLOUDFLARE ANALYTICS · updated {new Date(c.updatedAt).toLocaleTimeString()} · 24h window projected to 30.4 days
+            实时来自 CLOUDFLARE 分析 · 更新于 {new Date(c.updatedAt).toLocaleTimeString()} · 24 小时窗口推算至 30.4 天
           </div>
         </>
       )}
@@ -409,17 +409,17 @@ function SiteHealthPanel() {
   return (
     <Panel style={{ borderLeftWidth: 2, borderLeftColor: err ? "var(--err)" : "var(--accent-blue)" }}>
       <PanelHeader
-        title="Cloud Uptime · Every Deployed Site"
+        title="云正常运行时间 · 所有已部署站点"
         actions={
           d ? (
             <>
-              <Pill dim="neutral">{d.total} SITES · 5-MIN</Pill>
+              <Pill dim="neutral">{d.total} 站点 · 5 分钟</Pill>
               <Pill dim={allGreen ? "ok" : d.red > 0 ? "err" : "warn"}>
-                {d.total - d.red - d.degraded} UP{d.degraded ? ` · ${d.degraded} DEGRADED` : ""}{d.red ? ` · ${d.red} DOWN` : ""}
+                {d.total - d.red - d.degraded} 正常{d.degraded ? ` · ${d.degraded} 降级` : ""}{d.red ? ` · ${d.red} 宕机` : ""}
               </Pill>
             </>
           ) : (
-            <Pill dim={err ? "err" : "neutral"}>{err ? "OFFLINE" : "…"}</Pill>
+            <Pill dim={err ? "err" : "neutral"}>{err ? "离线" : "…"}</Pill>
           )
         }
       />
@@ -442,7 +442,7 @@ function SiteHealthPanel() {
             );
           })}
           <div className="text-[11px] tracking-[0.12em] text-ink-3" style={{ paddingTop: 6 }}>
-            LAST CLOUD CHECK {new Date(d.updatedAt).toLocaleString()} · the site-health worker · 5-min cron · authenticated
+            最后云端检查 {new Date(d.updatedAt).toLocaleString()} · 站点健康 worker · 5 分钟定时 · 已认证
           </div>
         </>
       )}
@@ -491,13 +491,13 @@ function ArbolPanel() {
   return (
     <Panel style={{ borderLeftWidth: 2, borderLeftColor: err ? "var(--err)" : "var(--accent-blue)" }}>
       <PanelHeader
-        title="Cloud Watch · Arbol Infra-Security"
+        title="云端监控 · Arbol 基础设施安全"
         actions={
           arbol ? (
             <>
-              <Pill dim="neutral">{arbol.targets} TARGETS · HOURLY</Pill>
+              <Pill dim="neutral">{arbol.targets} 目标 · 每小时</Pill>
               <Pill dim={arbol.summary.fail > 0 ? "warn" : "ok"}>
-                {arbol.summary.pass} PASS · {arbol.summary.fail} FAIL · {arbol.summary.error} ERR
+                {arbol.summary.pass} 通过 · {arbol.summary.fail} 失败 · {arbol.summary.error} 错误
               </Pill>
               {Object.entries(arbol.bySeverity).map(([sev, n]) => (
                 <Pill key={sev} dim={sevDim(sev)}>{n} {sev.toUpperCase()}</Pill>
@@ -527,11 +527,11 @@ function ArbolPanel() {
               className="self-start text-[12px] tracking-[0.12em] cursor-pointer"
               style={{ background: "none", border: "none", color: "var(--accent-blue)", padding: "6px 0 0" }}
             >
-              {showAll ? "◂ SHOW FEWER" : `SHOW ALL ${arbol.failing.length} FAILING ▸`}
+              {showAll ? "◂ 显示更少" : `显示全部 ${arbol.failing.length} 个失败 ▸`}
             </button>
           )}
           <div className="text-[11px] tracking-[0.12em] text-ink-3" style={{ paddingTop: 6 }}>
-            LAST CLOUD SCAN {new Date(arbol.timestamp).toLocaleString()} · the infra-security worker · hourly cron
+            最后云端扫描 {new Date(arbol.timestamp).toLocaleString()} · 基础设施安全 worker · 每小时定时
           </div>
         </>
       )}

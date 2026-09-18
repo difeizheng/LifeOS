@@ -96,11 +96,11 @@ function ViewControls({ view, onView, showIds, onToggleIds }: ViewControlsProps)
       <button
         className={"id-toggle" + (showIds ? " on" : "")}
         onClick={onToggleIds}
-        title="Show TELOS IDs"
+        title="显示 TELOS ID"
         type="button"
       >
         <span className="id-toggle-dot" />
-        <span>IDs</span>
+        <span>ID</span>
       </button>
     </div>
   );
@@ -151,22 +151,22 @@ export function TreeView({ telos, onTrace, showIds }: CommonViewProps) {
     <section className="tree-view">
       <header className="band-head">
         <div>
-          <h2 className="band-title">All 11 primitives · top-down</h2>
-          <p className="band-sub">The full TELOS model in dependency order. Click any node to trace.</p>
+          <h2 className="band-title">全部 11 个原语 · 自顶向下</h2>
+          <p className="band-sub">TELOS 模型按依赖顺序排列。点击任意节点进行追踪。</p>
         </div>
       </header>
       <div className="tree-list">
-        {row("Ideal State", "var(--sky)",      telos.dimensions, (d) => `${d.label} · ${d.cur}→${d.ideal}`, (d) => d.id)}
-        {row("Problems",    "var(--bad)",      telos.problems,   (p) => p.title, (p) => p.id)}
-        {row("Mission",     "var(--warm)",     telos.missions,   (m) => `${m.horizon} — ${m.title}`, (m) => m.id)}
-        {row("Goals",       "var(--ok)",       telos.goals,      (g) => g.title, (g) => g.id)}
-        {row("Metrics",     "var(--azure)",    telos.metrics,    (m) => `${m.label} · ${m.value}${m.unit}`, (m) => m.id)}
-        {row("Challenges",  "var(--warm)",     telos.challenges, (c) => c.title, (c) => c.id)}
-        {row("Strategies",  "var(--accent-2)", telos.strategies, (s) => s.title.split("—")[0].trim(), (s) => s.id)}
-        {row("Projects",    "var(--sky)",      telos.projects,   (p) => p.title, (p) => p.id)}
-        {row("Work",        "var(--text-2)",   allWork,          (w) => w.title, (w) => w.id)}
-        {row("Team",        "var(--accent-2)", telos.team,       (t) => `${t.name} — ${t.role}`, (t) => t.id)}
-        {row("Budget",      "var(--money)",    telos.budget,     (b) => `${b.label} · ${b.value}/${b.of}`, (b) => b.id)}
+        {row("理想状态", "var(--sky)",      telos.dimensions, (d) => `${d.label} · ${d.cur}→${d.ideal}`, (d) => d.id)}
+        {row("问题",    "var(--bad)",      telos.problems,   (p) => p.title, (p) => p.id)}
+        {row("使命",     "var(--warm)",     telos.missions,   (m) => `${m.horizon} — ${m.title}`, (m) => m.id)}
+        {row("目标",       "var(--ok)",       telos.goals,      (g) => g.title, (g) => g.id)}
+        {row("指标",     "var(--azure)",    telos.metrics,    (m) => `${m.label} · ${m.value}${m.unit}`, (m) => m.id)}
+        {row("挑战",  "var(--warm)",     telos.challenges, (c) => c.title, (c) => c.id)}
+        {row("策略",  "var(--accent-2)", telos.strategies, (s) => s.title.split("—")[0].trim(), (s) => s.id)}
+        {row("项目",    "var(--sky)",      telos.projects,   (p) => p.title, (p) => p.id)}
+        {row("工作",        "var(--text-2)",   allWork,          (w) => w.title, (w) => w.id)}
+        {row("团队",        "var(--accent-2)", telos.team,       (t) => `${t.name} — ${t.role}`, (t) => t.id)}
+        {row("预算",      "var(--money)",    telos.budget,     (b) => `${b.label} · ${b.value}/${b.of}`, (b) => b.id)}
       </div>
     </section>
   );
@@ -242,8 +242,8 @@ export function GraphView({ telos, onTrace }: CommonViewProps) {
     <section className="graph-view">
       <header className="band-head">
         <div>
-          <h2 className="band-title">Graph · all primitives and their links</h2>
-          <p className="band-sub">Concentric layers radiating out from Mission. Click any node to trace.</p>
+          <h2 className="band-title">图谱 · 所有原语及其链接</h2>
+          <p className="band-sub">以使命为中心的同心圆层。点击任意节点进行追踪。</p>
         </div>
       </header>
       <div className="graph-wrap">
@@ -336,11 +336,11 @@ function App() {
       <div style={{ padding: 40, color: "#E8EFFF" }}>
         {error ? (
           <>
-            <div style={{ marginBottom: 12 }}>Can&rsquo;t load TELOS from the Pulse daemon ({error}).</div>
-            <button onClick={refetch} style={{ padding: "6px 14px", cursor: "pointer" }}>Retry</button>
+            <div style={{ marginBottom: 12 }}>无法从 Pulse 守护进程加载 TELOS ({error})。</div>
+            <button onClick={refetch} style={{ padding: "6px 14px", cursor: "pointer" }}>重试</button>
           </>
         ) : (
-          "Loading…"
+          "加载中…"
         )}
       </div>
     );
@@ -365,9 +365,9 @@ function App() {
           <div style={{ padding: "20px 24px 0" }}>
             <EmptyStateGuide
               section="Telos"
-              description="Your missions, goals, problems, strategies, and the narratives behind your work — loaded into every LifeOS session."
+              description="你的使命、目标、问题、策略，以及工作背后的叙事——加载到每个 LifeOS 会话中。"
               userDir="TELOS"
-              daPromptExample="walk me through setting up my mission and goals"
+              daPromptExample="带我完成使命和目标的设置"
             />
           </div>
         )}
@@ -398,12 +398,12 @@ function App() {
           </div>
         )}
         <footer className="ftr">
-          <span>LifeOS · Life Operating System</span>
+          <span>LifeOS · 生活操作系统</span>
           <span className="ftr-sep">·</span>
-          <span>graph synced three minutes ago</span>
+          <span>图谱同步于三分钟前</span>
           <span className="ftr-sep">·</span>
           <span>
-            11 primitives · {telos.goals.length} goals · {telos.metrics.length} metrics · {telos.team.length} on team
+            11 个原语 · {telos.goals.length} 个目标 · {telos.metrics.length} 个指标 · {telos.team.length} 位团队成员
           </span>
         </footer>
       </main>

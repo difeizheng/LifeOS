@@ -129,7 +129,7 @@ export default function ClimbChart({ state, variant }: ClimbChartProps) {
 
   if (variant === "mini") {
     return (
-      <svg width={W} height={H} className="shrink-0" aria-label={`Climb ${pct}%`}>
+      <svg width={W} height={H} className="shrink-0" aria-label={`攀登 ${pct}%`}>
         <path d={doneArea} fill={lineColor} opacity={0.08} />
         <path d={totalPath} fill="none" stroke="#565f89" strokeWidth={1} opacity={0.6} strokeDasharray="2 2" />
         <path d={donePath} fill="none" stroke={lineColor} strokeWidth={1.5} opacity={0.9} />
@@ -148,7 +148,7 @@ export default function ClimbChart({ state, variant }: ClimbChartProps) {
 
   return (
     <div className="w-full">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ maxHeight: H }} aria-label={`Climb chart ${pct}%`}>
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ maxHeight: H }} aria-label={`攀登图表 ${pct}%`}>
         {/* claim-count gridlines */}
         {Array.from({ length: Math.min(maxTotal, 4) }, (_, i) => {
           const count = Math.round(((i + 1) / Math.min(maxTotal, 4)) * maxTotal);
@@ -201,14 +201,14 @@ export default function ClimbChart({ state, variant }: ClimbChartProps) {
           viewBox={`0 0 ${W} ${RIBBON_H}`}
           className="w-full mt-0.5"
           style={{ maxHeight: RIBBON_H }}
-          aria-label="Tool activity per minute"
+          aria-label="每分钟工具活动"
         >
           {ribbon.map((col, i) => {
             const colH = Math.max(2, (Math.min(col.total, col.maxCalls) / col.maxCalls) * (RIBBON_H - 4));
             let yCursor = RIBBON_H - 2;
             return (
               <g key={i}>
-                <title>{`${col.total} tool calls`}</title>
+                <title>{`${col.total} 次工具调用`}</title>
                 {col.segs.map((s) => {
                   const segH = (s.n / col.total) * colH;
                   yCursor -= segH;
@@ -229,8 +229,8 @@ export default function ClimbChart({ state, variant }: ClimbChartProps) {
             );
           })}
           <text x={PAD} y={8} fontSize={7} fill="rgba(255,255,255,0.3)" fontFamily="monospace">
-            activity
-          </text>
+            活动
+</text>
         </svg>
       )}
     </div>

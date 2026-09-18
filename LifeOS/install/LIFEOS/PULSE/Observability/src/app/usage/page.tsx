@@ -42,9 +42,9 @@ const MODEL_COLOR = (m: string) =>
   /fable/i.test(m) ? "var(--relationships)" : /opus/i.test(m) ? "var(--accent-blue)" : /sonnet/i.test(m) ? "var(--ok)" : /haiku/i.test(m) ? "var(--warn)" : "var(--ink-3)";
 
 const RANGE_TABS: { id: Range; label: string }[] = [
-  { id: "daily", label: "Daily" },
-  { id: "weekly", label: "Weekly" },
-  { id: "monthly", label: "Monthly" },
+  { id: "daily", label: "每日" },
+  { id: "weekly", label: "每周" },
+  { id: "monthly", label: "每月" },
 ];
 
 export default function UsagePage() {
@@ -69,36 +69,36 @@ export default function UsagePage() {
     <PageShell className="max-w-[1400px]">
       <PageHeader
         icon={Gauge}
-        title="Usage"
+        title="用量"
         subtitle={
           <>
-            Anthropic subscription utilization and Claude usage over time — models, tokens, and cost.
-            {summary?.daysTracked ? ` ${summary.daysTracked} days tracked.` : ""}
+            Anthropic 订阅利用率与 Claude 历史用量 — 模型、token 与成本。
+            {summary?.daysTracked ? ` 已追踪 ${summary.daysTracked} 天。` : ""}
             <span className="block text-[12px] text-ink-3 mt-1">
-              <strong className="text-ink-2">Cost = what this usage would cost at list API prices if it were NOT on the subscription</strong> — the number that starts to matter as Fable moves off-plan. Per-model breakdown below. The &ldquo;API spend&rdquo; card is what&apos;s already billed outside the subscription (admin cost report).
+              <strong className="text-ink-2">成本 = 若未使用订阅，按 API 标价计算的费用</strong> — 随着 Fable 脱离订阅计划，这个数字将越来越重要。下方有按模型分类的明细。&ldquo;API 支出&rdquo;卡片是订阅外已计费的部分（管理员成本报告）。
             </span>
           </>
         }
       />
 
-      {error && <div className="text-warn text-sm">Couldn&apos;t reach Usage API: {error}</div>}
-      {!summary && !error && <div className="text-ink-3 text-sm">Loading…</div>}
+      {error && <div className="text-warn text-sm">无法连接用量 API：{error}</div>}
+      {!summary && !error && <div className="text-ink-3 text-sm">加载中…</div>}
 
       {summary && (
         <>
           {/* Subscription gauges */}
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <GaugeCard label="5-hour window" pct={summary.subscription.fiveHourPct} />
-            <GaugeCard label="7-day window" pct={summary.subscription.sevenDayPct} />
-            <StatTile icon={Coins} dim="money" label="API spend (month)" value={fmtUsd(summary.monthUsedUsd)} sub={summary.monthUsedSource ?? ""} />
-            <StatTile icon={MessagesSquare} dim="ok" label="Messages (30d)" value={summary.month.messages.toLocaleString()} sub={`${fmtTokens(summary.month.totalTokens)} tokens`} />
+            <GaugeCard label="5小时窗口" pct={summary.subscription.fiveHourPct} />
+            <GaugeCard label="7天窗口" pct={summary.subscription.sevenDayPct} />
+            <StatTile icon={Coins} dim="money" label="API 支出（月）" value={fmtUsd(summary.monthUsedUsd)} sub={summary.monthUsedSource ?? ""} />
+            <StatTile icon={MessagesSquare} dim="ok" label="消息（30天）" value={summary.month.messages.toLocaleString()} sub={`${fmtTokens(summary.month.totalTokens)} tokens`} />
           </div>
 
           {/* Today / week / month token+cost */}
           <div className="grid gap-3 sm:grid-cols-3">
-            <PeriodCard label="Today" t={summary.today} />
-            <PeriodCard label="This week" t={summary.week} />
-            <PeriodCard label="This month" t={summary.month} />
+            <PeriodCard label="今天" t={summary.today} />
+            <PeriodCard label="本周" t={summary.week} />
+            <PeriodCard label="本月" t={summary.month} />
           </div>
 
           {!summary.hasDaily && (
@@ -106,18 +106,18 @@ export default function UsagePage() {
               className="text-[13px] rounded-lg px-3 py-2"
               style={{ color: "var(--warn)", border: "1px solid rgba(251,191,36,0.2)", background: "rgba(251,191,36,0.05)" }}
             >
-              No per-day rollup yet. Run <code className="mono text-warn">bun ~/.claude/LIFEOS/TOOLS/UsageAggregator.ts</code> (or wait for the nightly job) to populate token/cost history.
+              尚无每日汇总数据。运行 <code className="mono text-warn">bun ~/.claude/LIFEOS/TOOLS/UsageAggregator.ts</code>（或等待夜间任务）以填充 token/成本历史。
             </div>
           )}
 
           {/* Trend */}
           <Panel>
             <PanelHeader
-              title="Cost trend"
+              title="成本趋势"
               actions={<TabBar tabs={RANGE_TABS} active={range} onChange={setRange} />}
             />
             {trend.length === 0 ? (
-              <EmptyState title="No data for this range yet." />
+              <EmptyState title="此范围暂无数据。" />
             ) : (
               <div className="flex items-end gap-1 h-48">
                 {trend.map((p) => (
@@ -135,9 +135,9 @@ export default function UsagePage() {
 
           {/* Model mix */}
           <Panel>
-            <PanelHeader title="Model mix (all time)" />
+            <PanelHeader title="模型占比（全部时间）" />
             {models.length === 0 ? (
-              <EmptyState title="No model data yet." />
+              <EmptyState title="暂无模型数据。" />
             ) : (
               <div className="flex flex-col gap-3">
                 {models.map((m) => (

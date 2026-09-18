@@ -62,7 +62,7 @@ export function TabFreshnessPill({ className = "" }: { className?: string }) {
         if (cancelled) return;
         setData({
           dataDate: null,
-          label: "freshness check failed",
+          label: "新鲜度检查失败",
           daysOld: null,
           tier: "unknown",
           perFile: [],

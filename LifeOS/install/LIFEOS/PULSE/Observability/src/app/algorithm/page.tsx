@@ -88,27 +88,27 @@ interface FilePayload {
 
 type TabId = "files" | "how";
 const TABS: TabSpec<TabId>[] = [
-  { id: "files", label: "Rules & Files", icon: BookOpen, dim: "blue" },
-  { id: "how", label: "How It Works", icon: Workflow, dim: "blue" },
+  { id: "files", label: "规则与文件", icon: BookOpen, dim: "blue" },
+  { id: "how", label: "工作原理", icon: Workflow, dim: "blue" },
 ];
 
 const STAGE_META: Record<Stage, { label: string; dim: Dim; desc: string }> = {
-  context: { label: "Every turn", dim: "creative", desc: "Loaded before the first token — the standing context and the hooks that inject it." },
-  doctrine: { label: "The Algorithm", dim: "money", desc: "The doctrine itself — versioned, never edited in place — and its full history." },
-  isa: { label: "ISA system", dim: "freedom", desc: "Where 'done' gets written down, synced, committed, and rendered." },
-  run: { label: "During a run", dim: "relationships", desc: "The live layer — nudges and gates that fire while work happens." },
-  ondemand: { label: "On demand", dim: "health", desc: "Rule files pulled in when their trigger fires — never resident." },
+  context: { label: "每轮对话", dim: "creative", desc: "在第一个 token 之前加载 — 常驻上下文和注入它的钩子。" },
+  doctrine: { label: "算法", dim: "money", desc: "教义本身 — 版本化，永不就地编辑 — 及其完整历史。" },
+  isa: { label: "ISA 系统", dim: "freedom", desc: "记录'完成'标准、同步、提交和渲染的地方。" },
+  run: { label: "运行期间", dim: "relationships", desc: "实时层 — 工作发生时触发的提示和门控。" },
+  ondemand: { label: "按需", dim: "health", desc: "触发器激活时加载的规则文件 — 非常驻。" },
 };
 
 // The loop, as it actually runs. File chips jump to that file.
 const FLOW: { name: string; desc: string; dim: Dim; files: string[] }[] = [
-  { name: "Load", desc: "System prompt (constitutional, wins conflicts) + CLAUDE.md @-imports + hook-injected context and memory.", dim: "creative", files: ["system-prompt", "claude-md", "load-context-hook", "load-memory-hook"] },
-  { name: "Judge", desc: "Trivial turn or a run? Discovered from the work, never a rubric. A principal depth directive outranks judgment.", dim: "freedom", files: ["doctrine", "nudge-hook"] },
-  { name: "Articulate", desc: "Done gets written down first: an ISA whose claims each name the probe that would falsify them, plus anti-claims.", dim: "money", files: ["isa-format", "isa-skill"] },
-  { name: "Climb", desc: "Build against the ISA. Skills, agents, research as needed; deterministic nudges fire the moment a question is answerable.", dim: "relationships", files: ["nudge-hook", "isasync-hook"] },
-  { name: "Verify", desc: "No claim closes without tool evidence of the right modality. Hooks block mechanically; 'should work' is forbidden.", dim: "ok", files: ["verification-gate", "verification-expanded", "checkpoint-hook"] },
-  { name: "Learn", desc: "The run leaves a trail: ISA deltas, reflections, learnings routed to where they structurally live.", dim: "health", files: ["self-healing", "changelog"] },
-  { name: "Respond", desc: "The ONE output format — answer first, CHANGE/VERIFY evidence when work mutated things. Gated on Stop.", dim: "blue", files: ["system-prompt", "format-gate", "stop-gates"] },
+  { name: "加载", desc: "系统提示（宪法式，冲突时优先）+ CLAUDE.md @-imports + 钩子注入的上下文和记忆。", dim: "creative", files: ["system-prompt", "claude-md", "load-context-hook", "load-memory-hook"] },
+  { name: "判断", desc: "简单轮次还是正式运行？从工作中发现，而非预设标准。负责人深度指令优先于判断。", dim: "freedom", files: ["doctrine", "nudge-hook"] },
+  { name: "明确", desc: "先写下完成标准：ISA 的每个声明都命名证伪它的探针，加上反声明。", dim: "money", files: ["isa-format", "isa-skill"] },
+  { name: "攀登", desc: "依据 ISA 构建。按需使用技能、代理、研究；确定性提示在问题可回答时立即触发。", dim: "relationships", files: ["nudge-hook", "isasync-hook"] },
+  { name: "验证", desc: "没有工具证据的声明不会关闭。钩子机械阻止；'应该可以'被禁止。", dim: "ok", files: ["verification-gate", "verification-expanded", "checkpoint-hook"] },
+  { name: "学习", desc: "运行留下痕迹：ISA 差异、反思、学习路由到其结构性归属。", dim: "health", files: ["self-healing", "changelog"] },
+  { name: "响应", desc: "唯一的输出格式 — 先给答案，工作变更时附 CHANGE/VERIFY 证据。在 Stop 上门控。", dim: "blue", files: ["system-prompt", "format-gate", "stop-gates"] },
 ];
 
 const REFRESH_MS = 60_000;
@@ -316,7 +316,7 @@ export default function AlgorithmPage() {
             )}
           </span>
         }
-        subtitle="Every rule, hook, and doctrine file the system thinks with — read it, understand it, edit it. The page keeps itself current: change anything and the explanations regenerate."
+        subtitle="系统思考所用的每条规则、钩子和教义文件 — 阅读、理解、编辑。页面自动保持最新：更改任何内容，解释会重新生成。"
       />
 
       <TabBar
@@ -329,13 +329,13 @@ export default function AlgorithmPage() {
               className={error ? "inline-block w-1.5 h-1.5 rounded-full" : "inline-block w-1.5 h-1.5 rounded-full animate-pulse"}
               style={{ background: error ? "var(--err)" : "var(--ok)" }}
             />
-            <span className="whitespace-nowrap">{error ? "offline" : data ? `updated ${ago(data.generated_at)}` : "loading…"}</span>
+            <span className="whitespace-nowrap">{error ? "离线" : data ? `更新于 ${ago(data.generated_at)}` : "加载中…"}</span>
           </div>
         }
       />
 
-      {error && <div className="text-warn text-sm">Couldn&apos;t reach the Algorithm API: {error}</div>}
-      {!data && !error && <div className="text-ink-3 text-sm">Loading…</div>}
+      {error && <div className="text-warn text-sm">无法访问算法 API：{error}</div>}
+      {!data && !error && <div className="text-ink-3 text-sm">加载中…</div>}
 
       {/* ════ RULES & FILES — the primary surface ════ */}
       {data && tab === "files" && (
@@ -369,8 +369,8 @@ export default function AlgorithmPage() {
               );
             })}
             <p className="text-[11px] text-ink-3 px-1 leading-snug">
-              Everything is editable. Markdown saves bump freshness and git-commit in the file&apos;s own repo;
-              hook source is syntax-checked before it can reach disk; doctrine edits always cut a new version.
+              一切可编辑。Markdown 保存会更新新鲜度并在文件所在仓库 git 提交；
+              钩子源码在写入磁盘前会进行语法检查；教义编辑总是创建新版本。
             </p>
           </div>
 
@@ -382,19 +382,19 @@ export default function AlgorithmPage() {
                 <Panel>
                   <PanelHeader
                     icon={Sparkles}
-                    title={`${selectedSpec.name} — what this does`}
-                    meta={selectedSpec.summary ? `generated ${ago(selectedSpec.summary.generated_at)}` : undefined}
-                    actions={selectedSpec.summary?.stale ? <Pill dim="warn" title="File changed since this card was written — regenerating on the next pass">refreshing</Pill> : undefined}
+                    title={`${selectedSpec.name} — 功能说明`}
+                    meta={selectedSpec.summary ? `生成于 ${ago(selectedSpec.summary.generated_at)}` : undefined}
+                    actions={selectedSpec.summary?.stale ? <Pill dim="warn" title="文件已更改 — 下次扫描时重新生成">刷新中</Pill> : undefined}
                   />
                   <div className="text-[12px] text-ink-3 mb-2 leading-snug">
-                    {selectedSpec.role} <span className="text-ink-2">Loads: {selectedSpec.loaded}.</span>
+                    {selectedSpec.role} <span className="text-ink-2">加载：{selectedSpec.loaded}。</span>
                   </div>
                   {selectedSpec.summary ? (
                     <div className="text-[13px] leading-relaxed text-ink-1"><Md content={selectedSpec.summary.markdown} /></div>
                   ) : (
                     <div className="text-[12px] text-ink-3 flex items-center gap-2">
                       <RefreshCw className={`w-3 h-3 ${data.generating ? "animate-spin" : ""}`} />
-                      {data.generating ? "writing this file's summary…" : "summary not generated yet — it will appear on the next refresh pass"}
+                      {data.generating ? "正在生成此文件的摘要…" : "摘要尚未生成 — 下次刷新时会出现"}
                     </div>
                   )}
                 </Panel>
@@ -402,7 +402,7 @@ export default function AlgorithmPage() {
                 {/* doctrine version chips */}
                 {isDoctrine && (
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-[11px] uppercase tracking-[0.14em] text-ink-3 mr-1">Versions</span>
+                    <span className="text-[11px] uppercase tracking-[0.14em] text-ink-3 mr-1">版本</span>
                     {data.versions.slice(0, 12).map((v) => {
                       const isCurrent = v.version === data.version;
                       const isViewing = doctrineVersion ? v.version === doctrineVersion : isCurrent;
@@ -412,9 +412,9 @@ export default function AlgorithmPage() {
                           onClick={() => setDoctrineVersion(isCurrent ? null : v.version)}
                           className="mono text-[11px] px-2 py-0.5 rounded-full transition-colors"
                           style={dimStyle(isCurrent ? "money" : "neutral", isViewing)}
-                          title={`frozen ${ago(v.mtime)}`}
+                          title={`冻结于 ${ago(v.mtime)}`}
                         >
-                          v{v.version}{isCurrent ? " ·current" : ""}
+                          v{v.version}{isCurrent ? " · 当前" : ""}
                         </button>
                       );
                     })}
@@ -431,12 +431,12 @@ export default function AlgorithmPage() {
                           : `The Algorithm v${data.version} — live doctrine`
                         : selectedSpec.name
                     }
-                    meta={file ? `${selectedSpec.rel} · disk ${ago(file.mtime)}` : selectedSpec.rel}
+                    meta={file ? `${selectedSpec.rel} · 磁盘 ${ago(file.mtime)}` : selectedSpec.rel}
                     actions={
                       <div className="flex items-center gap-2">
                         {selectedSpec.kind === "markdown" && !editing && (
                           <button onClick={() => setRawView(!rawView)} className="text-[12px] px-2.5 py-1 rounded-full" style={dimStyle("neutral", rawView)}>
-                            {rawView ? "rendered" : "raw"}
+                            {rawView ? "渲染" : "原始"}
                           </button>
                         )}
                         {!editing && (!isDoctrine || !doctrineVersion) && (
@@ -446,7 +446,7 @@ export default function AlgorithmPage() {
                             className="flex items-center gap-1.5 text-[12px] px-2.5 py-1 rounded-full transition-opacity hover:opacity-80 disabled:opacity-50"
                             style={dimStyle(isDoctrine ? "money" : "ok", true)}
                           >
-                            <Pencil className="w-3 h-3" /> {isDoctrine ? "edit → new version" : "edit"}
+                            <Pencil className="w-3 h-3" /> {isDoctrine ? "编辑 → 新版本" : "编辑"}
                           </button>
                         )}
                       </div>
@@ -456,7 +456,7 @@ export default function AlgorithmPage() {
                   {isDoctrine && doctrineVersion && (
                     <div className="text-[12px] text-ink-3 mb-3 flex items-center gap-2">
                       <History className="w-3.5 h-3.5" />
-                      Tagged versions are immutable — this is history, not the live file. Select v{data.version} to edit.
+                      标记版本不可变 — 这是历史，非实时文件。选择 v{data.version} 进行编辑。
                     </div>
                   )}
 
@@ -466,7 +466,7 @@ export default function AlgorithmPage() {
                     </div>
                   )}
 
-                  {fileLoading && <div className="text-ink-3 text-sm">Loading…</div>}
+                  {fileLoading && <div className="text-ink-3 text-sm">加载中…</div>}
 
                   {!editing && file && (
                     selectedSpec.kind === "code" || rawView ? (

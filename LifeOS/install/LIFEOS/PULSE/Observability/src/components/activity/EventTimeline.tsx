@@ -60,22 +60,22 @@ export default function EventTimeline({
       {/* Column Headers */}
       <div className="flex items-center justify-between gap-3 px-4 py-2 text-xs font-medium text-[var(--ink-3)] uppercase tracking-wide">
         <div className="flex items-center gap-2.5 flex-1 min-w-0">
-          <span className="w-20">Agent</span>
-          <span className="w-24">Hook</span>
-          <span className="w-20">Tool</span>
-          <span className="flex-1">Details</span>
+          <span className="w-20">代理</span>
+          <span className="w-24">钩子</span>
+          <span className="w-20">工具</span>
+          <span className="flex-1">详情</span>
         </div>
         <div className="w-24 flex items-center justify-end gap-1">
-          <span>Time</span>
+          <span>时间</span>
           <button
             type="button"
             onClick={() => setSortOrder((o) => (o === "desc" ? "asc" : "desc"))}
             title={
               sortOrder === "desc"
-                ? "Most recent first — click for oldest first"
-                : "Oldest first — click for most recent first"
+                ? "最新优先 — 点击切换最旧优先"
+                : "最旧优先 — 点击切换最新优先"
             }
-            aria-label="Toggle sort order"
+            aria-label="切换排序"
             className="p-0.5 rounded hover:bg-white/[0.06] text-[var(--ink-3)] hover:text-[var(--ink-1)] transition-colors"
           >
             {sortOrder === "desc" ? (
@@ -94,8 +94,8 @@ export default function EventTimeline({
             <div className="bg-white/[0.03] p-6 rounded-2xl mb-4">
               <Box size={40} className="text-[var(--line-2)]" />
             </div>
-            <p className="text-base font-medium text-[var(--ink-2)] mb-1">No events yet</p>
-            <p className="text-sm text-[var(--line-2)]">Events will appear here as they stream in</p>
+            <p className="text-base font-medium text-[var(--ink-2)] mb-1">暂无事件</p>
+            <p className="text-sm text-[var(--line-2)]">事件将在流入时显示在这里</p>
           </div>
         ) : (
           <div className="space-y-1.5 divide-y divide-[rgba(107,128,171,0.1)]">

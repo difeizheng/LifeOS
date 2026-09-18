@@ -100,7 +100,7 @@ function RevenueByProduct({ products }: { products: ProductRow[] }) {
   if (products.length === 0) return null;
   return (
     <Panel>
-      <PanelHeader title="Revenue by Product" icon={TrendingUp} />
+      <PanelHeader title="产品收入" icon={TrendingUp} />
       <div data-sensitive style={{ height: 240 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={products} layout="vertical" margin={{ left: 20, right: 60 }}>
@@ -125,7 +125,7 @@ function RevenueByProduct({ products }: { products: ProductRow[] }) {
                 fontSize: 12,
                 color: "var(--ink-1)",
               }}
-              formatter={(v: number) => [`$${v.toLocaleString()}`, "Revenue"]}
+              formatter={(v: number) => [`$${v.toLocaleString()}`, "收入"]}
             />
             <Bar dataKey="revenue" radius={[0, 4, 4, 0]}>
               {products.map((_, i) => (
@@ -195,14 +195,14 @@ export default function BusinessPage() {
       <PageShell>
         <Panel style={{ borderLeft: "3px solid var(--err)" }}>
           <h2 className="font-medium" style={{ color: "var(--err)" }}>
-            Failed to load business
+            加载商业数据失败
           </h2>
           <p className="text-sm text-ink-2">{error}</p>
         </Panel>
       </PageShell>
     );
   }
-  if (!data) return <div className="p-8 text-sm text-ink-2">Loading Business...</div>;
+  if (!data) return <div className="p-8 text-sm text-ink-2">加载商业数据中...</div>;
 
   const metrics = parseMetrics(data.revenueSummary);
   const products = parseProducts(data.revenueByProduct);
@@ -216,34 +216,34 @@ export default function BusinessPage() {
   return (
     <PageShell>
       <PageHeader
-        title="Business"
-        subtitle="Revenue streams, customers, deals, pipeline."
+        title="商业"
+        subtitle="收入来源、客户、交易、管线。"
         icon={Building2}
         actions={
           data.latestRevenueReport ? (
-            <span className="text-[12px] text-ink-3 mono">Report: {data.latestRevenueReport}</span>
+            <span className="text-[12px] text-ink-3 mono">报告: {data.latestRevenueReport}</span>
           ) : undefined
         }
       />
 
       {isFreshInstall && (
         <EmptyStateGuide
-          section="Business Context"
-          description="Your business operations data — revenue streams, customers, deals, pipeline."
+          section="商业背景"
+          description="你的业务运营数据 — 收入来源、客户、交易、管线。"
           userDir="BUSINESS"
-          daPromptExample="walk me through my business context"
+          daPromptExample="带我了解我的商业背景"
         />
       )}
 
       {(metrics.total || metrics.deals) && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4" data-sensitive>
           {metrics.total && (
-            <StatTile label="Latest Revenue" value={metrics.total} dim="money" icon={Building2} />
+            <StatTile label="最新收入" value={metrics.total} dim="money" icon={Building2} />
           )}
-          {metrics.deals && <StatTile label="Deals Closed" value={metrics.deals} />}
-          {metrics.accounts && <StatTile label="Accounts" value={metrics.accounts} />}
-          {metrics.avgDeal && <StatTile label="Avg Deal" value={metrics.avgDeal} dim="money" />}
-          {metrics.largest && <StatTile label="Largest" value={metrics.largest} dim="money" />}
+          {metrics.deals && <StatTile label="已成交" value={metrics.deals} />}
+          {metrics.accounts && <StatTile label="账户" value={metrics.accounts} />}
+          {metrics.avgDeal && <StatTile label="平均交易" value={metrics.avgDeal} dim="money" />}
+          {metrics.largest && <StatTile label="最大" value={metrics.largest} dim="money" />}
         </div>
       )}
 
@@ -252,7 +252,7 @@ export default function BusinessPage() {
       {data.businessOverview && data.businessOverview.length > 0 && (
         <section className="flex flex-col gap-4">
           <h2 className="text-sm font-medium uppercase tracking-widest text-ink-3">
-            Business Overview
+            商业概览
           </h2>
           <SectionGrid sections={data.businessOverview} icon={Briefcase} accent="var(--creative)" />
         </section>
@@ -260,7 +260,7 @@ export default function BusinessPage() {
       {data.ulOverview && data.ulOverview.length > 0 && (
         <section className="flex flex-col gap-4">
           <h2 className="text-sm font-medium uppercase tracking-widest text-ink-3">
-            Company Overview
+            公司概览
           </h2>
           <SectionGrid sections={data.ulOverview} icon={TrendingUp} accent="var(--freedom)" />
         </section>
@@ -268,7 +268,7 @@ export default function BusinessPage() {
       {data.revenueAllSections && data.revenueAllSections.length > 0 && (
         <section className="flex flex-col gap-4">
           <h2 className="text-sm font-medium uppercase tracking-widest text-ink-3">
-            Revenue Details
+            收入详情
           </h2>
           <SectionGrid sections={data.revenueAllSections} icon={FileText} accent="var(--relationships)" />
         </section>

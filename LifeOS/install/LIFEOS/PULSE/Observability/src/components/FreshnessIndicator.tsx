@@ -17,20 +17,20 @@ export interface FreshnessData {
 
 function formatAge(daysOld: number | null): string {
   if (daysOld == null) return "—";
-  if (daysOld < 1) return "today";
-  if (daysOld < 2) return "1 day old";
-  if (daysOld < 60) return `${daysOld} days old`;
+  if (daysOld < 1) return "今天";
+  if (daysOld < 2) return "1 天前";
+  if (daysOld < 60) return `${daysOld} 天前`;
   const months = Math.round(daysOld / 30);
-  if (months < 12) return `${months} mo old`;
+  if (months < 12) return `${months} 月前`;
   const years = (daysOld / 365).toFixed(1);
-  return `${years} yr old`;
+  return `${years} 年前`;
 }
 
 const TIER_STYLE: Record<FreshnessData["tier"], { dot: string; text: string; border: string; bg: string; Icon: any; label: string }> = {
-  fresh:   { dot: "bg-ok",    text: "text-ok",    border: "border-[rgba(74,222,128,0.25)]",  bg: "bg-[rgba(74,222,128,0.1)]",  Icon: CheckCircle2,   label: "Fresh" },
-  aging:   { dot: "bg-warn",  text: "text-warn",  border: "border-[rgba(251,191,36,0.25)]",  bg: "bg-[rgba(251,191,36,0.1)]",  Icon: Clock,          label: "Aging" },
-  stale:   { dot: "bg-err",   text: "text-err",   border: "border-[rgba(248,113,113,0.25)]", bg: "bg-[rgba(248,113,113,0.1)]", Icon: AlertTriangle,  label: "Stale" },
-  unknown: { dot: "bg-ink-3", text: "text-ink-2", border: "border-line-2",                   bg: "bg-surface-3",               Icon: HelpCircle,     label: "Unknown" },
+  fresh:   { dot: "bg-ok",    text: "text-ok",    border: "border-[rgba(74,222,128,0.25)]",  bg: "bg-[rgba(74,222,128,0.1)]",  Icon: CheckCircle2,   label: "新鲜" },
+  aging:   { dot: "bg-warn",  text: "text-warn",  border: "border-[rgba(251,191,36,0.25)]",  bg: "bg-[rgba(251,191,36,0.1)]",  Icon: Clock,          label: "趋旧" },
+  stale:   { dot: "bg-err",   text: "text-err",   border: "border-[rgba(248,113,113,0.25)]", bg: "bg-[rgba(248,113,113,0.1)]", Icon: AlertTriangle,  label: "过期" },
+  unknown: { dot: "bg-ink-3", text: "text-ink-2", border: "border-line-2",                   bg: "bg-surface-3",               Icon: HelpCircle,     label: "未知" },
 };
 
 export function FreshnessIndicator({
@@ -48,7 +48,7 @@ export function FreshnessIndicator({
   if (!freshness) {
     return (
       <div className={`inline-flex items-center gap-1.5 text-xs text-ink-3 ${className}`}>
-        <HelpCircle className="w-3 h-3" /> No date info
+        <HelpCircle className="w-3 h-3" /> 无日期信息
       </div>
     );
   }
@@ -67,7 +67,7 @@ export function FreshnessIndicator({
     >
       <div
         className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-full border ${style.border} ${style.bg} cursor-default whitespace-nowrap`}
-        aria-label={`Data freshness: ${style.label} — ${formatAge(freshness.daysOld)}`}
+        aria-label={`数据新鲜度: ${style.label} — ${formatAge(freshness.daysOld)}`}
       >
         <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
         <Icon className={`w-3.5 h-3.5 ${style.text}`} />
@@ -83,7 +83,7 @@ export function FreshnessIndicator({
       {hover && dated.length > 0 && (
         <div className="absolute right-0 top-full mt-2 z-50 w-72 rounded-lg border border-line-2 bg-surface-1 backdrop-blur-sm shadow-xl p-3">
           <div className="text-[11px] font-semibold uppercase tracking-wider text-ink-2 mb-2">
-            Data sources
+            数据来源
           </div>
           <div className="flex flex-col gap-1">
             {top.map((f) => (
@@ -95,7 +95,7 @@ export function FreshnessIndicator({
           </div>
           {undated.length > 0 && (
             <div className="mt-2 pt-2 border-t border-line-1 text-[11px] text-ink-3">
-              {undated.length} file{undated.length === 1 ? "" : "s"} without a date
+              {undated.length} 个文件无日期
             </div>
           )}
         </div>

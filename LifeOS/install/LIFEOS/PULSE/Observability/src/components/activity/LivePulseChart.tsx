@@ -316,7 +316,7 @@ export default function LivePulseChart({
         <div className="flex items-center gap-4 flex-wrap">
           {/* Skills */}
           <div className="flex items-center gap-2 shrink-0">
-            <span className="text-sm text-[var(--ink-3)] font-medium uppercase">SKILLS:</span>
+            <span className="text-sm text-[var(--ink-3)] font-medium uppercase">技能：</span>
             {skills.length === 0 ? (
               <span className="text-sm font-medium text-[var(--ink-3)]">—</span>
             ) : (
@@ -333,11 +333,11 @@ export default function LivePulseChart({
 
           {/* Workflows */}
           <div className="flex items-center gap-2 shrink-0">
-            <span className="text-sm text-[var(--ink-3)] font-medium uppercase">WORKFLOWS:</span>
+            <span className="text-sm text-[var(--ink-3)] font-medium uppercase">工作流：</span>
             {workflows.length === 0 ? (
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-sm bg-[rgba(107,128,171,0.2)]">
                 <Hammer size={14} className="text-[var(--ink-3)]" />
-                <span className="font-medium text-[var(--ink-3)]">None</span>
+                <span className="font-medium text-[var(--ink-3)]">无</span>
               </div>
             ) : (
               workflows.slice(0, 3).map((w) => (
@@ -353,7 +353,7 @@ export default function LivePulseChart({
 
           {/* Tools */}
           <div className="flex items-center gap-2 shrink-0">
-            <span className="text-sm text-[var(--ink-3)] font-medium uppercase">TOOLS:</span>
+            <span className="text-sm text-[var(--ink-3)] font-medium uppercase">工具：</span>
             {topTools.length === 0 ? (
               ["Read", "Edit", "Bash"].map((t) => {
                 const Icon = TOOL_ICON_MAP[t] || Wrench;
@@ -473,7 +473,7 @@ export default function LivePulseChart({
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex items-center gap-3 text-[var(--ink-3)] text-base">
                 <Loader2 size={20} strokeWidth={2} className="animate-spin text-blue-500" />
-                <span className="font-medium">Waiting for events...</span>
+                <span className="font-medium">等待事件…</span>
               </div>
             </div>
           )}

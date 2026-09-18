@@ -63,7 +63,7 @@ function RefRow({ label, ids, onTrace }: { label: string; ids: readonly string[]
           style={{padding:'1px 6px',borderRadius:3,background:'rgba(154,203,255,0.10)',color:'#9ACBFF',border:'1px solid rgba(154,203,255,0.20)',fontSize:10,cursor:'pointer'}}>
           {refId}
         </span>
-      )) : <span style={{opacity:0.4}}>none</span>}
+      )) : <span style={{opacity:0.4}}>无</span>}
     </div>
   );
 }
@@ -74,8 +74,8 @@ export function Problems({ telos, onTrace, showIds, openFile }: CommonSectionPro
     <section className="problems" id="sec-problems">
       <header className="band-head">
         <div>
-          <h2 className="band-title">Problems</h2>
-          <p className="band-sub">The systemic issues above Mission. These are why the Mission exists.</p>
+          <h2 className="band-title">问题</h2>
+          <p className="band-sub">使命之上的系统性问题。这些就是使命存在的原因。</p>
         </div>
       </header>
       <div className="prob-grid">
@@ -88,13 +88,13 @@ export function Problems({ telos, onTrace, showIds, openFile }: CommonSectionPro
             </div>
             <p className="prob-note muted">{p.note}</p>
             <div className="prob-foot muted" style={{display:'flex',flexWrap:'wrap',gap:6,alignItems:'center'}}>
-              <span>affects:</span>
+              <span>影响：</span>
               {p.affects.length > 0 ? p.affects.map(refId => (
                 <span key={refId} role="button" tabIndex={0} className="ref-pill mono"
                   onClick={(e)=>{e.stopPropagation();onTrace(refId);}}
                   onKeyDown={(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();onTrace(refId);}}}
                   style={{padding:'1px 6px',borderRadius:3,background:'rgba(154,203,255,0.10)',color:'#9ACBFF',border:'1px solid rgba(154,203,255,0.20)',fontSize:10,cursor:'pointer'}}>{refId}</span>
-              )) : <span style={{opacity:0.5}}>none</span>}
+              )) : <span style={{opacity:0.5}}>无</span>}
             </div>
           </RBtn>
         ))}
@@ -119,8 +119,8 @@ export function MissionGoals({ telos, missionId, onMission, onTrace, onOpenGoal,
     <section className="mission-goals" id="sec-mission">
       <header className="band-head">
         <div>
-          <h2 className="band-title">Mission &amp; Goals</h2>
-          <p className="band-sub">The chosen purpose and the outcomes in its service.</p>
+          <h2 className="band-title">使命与目标</h2>
+          <p className="band-sub">所选的目的及其服务的成果。</p>
         </div>
         <div className="seg">
           {telos.missions.map((m) => (
@@ -141,15 +141,15 @@ export function MissionGoals({ telos, missionId, onMission, onTrace, onOpenGoal,
         onClick={() => openFile ? openFile("TELOS.md") : onTrace(active.id)}
         style={{ background: "linear-gradient(90deg, rgba(154,203,255,0.08), #0F1A33)" }}
       >
-        <div className="mission-eyebrow">Mission · {active.horizon}</div>
+        <div className="mission-eyebrow">使命 · {active.horizon}</div>
         <h3 className="mission-title">
           <span className="mono telos-id-label" style={{ marginRight: 10 }}>{active.id}</span>
           {active.title}
         </h3>
         {active.summary && <p className="mission-summary muted" style={{margin:'6px 0 0',fontSize:13,lineHeight:1.5}}>{active.summary}</p>}
-        <RefRow label="addresses" ids={active.addresses ?? []} onTrace={onTrace} />
+        <RefRow label="应对" ids={active.addresses ?? []} onTrace={onTrace} />
         <div className="mission-foot muted">
-          {telos.goals.length} goals serve this
+          {telos.goals.length} 个目标服务于它
         </div>
       </RBtn>
 
@@ -294,12 +294,12 @@ export function Metrics({ telos, onTrace, showIds, openFile }: CommonSectionProp
     <section className="metrics" id="sec-metrics">
       <header className="band-head">
         <div>
-          <h2 className="band-title">Metrics</h2>
-          <p className="band-sub">First-class measurements. Each links up to a Goal, down to the Work producing it.</p>
+          <h2 className="band-title">指标</h2>
+          <p className="band-sub">一等公民的度量。每个指标向上链接到目标，向下链接到产生它的工作。</p>
         </div>
       </header>
       {telos.metrics.length === 0 && (
-        <p className="muted">No live metrics yet — the app monitor, services, and work registry feed this section.</p>
+        <p className="muted">暂无活跃指标 — 应用监控、服务和工作注册表会填充此部分。</p>
       )}
       <div className="metric-grid">
         {telos.metrics.map((m) => (
@@ -318,7 +318,7 @@ export function Metrics({ telos, onTrace, showIds, openFile }: CommonSectionProp
             </div>
             <MetricSpark pts={m.spark} color="#9ACBFF" />
             <div className="metric-foot muted">
-              feeds {m.feeds.join(", ")}
+              服务于 {m.feeds.join(", ")}
             </div>
           </RBtn>
         ))}
@@ -352,19 +352,19 @@ export function ChallengeStrategy({ telos, onTrace, showIds, openFile }: Challen
     <section className="cs" id="sec-challenges">
       <header className="band-head">
         <div>
-          <h2 className="band-title">Challenges &amp; Strategies</h2>
-          <p className="band-sub">Personal blockers on the left; the plays answering them on the right. Hover to trace.</p>
+          <h2 className="band-title">挑战与策略</h2>
+          <p className="band-sub">左侧是个人阻碍；右侧是应对它们的打法。悬停以追踪。</p>
         </div>
         <div className="seg">
-          <button className={mode === "columns" ? "on" : ""} onClick={() => setMode("columns")} type="button">Columns</button>
-          <button className={mode === "graph" ? "on" : ""} onClick={() => setMode("graph")} type="button">Graph</button>
+          <button className={mode === "columns" ? "on" : ""} onClick={() => setMode("columns")} type="button">列</button>
+          <button className={mode === "graph" ? "on" : ""} onClick={() => setMode("graph")} type="button">图</button>
         </div>
       </header>
 
       {mode === "columns" ? (
         <div className="cs-cols">
           <div className="col">
-            <div className="col-head"><span>Challenges</span><span className="col-head-note">what&rsquo;s in the way</span></div>
+            <div className="col-head"><span>挑战</span><span className="col-head-note">阻碍因素</span></div>
             <div className="col-body">
               {telos.challenges.map((c) => {
                 const faded = hover !== null && !rel.has(c.id);
@@ -382,14 +382,14 @@ export function ChallengeStrategy({ telos, onTrace, showIds, openFile }: Challen
                       <div className="card-title">{c.title}</div>
                     </div>
                     <div className="card-note muted">{c.note}</div>
-                    <RefRow label="blocks" ids={c.blocks} onTrace={onTrace} />
+                    <RefRow label="阻碍" ids={c.blocks} onTrace={onTrace} />
                   </RBtn>
                 );
               })}
             </div>
           </div>
           <div className="col" id="sec-strategies">
-            <div className="col-head"><span>Strategies</span><span className="col-head-note">how we&rsquo;re answering</span></div>
+            <div className="col-head"><span>策略</span><span className="col-head-note">应对方式</span></div>
             <div className="col-body">
               {telos.strategies.map((s) => {
                 const faded = hover !== null && !rel.has(s.id);
@@ -408,11 +408,11 @@ export function ChallengeStrategy({ telos, onTrace, showIds, openFile }: Challen
                     <div className="card-row">
                       <span className="card-id mono telos-id-label">{s.id}</span>
                       <div className="card-title">{head}</div>
-                      {s.active && <span className="badge-now pill">doing this</span>}
+                      {s.active && <span className="badge-now pill">正在执行</span>}
                     </div>
                     {(s.summary || rule) && <div className="card-rule muted">{s.summary || rule}</div>}
-                    <RefRow label="overcomes" ids={s.overcomes} onTrace={onTrace} />
-                    <RefRow label="implements" ids={s.implements} onTrace={onTrace} />
+                    <RefRow label="克服" ids={s.overcomes} onTrace={onTrace} />
+                    <RefRow label="实施" ids={s.implements} onTrace={onTrace} />
                   </RBtn>
                 );
               })}
@@ -485,12 +485,12 @@ export function Team({ telos, onTrace, showIds, openFile }: CommonSectionProps) 
     <section className="team-sec" id="sec-team">
       <header className="band-head">
         <div>
-          <h2 className="band-title">Team</h2>
-          <p className="band-sub">Humans and agents doing the Work.</p>
+          <h2 className="band-title">团队</h2>
+          <p className="band-sub">执行工作的人和代理。</p>
         </div>
       </header>
       {telos.team.length === 0 && (
-        <p className="muted">No team data yet — parsed from the principal, DA, and fleet identity files.</p>
+        <p className="muted">暂无团队数据 — 从负责人、DA 和集群身份文件解析。</p>
       )}
       <div className="team-grid">
         {telos.team.map((t) => (
@@ -507,7 +507,7 @@ export function Team({ telos, onTrace, showIds, openFile }: CommonSectionProps) 
             </div>
             <p className="team-note muted">{t.note}</p>
             <div className="team-owns">
-              <span className="owns-label muted">owns</span>
+              <span className="owns-label muted">负责</span>
               {t.owns.map((pid) => {
                 const p = telos.projects.find((x) => x.id === pid);
                 return p ? (
@@ -552,8 +552,8 @@ export function Budget({ telos, onTrace, showIds, openFile }: CommonSectionProps
     <section className="budget" id="sec-budget">
       <header className="band-head">
         <div>
-          <h2 className="band-title">Budget</h2>
-          <p className="band-sub">What&rsquo;s being spent, and on what. Money, time, attention.</p>
+          <h2 className="band-title">预算</h2>
+          <p className="band-sub">正在花费什么，花在哪里。金钱、时间、注意力。</p>
         </div>
       </header>
       <div className="budget-cols">
@@ -586,7 +586,7 @@ export function Budget({ telos, onTrace, showIds, openFile }: CommonSectionProps
                 <div className="budget-note muted">
                   <span>{b.note}</span>
                   {b.funds.length > 0 && (
-                    <span className="budget-funds">funds {b.funds.length} item{b.funds.length === 1 ? "" : "s"}</span>
+                    <span className="budget-funds">资助 {b.funds.length} 个项目</span>
                   )}
                 </div>
               </RBtn>
@@ -606,8 +606,8 @@ export function Recommendations({ telos, onTrace, openFile }: CommonSectionProps
     <section className="recs">
       <header className="band-head">
         <div>
-          <h2 className="band-title">Recommendations</h2>
-          <p className="band-sub">The next two or three moves, with the trace that makes the case.</p>
+          <h2 className="band-title">建议</h2>
+          <p className="band-sub">接下来的两三个动作，以及支撑它们的追踪链。</p>
         </div>
       </header>
       <div className="recs-list">
@@ -629,9 +629,9 @@ export function Recommendations({ telos, onTrace, openFile }: CommonSectionProps
             <div className="rec-n mono muted">{String(i + 1).padStart(2, "0")}</div>
             <div className="rec-body">
               <div className="rec-action">{r.action}</div>
-              <div className="rec-because muted"><span className="rec-label">because</span> {r.because}</div>
+              <div className="rec-because muted"><span className="rec-label">因为</span> {r.because}</div>
               <div className="rec-trace">
-                <span className="rec-label muted">traces</span>
+                <span className="rec-label muted">追踪</span>
                 {r.upstream.map((id) => (
                   <span
                     key={id}
@@ -652,8 +652,8 @@ export function Recommendations({ telos, onTrace, openFile }: CommonSectionProps
               </div>
             </div>
             <div className="rec-meta muted">
-              <div><span className="rec-label">effort</span> {r.effort}</div>
-              <div><span className="rec-label">impact</span> <span className={"rec-impact " + r.impact}>{r.impact}</span></div>
+              <div><span className="rec-label">投入</span> {r.effort}</div>
+              <div><span className="rec-label">影响</span> <span className={"rec-impact " + r.impact}>{r.impact}</span></div>
             </div>
           </div>
         ))}
@@ -719,8 +719,8 @@ export function Preferences({ telos, openFile }: PreferencesProps) {
           }
         }}
       >
-        <span className="prefs-title">Preference context</span>
-        <span className="prefs-sub muted">The signals that aren&rsquo;t primitives but color every decision.</span>
+        <span className="prefs-title">偏好上下文</span>
+        <span className="prefs-sub muted">不是原语，但为每个决策着色的信号。</span>
         <Icons.Chev
           size={14}
           style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 200ms", marginLeft: "auto", color: "#6B80AB" }}
@@ -728,13 +728,13 @@ export function Preferences({ telos, openFile }: PreferencesProps) {
       </div>
       {open && (
         <div className="prefs-body">
-          {list({ label: "Books", items: p.books, file: "BOOKS.md" })}
-          {list({ label: "Films", items: p.films, file: "MOVIES.md" })}
-          {list({ label: "Anime", items: p.anime, file: "MOVIES.md" })}
-          {list({ label: "Characters", items: p.characters, file: "AUTHORS.md" })}
-          {list({ label: "Aphorisms", items: p.aphorisms, tone: "aph", file: "WISDOM.md" })}
-          {list({ label: "Hobbies", items: p.hobbies, file: "IDEAS.md" })}
-          {list({ label: "Literature", items: p.literature, file: "AUTHORS.md" })}
+          {list({ label: "书籍", items: p.books, file: "BOOKS.md" })}
+          {list({ label: "电影", items: p.films, file: "MOVIES.md" })}
+          {list({ label: "动漫", items: p.anime, file: "MOVIES.md" })}
+          {list({ label: "角色", items: p.characters, file: "AUTHORS.md" })}
+          {list({ label: "格言", items: p.aphorisms, tone: "aph", file: "WISDOM.md" })}
+          {list({ label: "爱好", items: p.hobbies, file: "IDEAS.md" })}
+          {list({ label: "文学", items: p.literature, file: "AUTHORS.md" })}
         </div>
       )}
     </section>

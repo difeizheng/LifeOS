@@ -32,18 +32,18 @@ export default function BooksPage() {
   }, []);
 
   const subtitle =
-    "Favorite books — the ones worth re-reading." +
-    (data?.count ? ` ${data.count} tracked.` : "") +
-    (data?.lastUpdated ? ` Updated ${data.lastUpdated}.` : "");
+    "收藏书籍 — 值得重读的佳作。" +
+    (data?.count ? ` ${data.count} 本已追踪。` : "") +
+    (data?.lastUpdated ? ` 更新于 ${data.lastUpdated}。` : "");
 
   return (
     <PageShell className="max-w-[1100px]">
       <PageHeader icon={BookOpen} title="Books" subtitle={subtitle} />
 
-      {error && <div className="text-warn text-sm">Couldn&apos;t reach Books API: {error}</div>}
-      {!data && !error && <div className="text-ink-3 text-sm">Loading…</div>}
+      {error && <div className="text-warn text-sm">无法访问 Books API：{error}</div>}
+      {!data && !error && <div className="text-ink-3 text-sm">加载中…</div>}
       {data && data.groups.length === 0 && !error && (
-        <EmptyState icon={BookOpen} title="No books yet" hint="Add books to USER/BOOKS.md to populate this page." />
+        <EmptyState icon={BookOpen} title="暂无书籍" hint="将书籍添加到 USER/BOOKS.md 以填充此页面。" />
       )}
 
       {data?.groups.map((g) => (

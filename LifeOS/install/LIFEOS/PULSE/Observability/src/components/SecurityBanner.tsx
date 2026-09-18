@@ -58,8 +58,8 @@ export default function SecurityBanner() {
           style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", width: "100%", textAlign: "left", padding: 0, display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, letterSpacing: "0.02em" }}
         >
           <span style={{ fontSize: 15 }}>{hasCrit ? "🔴" : "🟠"}</span>
-          <span>Security: {label} finding{d.count === 1 ? "" : "s"} on your infrastructure</span>
-          <span style={{ marginLeft: "auto", fontSize: 12, opacity: 0.85 }}>{open ? "hide ▲" : "details ▼"}</span>
+          <span>安全: {label} 个发现{d.count === 1 ? "" : ""}在您的基础设施上</span>
+          <span style={{ marginLeft: "auto", fontSize: 12, opacity: 0.85 }}>{open ? "隐藏 ▲" : "详情 ▼"}</span>
         </button>
         {open && d.items && (
           <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 4 }}>
@@ -70,7 +70,7 @@ export default function SecurityBanner() {
                 <span style={{ opacity: 0.85 }}>{it.check} — {it.evidence}</span>
               </div>
             ))}
-            <a href="/bunker" style={{ color: "#fff", fontSize: 12, marginTop: 4, textDecoration: "underline", opacity: 0.9 }}>Open Bunker →</a>
+            <a href="/bunker" style={{ color: "#fff", fontSize: 12, marginTop: 4, textDecoration: "underline", opacity: 0.9 }}>打开 Bunker →</a>
           </div>
         )}
       </div>
